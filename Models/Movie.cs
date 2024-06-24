@@ -8,7 +8,7 @@ namespace PlooCinema.WebApi.Model
     public class Movie
     {
         public Movie() { }
-        public Movie(int id, string name, string genre, TimeSpan duration, DateOnly release, string description)
+        public Movie(int id, string name, string genre, int duration, DateTime release, string description)
         {
             Id = id;
             Name = name;
@@ -17,7 +17,7 @@ namespace PlooCinema.WebApi.Model
             Release = release;
             Description = description;
         }
-        public Movie(string name, string genre, TimeSpan duration, DateOnly release, string description)
+        public Movie(string name, string genre, int duration, DateTime release, string description)
         {
             Name = name;
             Genre = genre;
@@ -50,28 +50,28 @@ namespace PlooCinema.WebApi.Model
                 _genre = value.ToUpper();
             }
         }
-        private TimeSpan _duration;
-        public TimeSpan Duration
+        private int _duration;
+        public int Duration
         {
             get => _duration;
             set
             {
-                if (value == TimeSpan.Zero)
+                if (value <= 0)
                     throw new ArgumentException("Informe a duração do filme.");
 
                 _duration = value;
             }
         }
-        private DateOnly _release;
-        public DateOnly Release
+        private DateTime _release;
+        public DateTime Release
         {
             get => _release;
             set
             {
-                if (value > DateOnly.FromDateTime(DateTime.Now))
+                if (value > DateTime.Now.Date)
                     throw new ArgumentException("A data informada não é valida.");
 
-                _release = value;
+                _release = value.Date;
             }
         }
         private string _description;

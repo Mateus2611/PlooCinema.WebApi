@@ -1,8 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "YZek5xsZep8=",
+  "dgSpecHash": "oBtG6oNdwGEABQMjeRI1tJEw8xCgf+TE3vHKAktNbASrKnBTNLetCPaK1WngfVxsoLZUdb5FUrRzhQehhJ1T/Q==",
   "success": true,
-  "projectFilePath": "C:\\Desenvolvimento\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Desenvolvimento\\DevConnect\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mateu\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\mateu\\.nuget\\packages\\microsoft.openapi\\1.6.14\\microsoft.openapi.1.6.14.nupkg.sha512",
+    "C:\\Users\\mateu\\.nuget\\packages\\swashbuckle.aspnetcore\\6.6.2\\swashbuckle.aspnetcore.6.6.2.nupkg.sha512",
+    "C:\\Users\\mateu\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.6.2\\swashbuckle.aspnetcore.swagger.6.6.2.nupkg.sha512",
+    "C:\\Users\\mateu\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.6.2\\swashbuckle.aspnetcore.swaggergen.6.6.2.nupkg.sha512",
+    "C:\\Users\\mateu\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.6.2\\swashbuckle.aspnetcore.swaggerui.6.6.2.nupkg.sha512",
+    "C:\\Users\\mateu\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\8.0.2\\microsoft.netcore.app.host.win-x64.8.0.2.nupkg.sha512",
+    "C:\\Users\\mateu\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.2\\microsoft.netcore.app.ref.8.0.2.nupkg.sha512"
+  ],
   "logs": []
 }
