@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Desenvolvimento\\DevConnect\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj": {}
+    "c:\\Desenvolvimento\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj": {}
   },
   "projects": {
-    "C:\\Desenvolvimento\\DevConnect\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj": {
+    "c:\\Desenvolvimento\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Desenvolvimento\\DevConnect\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj",
+        "projectUniqueName": "c:\\Desenvolvimento\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj",
         "projectName": "PlooCinema.WebApi",
-        "projectPath": "C:\\Desenvolvimento\\DevConnect\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj",
-        "packagesPath": "C:\\Users\\mateu\\.nuget\\packages\\",
-        "outputPath": "C:\\Desenvolvimento\\DevConnect\\PlooCinema.WebApi\\obj\\",
+        "projectPath": "c:\\Desenvolvimento\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj",
+        "packagesPath": "C:\\Users\\MateusAlves\\.nuget\\packages\\",
+        "outputPath": "c:\\Desenvolvimento\\PlooCinema.WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\mateu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\MateusAlves\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -32,12 +32,21 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Npgsql": {
+              "target": "Package",
+              "version": "[8.0.3, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
@@ -54,16 +63,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[8.0.2, 8.0.2]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.2, 8.0.2]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -72,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
