@@ -11,7 +11,7 @@
 *.sln.docstates
 *DbMovie.json
 *appsettings.json
-obj
+*obj
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
