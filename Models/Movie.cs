@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,9 +9,11 @@ namespace PlooCinema.WebApi.Model
 {
     public class Movie
     {
-        public Movie() { }
         public Movie(int id, string name, string genre, int duration, DateTime release, string description)
         {
+            ArgumentException.ThrowIfNullOrWhiteSpace(name);
+            ArgumentException.ThrowIfNullOrWhiteSpace(genre);
+            ArgumentException.ThrowIfNullOrWhiteSpace(description);
             Id = id;
             Name = name;
             Genre = genre;
@@ -19,6 +23,9 @@ namespace PlooCinema.WebApi.Model
         }
         public Movie(string name, string genre, int duration, DateTime release, string description)
         {
+            ArgumentException.ThrowIfNullOrWhiteSpace(name);
+            ArgumentException.ThrowIfNullOrWhiteSpace(genre);
+            ArgumentException.ThrowIfNullOrWhiteSpace(description);
             Name = name;
             Genre = genre;
             Duration = duration;
@@ -26,30 +33,10 @@ namespace PlooCinema.WebApi.Model
             Description = description;
         }
         public int Id { get; set; }
-        private string _name;
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                if (value == "" || value == null)
-                    throw new ArgumentException("Informe o titulo do filme.");
-
-                _name = value;
-            }
-        }
-        private string _genre;
-        public string Genre
-        {
-            get => _genre;
-            set
-            {
-                if (value == "" || value == null)
-                    throw new ArgumentException("Informe o genero do filme.");
-
-                _genre = value.ToUpper();
-            }
-        }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string Genre { get; set; }
         private int _duration;
         public int Duration
         {
@@ -74,18 +61,8 @@ namespace PlooCinema.WebApi.Model
                 _release = value.Date;
             }
         }
-        private string _description;
-        public string Description
-        {
-            get => _description;
-            set
-            {
-                if (value == "" || value == null)
-                    throw new ArgumentException("Informe a descrição do filme.");
-
-                _description = value;
-            }
-        }
+        [Required]
+        public string Description { get; set;}
 
         public override string ToString()
         {

@@ -16,7 +16,7 @@ namespace PlooCinema.WebApi.Repositories
         void Create(Movie movie);
         IEnumerable<Movie> SearchAll();
         IEnumerable<Movie> SearchByName(string name);
-        IEnumerable<Movie> SearchById(int id);
+        Movie? SearchById(int id);
         void Update(int id, Movie movie);
         void Delete(int id);
     }
@@ -66,13 +66,13 @@ namespace PlooCinema.WebApi.Repositories
             return query;
         }
 
-        public IEnumerable<Movie> SearchById(int id)
+        public Movie? SearchById(int id)
         {
             var getJsonMovie = File.ReadAllText(fileMovie);
             var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie) ?? [];
 
             var query = jsonMovie
-                .Where(movie => movie.Id == id);
+                .SingleOrDefault(movie => movie.Id == id);
 
             return query;
         }
@@ -116,20 +116,8 @@ namespace PlooCinema.WebApi.Repositories
 
     public class MovieRepositoryPostgresSql : IMovieRepository
     {
-        public MovieRepositoryPostgresSql()
+        public MovieRepositoryPostgresSql(string connString)
         {
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            var connString = config.GetConnectionString("DefaultConnection");
-
-            connString = connString.Replace("${HOST_POSTGRES}", config["AppSettings:HOST_POSTGRES"]);
-            connString = connString.Replace("${PORT_POSTGRES}", config["AppSettings:PORT_POSTGRES"]);
-            connString = connString.Replace("${USERNAME_POSTGRES}", config["AppSettings:USERNAME_POSTGRES"]);
-            connString = connString.Replace("${PASSWORD_POSTGRES}", config["AppSettings:PASSWORD_POSTGRES"]);
-            connString = connString.Replace("${DATA_POSTGRES}", config["AppSettings:DATA_POSTGRES"]);
-
             _conn = new NpgsqlConnection(connString);
         }
 
@@ -145,7 +133,7 @@ namespace PlooCinema.WebApi.Repositories
             cmd.Parameters.AddWithValue("genre", movie.Genre);
             cmd.Parameters.AddWithValue("description", movie.Description);
             cmd.Parameters.AddWithValue("duration_minutes", movie.Duration);
-            cmd.Parameters.AddWithValue("release", movie.Release);
+            cmd.Parameters.AddWithValue("release", movie.Release.Date);
 
             cmd.ExecuteNonQuery();
 
@@ -197,36 +185,58 @@ namespace PlooCinema.WebApi.Repositories
             return moviesList.AsEnumerable();
         }
 
-        public IEnumerable<Movie> SearchById(int id)
+        public Movie? SearchById(int id)
         {
-            List<Movie> moviesList = [];
 
             _conn.Open();
 
-            var command = new NpgsqlCommand("SELECT FROM movie WHERE id = @id", _conn);
-            
+            var command = new NpgsqlCommand("SELECT * FROM movie WHERE id = @id", _conn);
+
             command.Parameters.AddWithValue("id", id);
 
             var reader = command.ExecuteReader();
 
-            while (reader.HasRows && reader.Read())
+            if (reader.HasRows && reader.Read())
             {
-                var movie = new Movie(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
+                Movie movie = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 
-                moviesList.Add(movie);
+                _conn.Close();
+                return movie;
             }
 
-            return moviesList.AsEnumerable();
+            _conn.Close();
+            return null;
         }
 
         public void Update(int id, Movie movie)
         {
-            
+            _conn.Open();
+
+            var command = new NpgsqlCommand("UPDATE movie SET name = @name, genre = @genre,  description = @description, duration_minutes = @duration_minutes, release = @release WHERE id = @id", _conn);
+
+            command.Parameters.AddWithValue("id", id);
+            command.Parameters.AddWithValue("name", movie.Name);
+            command.Parameters.AddWithValue("genre", movie.Genre);
+            command.Parameters.AddWithValue("description", movie.Description);
+            command.Parameters.AddWithValue("duration_minutes", movie.Duration);
+            command.Parameters.AddWithValue("release", movie.Release.Date);
+
+            command.ExecuteNonQuery();
+
+            _conn.Close();
         }
 
         public void Delete(int id)
         {
+            _conn.Open();
 
+            var command = new NpgsqlCommand("DELETE FROM movie WHERE id = @id", _conn);
+
+            command.Parameters.AddWithValue("id", id);
+
+            command.ExecuteNonQuery();
+
+            _conn.Close();
         }
     }
 }
