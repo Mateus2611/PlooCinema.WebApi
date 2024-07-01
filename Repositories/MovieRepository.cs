@@ -13,11 +13,11 @@ namespace PlooCinema.WebApi.Repositories
 
     public interface IMovieRepository
     {
-        void Create(Movie movie);
+        Movie Create(Movie movie);
         IEnumerable<Movie> SearchAll();
         IEnumerable<Movie> SearchByName(string name);
         Movie? SearchById(int id);
-        void Update(int id, Movie movie);
+        Movie? Update(int id, Movie movie);
         void Delete(int id);
     }
 
@@ -35,7 +35,7 @@ namespace PlooCinema.WebApi.Repositories
 
         string fileMovie = "DbMovie.json";
 
-        public void Create(Movie movie)
+        public Movie Create(Movie movie)
         {
             var getAllMovies = File.ReadAllText(fileMovie);
             var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getAllMovies) ?? [];
@@ -45,6 +45,8 @@ namespace PlooCinema.WebApi.Repositories
             var newJsonList = jsonMovie.Append(movie);
             var listToJson = JsonSerializer.Serialize<IEnumerable<Movie>>(newJsonList);
             File.WriteAllText(fileMovie, listToJson);
+
+            return movie;
         }
 
         public IEnumerable<Movie> SearchAll()
@@ -77,7 +79,7 @@ namespace PlooCinema.WebApi.Repositories
             return query;
         }
 
-        public void Update(int id, Movie movie)
+        public Movie? Update(int id, Movie movie)
         {
             var getJsonMovie = File.ReadAllText(fileMovie);
             var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getJsonMovie) ?? [];
@@ -96,6 +98,8 @@ namespace PlooCinema.WebApi.Repositories
 
             var newJson = JsonSerializer.Serialize(jsonMovie);
             File.WriteAllText(fileMovie, newJson);
+
+            return query;
         }
 
         public void Delete(int id)
@@ -123,7 +127,7 @@ namespace PlooCinema.WebApi.Repositories
 
         private NpgsqlConnection _conn { get; set; }
 
-        public void Create(Movie movie)
+        public Movie Create(Movie movie)
         {
             _conn.Open();
 
@@ -138,6 +142,8 @@ namespace PlooCinema.WebApi.Repositories
             cmd.ExecuteNonQuery();
 
             _conn.Close();
+
+            return movie;
         }
 
         public IEnumerable<Movie> SearchAll()
@@ -208,7 +214,7 @@ namespace PlooCinema.WebApi.Repositories
             return null;
         }
 
-        public void Update(int id, Movie movie)
+        public Movie? Update(int id, Movie movie)
         {
             _conn.Open();
 
@@ -224,6 +230,8 @@ namespace PlooCinema.WebApi.Repositories
             command.ExecuteNonQuery();
 
             _conn.Close();
+
+            return movie;
         }
 
         public void Delete(int id)
