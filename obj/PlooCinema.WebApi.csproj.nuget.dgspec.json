@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Desenvolvimento\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj": {}
+    "C:\\Users\\MateusAlves\\Documents\\DevConnect\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj": {}
   },
   "projects": {
-    "c:\\Desenvolvimento\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj": {
+    "C:\\Users\\MateusAlves\\Documents\\DevConnect\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Desenvolvimento\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj",
+        "projectUniqueName": "C:\\Users\\MateusAlves\\Documents\\DevConnect\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj",
         "projectName": "PlooCinema.WebApi",
-        "projectPath": "c:\\Desenvolvimento\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj",
+        "projectPath": "C:\\Users\\MateusAlves\\Documents\\DevConnect\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj",
         "packagesPath": "C:\\Users\\MateusAlves\\.nuget\\packages\\",
-        "outputPath": "c:\\Desenvolvimento\\PlooCinema.WebApi\\obj\\",
+        "outputPath": "C:\\Users\\MateusAlves\\Documents\\DevConnect\\PlooCinema.WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\MateusAlves\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -71,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

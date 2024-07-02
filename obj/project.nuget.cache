@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XElx1U5fE/E=",
+  "dgSpecHash": "WBQ7oebzdSIQCrG1odg/qio8jPQl2EDJRtuaLyyRe8RNphVfrN1MILKdnX6yg1C1+d1gIu1p0UX0vnS/V4uUxg==",
   "success": true,
-  "projectFilePath": "c:\\Desenvolvimento\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj",
+  "projectFilePath": "C:\\Users\\MateusAlves\\Documents\\DevConnect\\PlooCinema.WebApi\\PlooCinema.WebApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MateusAlves\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\MateusAlves\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
