@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PlooCinema.WebApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16ba5ccb3b3f172d4a338c9aed44746343a8b2c6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+203161872d9a86934472a80cc4befcab33160723")]
 [assembly: System.Reflection.AssemblyProductAttribute("PlooCinema.WebApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PlooCinema.WebApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
