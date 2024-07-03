@@ -49,6 +49,7 @@ app.MapGet("/json/movie", ([FromServices] MovieRepositoryJson repository,[FromQu
 
     return Results.Ok(repository.SearchByName(name));
 });
+
 app.MapGet("/json/movie/{id}", ([FromServices] MovieRepositoryJson repository, [FromRoute(Name = "id")] int id) =>
 {
     var movie = repository.SearchById(id);
@@ -58,6 +59,7 @@ app.MapGet("/json/movie/{id}", ([FromServices] MovieRepositoryJson repository, [
 
     return Results.Ok(movie);
 });
+
 app.MapPost("/json/movie", ([FromServices] MovieRepositoryJson repository, [FromBody] Movie movie) =>
 {
     try
@@ -70,6 +72,7 @@ app.MapPost("/json/movie", ([FromServices] MovieRepositoryJson repository, [From
         return Results.BadRequest(error);
     }
 });
+
 app.MapPut("/json/movie/{id}", ([FromServices] MovieRepositoryJson repository, [FromRoute(Name = "id")] int id, [FromBody] Movie movie) =>
 {
     try
@@ -82,6 +85,7 @@ app.MapPut("/json/movie/{id}", ([FromServices] MovieRepositoryJson repository, [
         return Results.NotFound();
     }
 });
+
 app.MapDelete("/json/movie/{id}", ([FromServices] MovieRepositoryJson repository, [FromRoute] int id) =>
 {
     try
@@ -95,5 +99,23 @@ app.MapDelete("/json/movie/{id}", ([FromServices] MovieRepositoryJson repository
         return Results.NotFound();
     }
 });
+
+app.MapGet("/postgres/movie", ([FromServices] MovieRepositoryPostgresSql postgres, [FromQuery] string? name) => {
+    if (string.IsNullOrEmpty(name))
+        return Results.Ok(postgres.SearchAll());
+
+    return Results.Ok(postgres.SearchByName(name));
+});
+
+app.MapGet("/postgres/movie/{id:int}", ([FromServices] MovieRepositoryPostgresSql postgres, [FromRoute(Name = "id")] int id) => {
+    var movie = postgres.SearchById(id);
+
+    if (movie == null)
+        return Results.NotFound();
+    
+    return Results.Ok(movie);
+});
+
+
 
 app.Run();
