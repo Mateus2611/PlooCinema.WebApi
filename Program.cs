@@ -6,6 +6,20 @@ using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddScoped<MovieRepositoryJson>(ServiceProvider =>
+{
+    return new MovieRepositoryJson();
+});
+
+builder.Services.AddScoped<MovieRepositoryPostgresSql>(ServiceProvider =>
+{
+    var connString = ServiceProvider
+        .GetRequiredService<IConfiguration>()
+        .GetConnectionString("DefaultConnection");
+
+    return new MovieRepositoryPostgresSql(connString);
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -28,48 +42,57 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-var repository = new MovieRepositoryJson();
-
-app.MapGet("/json/movie", ([FromBody] string name) => {
+app.MapGet("/json/movie", ([FromServices] MovieRepositoryJson repository,[FromQuery] string? name) =>
+{
     if (string.IsNullOrEmpty(name))
-        Results.Ok(repository.SearchAll());
+        return Results.Ok(repository.SearchAll());
 
-    Results.Ok(repository.SearchByName(name));
+    return Results.Ok(repository.SearchByName(name));
 });
-app.MapGet("/json/movie/{id}", ([FromRoute(Name = "id")] int id) =>
+app.MapGet("/json/movie/{id}", ([FromServices] MovieRepositoryJson repository, [FromRoute(Name = "id")] int id) =>
 {
     var movie = repository.SearchById(id);
 
     if (movie == null)
-        Results.NotFound();
+        return Results.NotFound();
 
-    Results.Ok();
+    return Results.Ok(movie);
 });
-app.MapPost("/json/movie", ([FromBody] Movie movie) =>
-{
-    var created = repository.Create(movie);
-    Results.Created($"/json/movie/{created.Id}", created);
-});
-app.MapPut("/json/movie/{id}", ([FromRoute(Name = "id")] int id, [FromBody] Movie movie) => 
+app.MapPost("/json/movie", ([FromServices] MovieRepositoryJson repository, [FromBody] Movie movie) =>
 {
     try
     {
-        Results.Ok(repository.Update(id, movie));
-    } catch (Exception error)
+        var created = repository.Create(movie);
+        return Results.Created($"/json/movie/{created.Id}", created);
+    }
+    catch (ArgumentException error)
     {
-        Console.WriteLine(error.Message);
-        Results.NotFound();
+        return Results.BadRequest(error);
     }
 });
-app.MapDelete("/json/movie/{id}", ([FromRoute] int id) => {
+app.MapPut("/json/movie/{id}", ([FromServices] MovieRepositoryJson repository, [FromRoute(Name = "id")] int id, [FromBody] Movie movie) =>
+{
+    try
+    {
+        return Results.Ok(repository.Update(id, movie));
+    }
+    catch (Exception error)
+    {
+        Console.WriteLine(error.Message);
+        return Results.NotFound();
+    }
+});
+app.MapDelete("/json/movie/{id}", ([FromServices] MovieRepositoryJson repository, [FromRoute] int id) =>
+{
     try
     {
         repository.Delete(id);
-        Results.NoContent(); 
-    } catch (Exception error)
+        return Results.NoContent();
+    }
+    catch (Exception error)
     {
         Console.WriteLine(error.Message);
-        Results.NotFound();
+        return Results.NotFound();
     }
 });
 

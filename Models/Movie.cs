@@ -7,7 +7,7 @@ namespace PlooCinema.WebApi.Model
 {
     public class Movie
     {
-        public Movie() { }
+        public Movie() {}
         public Movie(int id, string name, string genre, int duration, DateTime release, string description)
         {
             Id = id;

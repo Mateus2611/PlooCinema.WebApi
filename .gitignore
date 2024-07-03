@@ -10,7 +10,7 @@
 *.userosscache
 *.sln.docstates
 *DbMovie.json
-# *appsettings.json
+*appsettings.json
 *obj
 
 # User-specific files (MonoDevelop/Xamarin Studio)

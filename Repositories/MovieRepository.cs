@@ -13,7 +13,7 @@ namespace PlooCinema.WebApi.Repositories
 
     public interface IMovieRepository
     {
-        Movie Create(Movie movie);
+        Movie? Create(Movie movie);
         IEnumerable<Movie> SearchAll();
         IEnumerable<Movie> SearchByName(string name);
         Movie? SearchById(int id);
@@ -35,7 +35,7 @@ namespace PlooCinema.WebApi.Repositories
 
         string fileMovie = "DbMovie.json";
 
-        public Movie Create(Movie movie)
+        public Movie? Create(Movie movie)
         {
             var getAllMovies = File.ReadAllText(fileMovie);
             var jsonMovie = JsonSerializer.Deserialize<IEnumerable<Movie>>(getAllMovies) ?? [];
@@ -116,5 +116,43 @@ namespace PlooCinema.WebApi.Repositories
             var newJson = JsonSerializer.Serialize(jsonMovie);
             File.WriteAllText(fileMovie, newJson);
         }
+    }
+
+    public class MovieRepositoryPostgresSql : IMovieRepository
+    {
+        public MovieRepositoryPostgresSql(string connString)
+        {
+            Conn = new NpgsqlConnection(connString);
+        }
+
+        private NpgsqlConnection Conn { get; set; }
+
+        public Movie? Create(Movie movie)
+        {
+            Conn.Open();
+
+            var command = new NpgsqlCommand("INSERT INTO movie (name, genre, description, duration_minutes, release) VALUES (@name, @genre, @description, @duration_minutes, @release) RETURNING id, name, genre, description, duration_minutes, release", Conn);
+
+            command.Parameters.AddWithValue("name", movie.Name);
+            command.Parameters.AddWithValue("genre", movie.Genre);
+            command.Parameters.AddWithValue("description", movie.Description);
+            command.Parameters.AddWithValue("duration_minutes", movie.Duration);
+            command.Parameters.AddWithValue("release", movie.Release.Date);
+
+            var reader = command.ExecuteReader();
+
+            if (reader.HasRows && reader.Read())
+            {
+                Movie savedData = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
+
+                Conn.Close();
+
+                return savedData;
+            }
+
+            return null;
+        }
+
+        
     }
 }
