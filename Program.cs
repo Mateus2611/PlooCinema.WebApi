@@ -1,4 +1,6 @@
 using PlooCinema.WebApi.Repositories;
+using PlooCinema.WebApi.Repositories.PostgreSql;
+using PlooCinema.WebApi.Repositories.Json;
 using PlooCinema.WebApi.Model;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +13,13 @@ builder.Services.AddScoped<MovieRepositoryJson>(ServiceProvider =>
     return new MovieRepositoryJson();
 });
 
-builder.Services.AddScoped<MovieRepositoryPostgresSql>(ServiceProvider =>
+builder.Services.AddScoped<MovieRepositoryPostgreSql>(ServiceProvider =>
 {
     var connString = ServiceProvider
         .GetRequiredService<IConfiguration>()
         .GetConnectionString("DefaultConnection");
 
-    return new MovieRepositoryPostgresSql(connString);
+    return new MovieRepositoryPostgreSql(connString);
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -100,14 +102,14 @@ app.MapDelete("/json/movie/{id}", ([FromServices] MovieRepositoryJson repository
     }
 });
 
-app.MapGet("/postgres/movie", ([FromServices] MovieRepositoryPostgresSql postgres, [FromQuery] string? name) => {
+app.MapGet("/postgres/movie", ([FromServices] MovieRepositoryPostgreSql postgres, [FromQuery(Name = "name")] string? name) => {
     if (string.IsNullOrEmpty(name))
         return Results.Ok(postgres.SearchAll());
 
     return Results.Ok(postgres.SearchByName(name));
 });
 
-app.MapGet("/postgres/movie/{id:int}", ([FromServices] MovieRepositoryPostgresSql postgres, [FromRoute(Name = "id")] int id) => {
+app.MapGet("/postgres/movie/{id:int}", ([FromServices] MovieRepositoryPostgreSql postgres, [FromRoute(Name = "id")] int id) => {
     var movie = postgres.SearchById(id);
 
     if (movie == null)
@@ -116,6 +118,38 @@ app.MapGet("/postgres/movie/{id:int}", ([FromServices] MovieRepositoryPostgresSq
     return Results.Ok(movie);
 });
 
+app.MapPost("/postgres/movie", ([FromServices] MovieRepositoryPostgreSql postgres, [FromBody] Movie movie) => {
+    try
+    {
+        var created = postgres.Create(movie);
+        return Results.Created($"/postgres/movie/{created.Id}", created);
+    } catch (Exception error)
+    {
+        return Results.BadRequest(error);
+    }
+});
 
+app.MapPut("/postgres/movie/{id:int}", ([FromServices] MovieRepositoryPostgreSql postgres, [FromRoute(Name = "id")] int id, [FromBody] Movie movie) => {
+    try
+    {
+        return Results.Ok(postgres.Update(id, movie));
+    } catch (Exception error)
+    {
+        Console.WriteLine(error.Message);
+        return Results.BadRequest(error);
+    }
+});
+
+app.MapDelete("/postgres/movie/{id:int}", ([FromServices] MovieRepositoryPostgreSql postgres, [FromRoute(Name = "id")] int id) => {
+    try
+    {
+        postgres.Delete(id);
+        return Results.NoContent();
+    } catch (Exception error)
+    {
+        Console.WriteLine(error.Message);
+        return Results.NotFound();
+    }
+});
 
 app.Run();
