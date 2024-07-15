@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,67 +26,27 @@ namespace PlooCinema.WebApi.Model
             Release = release;
             Description = description;
         }
+
         public int Id { get; set; }
-        private string _name;
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                if (value == "" || value == null)
-                    throw new ArgumentException("Informe o titulo do filme.");
-
-                _name = value;
-            }
-        }
-        private string _genre;
-        public string Genre
-        {
-            get => _genre;
-            set
-            {
-                if (value == "" || value == null)
-                    throw new ArgumentException("Informe o genero do filme.");
-
-                _genre = value.ToUpper();
-            }
-        }
-        private int _duration;
-        public int Duration
-        {
-            get => _duration;
-            set
-            {
-                if (value <= 0)
-                    throw new ArgumentException("Informe a duração do filme.");
-
-                _duration = value;
-            }
-        }
-        private DateTime _release;
+        [Required(ErrorMessage = "Informe o nome do filme.")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "Informe o genêro do filme.")]
+        public string Genre { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Duração inválida. Informe um valor acima de zero")]
+        public int Duration { get; set; }
         public DateTime Release
         {
-            get => _release;
+            get => Release;
             set
             {
                 if (value > DateTime.Now.Date)
                     throw new ArgumentException("A data informada não é valida.");
 
-                _release = value.Date;
+                value = value.Date;
             }
         }
-        private string _description;
-        public string Description
-        {
-            get => _description;
-            set
-            {
-                if (value == "" || value == null)
-                    throw new ArgumentException("Informe a descrição do filme.");
-
-                _description = value;
-            }
-        }
+        [Required(ErrorMessage = "Informe a descrição do filme.")]
+        public string Description { get; set; }
 
         public override string ToString()
         {
