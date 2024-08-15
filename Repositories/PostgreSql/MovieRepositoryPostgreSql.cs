@@ -77,7 +77,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             var reader = command.ExecuteReader();
 
-            while (reader.HasRows && !reader.Read())
+            while (reader.HasRows && reader.Read())
             {
                 var movie = new Movie(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 

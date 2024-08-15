@@ -46,7 +46,7 @@ namespace PlooCinema.WebApi.Controllers
                 if ( create is null )
                     return NotFound();
 
-                return CreatedAtAction( nameof(Get), new { id = create.Id }, create);
+                return CreatedAtAction( nameof(GetById), new { id = create.Id }, create);
             } catch (Exception error)
             {
                 return BadRequest(error);
