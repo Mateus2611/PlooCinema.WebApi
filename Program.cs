@@ -16,6 +16,7 @@ builder.Services.AddScoped<IMovieRepository, MovieRepositoryPostgreSql>(ServiceP
 
     return new MovieRepositoryPostgreSql(connString);
 });
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

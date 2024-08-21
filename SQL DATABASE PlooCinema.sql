@@ -16,7 +16,7 @@ movie_id INT NOT NULL,
 genre_id INT NOT NULL,
 FOREIGN KEY (movie_id) REFERENCES movie(id),
 FOREIGN KEY (genre_id) REFERENCES genre(id), 
-PRIMARY KEY (movie_id, person_id) NOT NULL
+PRIMARY KEY (movie_id, genre_id)
 );
 
 CREATE TABLE room (
