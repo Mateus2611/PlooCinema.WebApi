@@ -77,7 +77,7 @@ namespace PlooCinema.WebApi.Repositories.Json
             if (query != null)
             {
                 query.Name = movie.Name;
-                query.Genre = movie.Genre;
+                query.Genres = movie.Genres;
                 query.Duration = movie.Duration;
                 query.Release = movie.Release;
                 query.Description = movie.Description;

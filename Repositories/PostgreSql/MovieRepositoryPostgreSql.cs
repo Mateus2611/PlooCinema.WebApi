@@ -8,6 +8,9 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
     using PlooCinema.WebApi.Model;
     using PlooCinema.WebApi.Repositories;
     using Npgsql;
+    using System.Text.Json.Serialization;
+    using System.Text.Json;
+    using PlooCinema.WebApi.Models;
 
     public class MovieRepositoryPostgreSql : IMovieRepository
     {
@@ -25,7 +28,6 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
             var command = new NpgsqlCommand("INSERT INTO movie (name, genre, description, duration_minutes, release) VALUES (@name, @genre, @description, @duration_minutes, @release) RETURNING id, name, genre, description, duration_minutes, release", Conn);
 
             command.Parameters.AddWithValue("name", movie.Name);
-            command.Parameters.AddWithValue("genre", movie.Genre);
             command.Parameters.AddWithValue("description", movie.Description);
             command.Parameters.AddWithValue("duration_minutes", movie.Duration);
             command.Parameters.AddWithValue("release", movie.Release.Date);
@@ -34,7 +36,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             if (reader.HasRows && reader.Read())
             {
-                Movie savedData = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
+                Movie savedData = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 
                 Conn.Close();
 
@@ -55,7 +57,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             while (reader.HasRows && reader.Read())
             {
-                var movie = new Movie(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
+                var movie = new Movie(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 
                 movies.Add(movie);
             }
@@ -79,7 +81,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             while (reader.HasRows && reader.Read())
             {
-                var movie = new Movie(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
+                var movie = new Movie(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 
                 movies.Add(movie);
             }
@@ -101,7 +103,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             if ((reader.HasRows) && reader.Read())
             {
-                Movie movie = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
+                Movie movie = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 
                 Conn.Close();
 
@@ -120,7 +122,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             command.Parameters.AddWithValue("id", id);
             command.Parameters.AddWithValue("name", movie.Name);
-            command.Parameters.AddWithValue("genre", movie.Genre);
+            command.Parameters.AddWithValue("genre", movie.Genres);
             command.Parameters.AddWithValue("description", movie.Description);
             command.Parameters.AddWithValue("duration_minutes", movie.Duration);
             command.Parameters.AddWithValue("release", movie.Release.Date);
@@ -129,7 +131,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             if (reader.HasRows && reader.Read())
             {
-                Movie savedData = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetString(reader.GetOrdinal("genre")), reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
+                Movie savedData = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 
                 Conn.Close();
 

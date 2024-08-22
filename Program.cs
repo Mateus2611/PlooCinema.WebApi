@@ -17,6 +17,15 @@ builder.Services.AddScoped<IMovieRepository, MovieRepositoryPostgreSql>(ServiceP
     return new MovieRepositoryPostgreSql(connString);
 });
 
+builder.Services.AddScoped<IGenreRepository, GenreRepositoryPostgreSql>(ServiceProvider =>
+{
+    var connString = ServiceProvider
+        .GetRequiredService<IConfiguration>()
+        .GetConnectionString("DefaultConnection");
+
+    return new GenreRepositoryPostgreSql(connString);
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

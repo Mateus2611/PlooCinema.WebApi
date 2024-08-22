@@ -10,6 +10,14 @@ namespace PlooCinema.WebApi.Models
 {
     public class Genre
     {
+        public Genre() { }
+        
+        public Genre(int id, string name)
+        {
+             Id = id;
+            Name = name;
+        }
+
         public Genre(int id, string name, IEnumerable<Movie> movies)
         {
             Id = id;

@@ -6,7 +6,7 @@ using PlooCinema.WebApi.Models;
 
 namespace PlooCinema.WebApi.Repositories
 {
-    public interface GenreRepository
+    public interface IGenreRepository
     {
         Genre? Create (Genre genre);
         IEnumerable<Genre> SearchAll();

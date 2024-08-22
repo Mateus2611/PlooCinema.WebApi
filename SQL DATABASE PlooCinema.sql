@@ -33,4 +33,4 @@ movie_start TIMESTAMPTZ NOT NULL,
 available_seats INT NOT NULL,
 FOREIGN KEY (movie_id) REFERENCES movie(id),
 FOREIGN KEY (room_id) REFERENCES room(id)
-); 
+);
