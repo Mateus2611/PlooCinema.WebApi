@@ -101,7 +101,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             var reader = command.ExecuteReader();
 
-            if ((reader.HasRows) && reader.Read())
+            if (reader.HasRows && reader.Read())
             {
                 Movie movie = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 

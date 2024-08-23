@@ -37,5 +37,28 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             return null;
         }
+
+        public Genre? SearchById(int id)
+        {
+            Conn.Open();
+
+            var command = new NpgsqlCommand( "SELECT * FROM genre WHERE id = @id ", Conn);
+
+            command.Parameters.AddWithValue("id", id);
+
+            var reader = command.ExecuteReader();
+
+            if (!reader.HasRows && reader.Read())
+            {
+                Genre genre = new( reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")));
+
+                Conn.Close();
+
+                return genre;
+            }
+
+            Conn.Close();
+            return null;
+        }
     }
 }
