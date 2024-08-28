@@ -2,13 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PlooCinema.WebApi.Model;
 using PlooCinema.WebApi.Models;
 
 namespace PlooCinema.WebApi.Repositories
 {
     public interface IGenreRepository
     {
-        Genre? Create (Genre genre);
+        Genre? Create (string name, IEnumerable<int> idMovies);
+        void AddMovies (IEnumerable<int> idMovie, int idGenre);
         // IEnumerable<Genre> SearchAll();
         // IEnumerable<Genre> SearchByName(string name);
         Genre? SearchById(int id);
