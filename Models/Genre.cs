@@ -21,5 +21,6 @@ namespace PlooCinema.WebApi.Models
         public int Id { get; set; }
         [Required(ErrorMessage = "Informe o nome do gênero.")]
         public string Name { get; set; }
+        IEnumerable<Movie> Movies { get; set; }
     }
 }

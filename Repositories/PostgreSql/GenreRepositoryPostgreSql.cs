@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Npgsql;
+using Npgsql.Internal;
 using PlooCinema.WebApi.Model;
 using PlooCinema.WebApi.Models;
 
@@ -19,37 +20,26 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
         public Genre? Create(string name, IEnumerable<int> idMovies)
         {
-            IMovieRepository searchMovies = new MovieRepositoryPostgreSql(Conn.ToString());
-
-            IEnumerable<Movie> movies = [];
-
-            Conn.Open();
-
-            foreach (int id in idMovies)
-            {
-                try
-                {
-                    movies.Append(searchMovies.SearchById(id));
-                }
-                catch
-                {
-                    continue;
-                }
-            }
-
             var command = new NpgsqlCommand("INSERT INTO genre (name) VALUES @name RETURNING id, name", Conn);
 
             command.Parameters.AddWithValue("name", name);
 
             var reader = command.ExecuteReader();
 
-            if (!reader.HasRows && reader.Read())
+            if (idMovies is null )
             {
-                
+                if ( !reader.HasRows && reader.Read() )
+                {
+                    Genre newGenre = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")));
+
+                    return newGenre;
+                }
             }
+
+            // Retorno do método AddMovies ( deve ser um genero com uma lista de filmes)
         }
 
-        public void AddMovies(IEnumerable<int> idsMovies, int idGenre)
+        public Genre? AddMovies(IEnumerable<int> idsMovies, int idGenre)
         {
             foreach (int idMovie in idsMovies)
             {
@@ -57,12 +47,46 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
                 {
                     Conn.Open();
 
-                    var command = new NpgsqlCommand("INSERT INTO movie_genre (movie_id, genre_id) VALUES (@id_movie, @id_genre) RETURNING movie_id, genre_id", Conn);
+                    var command = new NpgsqlCommand(@"
+                        WITH inserted AS (
+                            INSERT INTO movie_genre ( movie_id, genre_id )
+                            VALUES ( @movie_id, @genre_id )
+                            RETURNING movie_id, genre_id
+                        )
+                        SELECT 
+                            m.id AS id_movie,
+                            m.name AS name_movie,
+                            m.description AS description_movie,
+                            m.duration AS duration_movie,
+                            m.release AS release_movie,
+                            g.id AS id_genre,
+                            g.name AS name_genre
+                        FROM iserted i
+                        JOIN movie m ON i.movie_id = m.id
+                        JOIN genre g ON i.genre_id = g.id
+                        WHERE g.id = i.genre_id
+                    ", Conn);
 
                     command.Parameters.AddWithValue("movie_id", idMovie);
                     command.Parameters.AddWithValue("genre_id", idGenre);
 
-                    command.ExecuteNonQuery();
+                    var reader = command.ExecuteReader();
+
+                    while ( reader.HasRows && reader.Read())
+                    {
+                        Genre newGenre = new Genre {
+                            Id = reader.GetInt32(reader.GetOrdinal("id_genre")),
+                            Name = reader.GetString(reader.GetOrdinal("name_genre"))
+                        };
+
+                        Movie movieGenre = new Movie{
+                            Id = reader.GetInt32(reader.GetOrdinal("id_movie")),
+                            Name = reader.GetString(reader.GetOrdinal("name_movie")),
+                            Description = reader.GetString(reader.GetOrdinal("description_movie")),
+                            Duration = reader.GetInt32(reader.GetOrdinal("duration_movie")),
+                            Release = reader.GetDateTime(reader.GetOrdinal("release_movie")),
+                        };
+                    }
 
                     Conn.Close();
                 } catch
