@@ -31,7 +31,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             if (reader.HasRows && reader.Read())
             {
-                Genre newGenre = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), []);
+                Genre newGenre = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")));
 
                 if (idMovies is not null && idMovies.Any())
                 {
@@ -104,11 +104,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
                         }
 
                         Conn.Close();
-                    }
-                    catch
-                    {
-                        return null;
-                    }
+                    } catch {}
                 }
             }
 
