@@ -10,7 +10,7 @@ namespace PlooCinema.WebApi.Repositories
     public interface IGenreRepository
     {
         Genre? Create (string name, IEnumerable<int> idMovies);
-        void AddMovies (IEnumerable<int> idMovie, int idGenre);
+        Genre? AddMovies (IEnumerable<int> idMovie, int idGenre);
         // IEnumerable<Genre> SearchAll();
         // IEnumerable<Genre> SearchByName(string name);
         Genre? SearchById(int id);

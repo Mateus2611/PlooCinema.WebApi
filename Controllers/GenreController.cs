@@ -28,16 +28,17 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Genre> Create(Genre genre)
+        public ActionResult<Genre> Create(string name, IEnumerable<int> idsMovies)
         {
             try
             {
-                var created = _genreRepository.Create(genre);
+                var created = _genreRepository.Create(name.ToUpper(), idsMovies);
 
                 if (created is null)
                     return NotFound();
                 
                 return CreatedAtAction( nameof(GetById), new { id = created.Id }, created);
+
             } catch (Exception error)
             {
                 return BadRequest(error);

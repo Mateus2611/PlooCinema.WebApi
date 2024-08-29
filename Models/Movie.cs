@@ -50,19 +50,6 @@ namespace PlooCinema.WebApi.Model
         [Required(ErrorMessage = "Informe a descrição do filme.")]
         public string Description { get; set; }
 
-        public void AddGenre(IEnumerable<Genre> genres)
-        {
-            var query = genres.Except(Genres);
-
-            if (query != null)
-            {
-                foreach (Genre genre in query)
-                {
-                    Genres = Genres.Append(genre);
-                }
-            }
-        }
-
         public override string ToString()
         {
             return $"ID: {Id} Nome: {Name}, Gênero: {Genres}, Duração: {Duration}, Lançamento: {Release}, Descrição: {Description}\n";
