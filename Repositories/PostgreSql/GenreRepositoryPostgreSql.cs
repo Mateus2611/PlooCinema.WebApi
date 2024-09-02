@@ -111,6 +111,51 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
             return null;
         }
 
+        public IEnumerable<Genre> SearchAll() 
+        {
+            List<Genre> genres = new();
+
+            Conn.Open();
+
+            var command = new NpgsqlCommand("SELECT * FROM genre", Conn);
+            var reader = command.ExecuteReader();
+
+            while ( reader.HasRows && reader.Read() )
+            {
+                Genre genre = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")));
+
+                genres.Add(genre);
+            }
+            
+            Conn.Close();
+
+            return genres.AsEnumerable<Genre>();
+        }
+
+        public IEnumerable<Genre> SearchByName(string name)
+        {
+            List<Genre> genres = new();
+
+            Conn.Open();
+
+            var command = new NpgsqlCommand("SELECT * FROM genre WHERE (name) ILIKE '%' || @name || '%' ", Conn);
+
+            command.Parameters.AddWithValue("name", name);
+
+            var reader = command.ExecuteReader();
+
+            while ( reader.HasRows && reader.Read() )
+            {
+                Genre genre = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")));
+
+                genres.Add(genre);
+            }
+
+            Conn.Close();
+
+            return genres.AsEnumerable<Genre>();
+        }
+
         public Genre? SearchById(int id)
         {
             Conn.Open();
@@ -121,7 +166,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             var reader = command.ExecuteReader();
 
-            if (!reader.HasRows && reader.Read())
+            if (reader.HasRows && reader.Read())
             {
                 Genre genre = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")));
 
@@ -132,6 +177,42 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             Conn.Close();
             return null;
+        }
+
+        public Genre? Update(int id, string name)
+        {
+            Conn.Open();
+
+            var command = new NpgsqlCommand("UPDATE genre SET name = @name WHERE id = @id RETURNING id, name", Conn);
+
+            command.Parameters.AddWithValue("id", id);
+            command.Parameters.AddWithValue("name", name);
+
+            var reader = command.ExecuteReader();
+
+            if ( reader.HasRows && reader.Read())
+            {
+                Genre genre = new( reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")));
+
+                Conn.Close();
+
+                return genre;
+            }
+
+            return null;
+        }
+
+        public void Delete(int id)
+        {
+            Conn.Open();
+
+            var command = new NpgsqlCommand("DELETE FROM genre WHERE id = @id", Conn);
+
+            command.Parameters.AddWithValue("id", id);
+
+            command.ExecuteNonQuery();
+
+            Conn.Close();   
         }
     }
 }

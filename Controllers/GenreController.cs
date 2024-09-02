@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PlooCinema.WebApi.Models;
@@ -15,6 +17,15 @@ namespace PlooCinema.WebApi.Controllers
     public class GenreController (IGenreRepository genreRepository) : ControllerBase
     {
         private readonly IGenreRepository _genreRepository = genreRepository;
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Genre>> Get([FromQuery(Name = "name")] string? name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return Ok(_genreRepository.SearchAll());
+
+            return Ok(_genreRepository.SearchByName(name));
+        }
 
         [HttpGet("{id}")]
         public ActionResult<Genre> GetById(int id)

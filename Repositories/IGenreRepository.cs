@@ -11,11 +11,11 @@ namespace PlooCinema.WebApi.Repositories
     {
         Genre? Create (string name, IEnumerable<int> idMovies);
         Genre? AddMovies (IEnumerable<int> idMovie, int idGenre);
-        // IEnumerable<Genre> SearchAll();
-        // IEnumerable<Genre> SearchByName(string name);
+        IEnumerable<Genre> SearchAll();
+        IEnumerable<Genre> SearchByName(string name);
         Genre? SearchById(int id);
         // Genre? SearchMovies();
-        // Genre? Update(int id, Genre genre);
-        // void Delete(int id);
+        Genre? Update(int id, string name);
+        void Delete(int id);
     }
 }
