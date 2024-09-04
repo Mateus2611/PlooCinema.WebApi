@@ -55,5 +55,34 @@ namespace PlooCinema.WebApi.Controllers
                 return BadRequest(error);
             }
         }
+
+        [HttpPut("{id}")]
+        public ActionResult<Genre> Update(int id, string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                var genreUpdated = _genreRepository.Update(id, name.ToUpper());
+
+                if ( genreUpdated is null )
+                    return NotFound();
+                
+                return Ok(genreUpdated);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            var movieValidation = _genreRepository.SearchById(id);
+
+            if ( movieValidation is null )
+                return NotFound();
+
+            _genreRepository.Delete(id);
+
+            return NoContent();
+        }
     }
 }

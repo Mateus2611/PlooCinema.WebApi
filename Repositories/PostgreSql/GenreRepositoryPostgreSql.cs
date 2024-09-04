@@ -22,7 +22,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
         public Genre? Create(string name, IEnumerable<int> idMovies)
         {
             Conn.Open();
-            
+
             var command = new NpgsqlCommand("INSERT INTO genre (name) VALUES (@name) RETURNING id, name", Conn);
 
             command.Parameters.AddWithValue("name", name);
@@ -104,14 +104,15 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
                         }
 
                         Conn.Close();
-                    } catch {}
+                    }
+                    catch { }
                 }
             }
 
             return null;
         }
 
-        public IEnumerable<Genre> SearchAll() 
+        public IEnumerable<Genre> SearchAll()
         {
             List<Genre> genres = new();
 
@@ -120,13 +121,13 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
             var command = new NpgsqlCommand("SELECT * FROM genre", Conn);
             var reader = command.ExecuteReader();
 
-            while ( reader.HasRows && reader.Read() )
+            while (reader.HasRows && reader.Read())
             {
                 Genre genre = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")));
 
                 genres.Add(genre);
             }
-            
+
             Conn.Close();
 
             return genres.AsEnumerable<Genre>();
@@ -144,7 +145,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             var reader = command.ExecuteReader();
 
-            while ( reader.HasRows && reader.Read() )
+            while (reader.HasRows && reader.Read())
             {
                 Genre genre = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")));
 
@@ -190,9 +191,9 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             var reader = command.ExecuteReader();
 
-            if ( reader.HasRows && reader.Read())
+            if (reader.HasRows && reader.Read())
             {
-                Genre genre = new( reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")));
+                Genre genre = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")));
 
                 Conn.Close();
 
@@ -212,7 +213,7 @@ namespace PlooCinema.WebApi.Repositories.PostgreSql
 
             command.ExecuteNonQuery();
 
-            Conn.Close();   
+            Conn.Close();
         }
     }
 }

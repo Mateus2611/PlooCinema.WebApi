@@ -19,6 +19,14 @@ namespace PlooCinema.WebApi.Model
             Release = release;
             Description = description;
         }
+        public Movie(int id, string name, int duration, DateTime release, string description)
+        {
+            Id = id;
+            Name = name;
+            Duration = duration;
+            Release = release;
+            Description = description;
+        }
         public Movie(string name, IEnumerable<Genre> genre, int duration, DateTime release, string description)
         {
             Name = name;
@@ -31,8 +39,7 @@ namespace PlooCinema.WebApi.Model
         public int Id { get; set; }
         [Required(ErrorMessage = "Informe o nome do filme.")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "Informe o genêro do filme.")]
-        public IEnumerable<Genre> Genres { get; set; }
+        public IEnumerable<Genre> Genres { get; set; } = [];
         [Range(1, int.MaxValue, ErrorMessage = "Duração inválida. Informe um valor acima de zero")]
         public int Duration { get; set; }
         private DateTime _release {get; set;}
