@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using PlooCinema.WebApi.Models;
@@ -9,7 +10,7 @@ namespace PlooCinema.WebApi.Model
 {
     public class Movie
     {
-        public Movie() {}
+        public Movie() { }
         public Movie(int id, string name, IEnumerable<Genre> genre, int duration, DateTime release, string description)
         {
             Id = id;
@@ -37,12 +38,15 @@ namespace PlooCinema.WebApi.Model
         }
 
         public int Id { get; set; }
+
         [Required(ErrorMessage = "Informe o nome do filme.")]
         public string Name { get; set; }
+
         public IEnumerable<Genre> Genres { get; set; } = [];
+
         [Range(1, int.MaxValue, ErrorMessage = "Duração inválida. Informe um valor acima de zero")]
         public int Duration { get; set; }
-        private DateTime _release {get; set;}
+
         public DateTime Release
         {
             get => _release;
@@ -54,6 +58,8 @@ namespace PlooCinema.WebApi.Model
                 _release = value.Date;
             }
         }
+        private DateTime _release { get; set; }
+
         [Required(ErrorMessage = "Informe a descrição do filme.")]
         public string Description { get; set; }
 

@@ -5,17 +5,27 @@ using PlooCinema.WebApi.Model;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using PlooCinema.WebApi.Repositories.EntityFramework;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IMovieRepository, MovieRepositoryPostgreSql>(ServiceProvider =>
+builder.Services.AddDbContext<DataContext>(options =>
 {
-    var connString = ServiceProvider
-        .GetRequiredService<IConfiguration>()
-        .GetConnectionString("DefaultConnection");
-
-    return new MovieRepositoryPostgreSql(connString);
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+        .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
 });
+builder.Services.AddScoped<IMovieRepository, MovieRepositoryEntityFramework>();
+
+// builder.Services.AddScoped<IMovieRepository, MovieRepositoryPostgreSql>(ServiceProvider =>
+// {
+//     var connString = ServiceProvider
+//         .GetRequiredService<IConfiguration>()
+//         .GetConnectionString("DefaultConnection");
+
+//     return new MovieRepositoryPostgreSql(connString);
+// });
 
 builder.Services.AddScoped<IGenreRepository, GenreRepositoryPostgreSql>(ServiceProvider =>
 {
