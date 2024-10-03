@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Features;
 using PlooCinema.WebApi.Model;
@@ -20,6 +21,7 @@ namespace PlooCinema.WebApi.Models
         public int Id { get; set; }
         [Required(ErrorMessage = "Informe o nome do gênero.")]
         public string Name { get; set; }
-        public IEnumerable<Movie> Movies { get; set; } = [];
+        [JsonIgnore]
+        public virtual ICollection<Movie> Movies { get; set; } = [];
     }
 }

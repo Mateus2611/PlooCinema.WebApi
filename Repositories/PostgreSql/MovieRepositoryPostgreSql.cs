@@ -1,157 +1,157 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+// using System;
+// using System.Collections.Generic;
+// using System.Linq;
+// using System.Threading.Tasks;
 
-namespace PlooCinema.WebApi.Repositories.PostgreSql
-{
-    using PlooCinema.WebApi.Model;
-    using PlooCinema.WebApi.Repositories;
-    using Npgsql;
-    using System.Text.Json.Serialization;
-    using System.Text.Json;
-    using PlooCinema.WebApi.Models;
+// namespace PlooCinema.WebApi.Repositories.PostgreSql
+// {
+//     using PlooCinema.WebApi.Model;
+//     using PlooCinema.WebApi.Repositories;
+//     using Npgsql;
+//     using System.Text.Json.Serialization;
+//     using System.Text.Json;
+//     using PlooCinema.WebApi.Models;
 
-    public class MovieRepositoryPostgreSql : IMovieRepository
-    {
-        public MovieRepositoryPostgreSql(string connString)
-        {
-            Conn = new NpgsqlConnection(connString);
-        }
+//     public class MovieRepositoryPostgreSql : IMovieRepository
+//     {
+//         public MovieRepositoryPostgreSql(string connString)
+//         {
+//             Conn = new NpgsqlConnection(connString);
+//         }
 
-        private NpgsqlConnection Conn { get; set; }
+//         private NpgsqlConnection Conn { get; set; }
 
-        public Movie? Create(Movie movie)
-        {
-            Conn.Open();
+//         public Movie? Create(Movie movie)
+//         {
+//             Conn.Open();
 
-            var command = new NpgsqlCommand("INSERT INTO movie (name, description, duration, release) VALUES (@name, @description, @duration, @release) RETURNING id, name, description, duration, release", Conn);
+//             var command = new NpgsqlCommand("INSERT INTO movie (name, description, duration, release) VALUES (@name, @description, @duration, @release) RETURNING id, name, description, duration, release", Conn);
 
-            command.Parameters.AddWithValue("name", movie.Name);
-            command.Parameters.AddWithValue("description", movie.Description);
-            command.Parameters.AddWithValue("duration", movie.Duration);
-            command.Parameters.AddWithValue("release", movie.Release.Date);
+//             command.Parameters.AddWithValue("name", movie.Name);
+//             command.Parameters.AddWithValue("description", movie.Description);
+//             command.Parameters.AddWithValue("duration", movie.Duration);
+//             command.Parameters.AddWithValue("release", movie.Release.Date);
 
-            var reader = command.ExecuteReader();
+//             var reader = command.ExecuteReader();
 
-            if (reader.HasRows && reader.Read())
-            {
-                Movie savedData = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetInt32(reader.GetOrdinal("duration")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
+//             if (reader.HasRows && reader.Read())
+//             {
+//                 Movie savedData = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), reader.GetInt32(reader.GetOrdinal("duration")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 
-                Conn.Close();
+//                 Conn.Close();
 
-                return savedData;
-            }
+//                 return savedData;
+//             }
 
-            return null;
-        }
+//             return null;
+//         }
 
-        public IEnumerable<Movie> SearchAll()
-        {
-            List<Movie> movies = [];
+//         public IEnumerable<Movie> SearchAll()
+//         {
+//             List<Movie> movies = [];
 
-            Conn.Open();
+//             Conn.Open();
 
-            var command = new NpgsqlCommand("SELECT * FROM movie", Conn);
-            var reader = command.ExecuteReader();
+//             var command = new NpgsqlCommand("SELECT * FROM movie", Conn);
+//             var reader = command.ExecuteReader();
 
-            while (reader.HasRows && reader.Read())
-            {
-                var movie = new Movie(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
+//             while (reader.HasRows && reader.Read())
+//             {
+//                 var movie = new Movie(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 
-                movies.Add(movie);
-            }
+//                 movies.Add(movie);
+//             }
 
-            Conn.Close();
+//             Conn.Close();
 
-            return movies.AsEnumerable<Movie>();
-        }
+//             return movies.AsEnumerable<Movie>();
+//         }
 
-        public IEnumerable<Movie> SearchByName(string name)
-        {
-            List<Movie> movies = [];
+//         public IEnumerable<Movie> SearchByName(string name)
+//         {
+//             List<Movie> movies = [];
 
-            Conn.Open();
+//             Conn.Open();
 
-            var command = new NpgsqlCommand("SELECT * FROM movie WHERE (name) ILIKE '%' || @name || '%'", Conn);
+//             var command = new NpgsqlCommand("SELECT * FROM movie WHERE (name) ILIKE '%' || @name || '%'", Conn);
 
-            command.Parameters.AddWithValue("name", name);
+//             command.Parameters.AddWithValue("name", name);
 
-            var reader = command.ExecuteReader();
+//             var reader = command.ExecuteReader();
 
-            while (reader.HasRows && reader.Read())
-            {
-                var movie = new Movie(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
+//             while (reader.HasRows && reader.Read())
+//             {
+//                 var movie = new Movie(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 
-                movies.Add(movie);
-            }
+//                 movies.Add(movie);
+//             }
 
-            Conn.Close();
+//             Conn.Close();
 
-            return movies.AsEnumerable();
-        }
+//             return movies.AsEnumerable();
+//         }
 
-        public Movie? SearchById(int id)
-        {
-            Conn.Open();
+//         public Movie? SearchById(int id)
+//         {
+//             Conn.Open();
 
-            var command = new NpgsqlCommand("SELECT * FROM movie WHERE id = @id", Conn);
+//             var command = new NpgsqlCommand("SELECT * FROM movie WHERE id = @id", Conn);
 
-            command.Parameters.AddWithValue("id", id);
+//             command.Parameters.AddWithValue("id", id);
 
-            var reader = command.ExecuteReader();
+//             var reader = command.ExecuteReader();
 
-            if (reader.HasRows && reader.Read())
-            {
-                Movie movie = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
+//             if (reader.HasRows && reader.Read())
+//             {
+//                 Movie movie = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 
-                Conn.Close();
+//                 Conn.Close();
 
-                return movie;
-            }
+//                 return movie;
+//             }
 
-            Conn.Close();
-            return null;
-        }
+//             Conn.Close();
+//             return null;
+//         }
 
-        public Movie? Update(int id, Movie movie)
-        {
-            Conn.Open();
+//         public Movie? Update(int id, Movie movie)
+//         {
+//             Conn.Open();
 
-            var command = new NpgsqlCommand("UPDATE movie SET name = @name, genre = @genre,  description = @description, duration_minutes = @duration_minutes, release = @release WHERE id = @id RETURNING id, name, genre, description, duration_minutes, release", Conn);
+//             var command = new NpgsqlCommand("UPDATE movie SET name = @name, genre = @genre,  description = @description, duration_minutes = @duration_minutes, release = @release WHERE id = @id RETURNING id, name, genre, description, duration_minutes, release", Conn);
 
-            command.Parameters.AddWithValue("id", id);
-            command.Parameters.AddWithValue("name", movie.Name);
-            command.Parameters.AddWithValue("genre", movie.Genres);
-            command.Parameters.AddWithValue("description", movie.Description);
-            command.Parameters.AddWithValue("duration_minutes", movie.Duration);
-            command.Parameters.AddWithValue("release", movie.Release.Date);
+//             command.Parameters.AddWithValue("id", id);
+//             command.Parameters.AddWithValue("name", movie.Name);
+//             command.Parameters.AddWithValue("genre", movie.Genres);
+//             command.Parameters.AddWithValue("description", movie.Description);
+//             command.Parameters.AddWithValue("duration_minutes", movie.Duration);
+//             command.Parameters.AddWithValue("release", movie.Release.Date);
 
-            var reader = command.ExecuteReader();
+//             var reader = command.ExecuteReader();
 
-            if (reader.HasRows && reader.Read())
-            {
-                Movie savedData = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
+//             if (reader.HasRows && reader.Read())
+//             {
+//                 Movie savedData = new(reader.GetInt32(reader.GetOrdinal("id")), reader.GetString(reader.GetOrdinal("name")), JsonSerializer.Deserialize<IEnumerable<Genre>>(reader.GetString(reader.GetOrdinal("genre"))) ?? [], reader.GetInt32(reader.GetOrdinal("duration_minutes")), reader.GetDateTime(reader.GetOrdinal("release")), reader.GetString(reader.GetOrdinal("description")));
 
-                Conn.Close();
+//                 Conn.Close();
 
-                return savedData;
-            }
+//                 return savedData;
+//             }
 
-            return null;
-        }
+//             return null;
+//         }
 
-        public void Delete(int id)
-        {
-            Conn.Open();
+//         public void Delete(int id)
+//         {
+//             Conn.Open();
 
-            var command = new NpgsqlCommand("DELETE FROM movie WHERE id = @id", Conn);
+//             var command = new NpgsqlCommand("DELETE FROM movie WHERE id = @id", Conn);
 
-            command.Parameters.AddWithValue("id", id);
+//             command.Parameters.AddWithValue("id", id);
 
-            command.ExecuteNonQuery();
+//             command.ExecuteNonQuery();
 
-            Conn.Close();
-        }
-    }
-}
+//             Conn.Close();
+//         }
+//     }
+// }

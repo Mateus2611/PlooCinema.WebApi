@@ -12,10 +12,10 @@ namespace PlooCinema.WebApi.Repositories
     public interface IMovieRepository
     {
         Movie? Create(Movie movie);
-        IEnumerable<Movie> SearchAll();
-        IEnumerable<Movie> SearchByName(string name);
-        Movie? SearchById(int id);
-        Movie? Update(int id, Movie movie);
-        void Delete(int id);
+        IEnumerable<Movie> GetAll();
+        Movie? Update(Movie movie);
+        void Delete(Movie movie);
+        IEnumerable<Movie> GetByName(string name);
+        Movie? GetById(int id);
     }
 }

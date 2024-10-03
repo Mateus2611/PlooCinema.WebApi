@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using PlooCinema.WebApi.Models;
 
@@ -10,28 +11,11 @@ namespace PlooCinema.WebApi.Model
 {
     public class Movie
     {
-        public Movie() { }
-        public Movie(int id, string name, IEnumerable<Genre> genre, int duration, DateTime release, string description)
-        {
-            Id = id;
-            Name = name;
-            Genres = genre;
-            Duration = duration;
-            Release = release;
-            Description = description;
-        }
+        public Movie() {}
         public Movie(int id, string name, int duration, DateTime release, string description)
         {
             Id = id;
             Name = name;
-            Duration = duration;
-            Release = release;
-            Description = description;
-        }
-        public Movie(string name, IEnumerable<Genre> genre, int duration, DateTime release, string description)
-        {
-            Name = name;
-            Genres = genre;
             Duration = duration;
             Release = release;
             Description = description;
@@ -41,8 +25,6 @@ namespace PlooCinema.WebApi.Model
 
         [Required(ErrorMessage = "Informe o nome do filme.")]
         public string Name { get; set; }
-
-        public IEnumerable<Genre> Genres { get; set; } = [];
 
         [Range(1, int.MaxValue, ErrorMessage = "Duração inválida. Informe um valor acima de zero")]
         public int Duration { get; set; }
@@ -62,6 +44,8 @@ namespace PlooCinema.WebApi.Model
 
         [Required(ErrorMessage = "Informe a descrição do filme.")]
         public string Description { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Genre> Genres { get; set; } = [];
 
         public override string ToString()
         {

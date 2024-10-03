@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PlooCinema.WebApi.Model;
 using PlooCinema.WebApi.Repositories;
-using PlooCinema.WebApi.Repositories.PostgreSql;
 
 namespace PlooCinema.WebApi.Controllers
 {
@@ -15,26 +15,26 @@ namespace PlooCinema.WebApi.Controllers
     [Route("[controller]")]
     public class MovieController(IMovieRepository movieRepository) : ControllerBase
     {
-        private readonly IMovieRepository _movieRepository = movieRepository;
+        private readonly IMovieRepository movieRepository = movieRepository;
 
         [HttpGet]
-        public ActionResult<IEnumerable<Movie>> Get([FromQuery(Name = "name")] string? name)
+        public ActionResult<IEnumerable<Movie>> Get([FromQuery( Name = "name")] string? name)
         {
-            if (string.IsNullOrEmpty(name))
-                return Ok(_movieRepository.SearchAll());
-
-            return Ok(_movieRepository.SearchByName(name));
+            if ( string.IsNullOrEmpty( name ) )
+                return Ok(movieRepository.GetAll());
+            
+            return Ok(movieRepository.GetByName(name));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Movie> GetById(int id)
+        public ActionResult<Movie> GetById (int id)
         {
-            var movie = _movieRepository.SearchById(id);
+            var searchMovie = movieRepository.GetById(id);
 
-            if (movie is null)
+            if ( searchMovie is null)
                 return NotFound();
-
-            return Ok(movie);
+            
+            return Ok(searchMovie);
         }
 
         [HttpPost]
@@ -42,23 +42,25 @@ namespace PlooCinema.WebApi.Controllers
         {
             try
             {
-                var create = _movieRepository.Create(movie);
-                if ( create is null )
+                var create = movieRepository.Create(movie);
+                if (create is null)
                     return NotFound();
 
-                return CreatedAtAction( nameof(GetById), new { id = create.Id }, create);
-            } catch (Exception error)
+                return CreatedAtAction( nameof(GetById), new { id = create.Id}, create);
+            }
+            catch (Exception error)
             {
-                return BadRequest(error);
+                return BadRequest(error.Message);
             }
         }
 
-        [HttpPut("{id}")]
-        public ActionResult<Movie> Update(int id, Movie movie)
+        [HttpPut]
+        public ActionResult<Movie> Update(Movie movie)
         {
             try
             {
-                var updatedValue = _movieRepository.Update(id, movie);
+                var updatedValue = movieRepository.Update(movie);
+                
                 if (updatedValue is null)
                     return NotFound();
 
@@ -70,15 +72,15 @@ namespace PlooCinema.WebApi.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public IActionResult Delete(int id)
         {
-            var movie = _movieRepository.SearchById(id);
-            if ( movie is null )
-                return NotFound();
-            
-            _movieRepository.Delete(id);
+            var movieDelete = movieRepository.GetById(id);
 
+            if ( movieDelete is null )
+                return NotFound();
+
+            movieRepository.Delete(movieDelete);
             return NoContent();
         }
     }

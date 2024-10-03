@@ -9,79 +9,74 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PlooCinema.WebApi.Models;
 using PlooCinema.WebApi.Repositories;
+using PlooCinema.WebApi.Repositories.PostgreSql;
 
 namespace PlooCinema.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class GenreController (IGenreRepository genreRepository) : ControllerBase
+    public class GenreController(IGenreRepository genreRepository) : ControllerBase
     {
-        private readonly IGenreRepository _genreRepository = genreRepository;
+        private readonly IGenreRepository genreRepository = genreRepository;
 
         [HttpGet]
         public ActionResult<IEnumerable<Genre>> Get([FromQuery(Name = "name")] string? name)
         {
-            if (string.IsNullOrEmpty(name))
-                return Ok(_genreRepository.SearchAll());
+            if ( string.IsNullOrEmpty(name) )
+                return Ok(genreRepository.GetAll());
 
-            return Ok(_genreRepository.SearchByName(name));
+            return Ok(genreRepository.GetByName(name));
         }
 
-        [HttpGet("{id}")]
+        [HttpPost("{id}")]
         public ActionResult<Genre> GetById(int id)
         {
-            var genre = _genreRepository.SearchById(id);
+            var genre = genreRepository.GetById(id);
 
-            if (genre is null)
+            if ( genre is null)
                 return NotFound();
             
             return Ok(genre);
         }
 
         [HttpPost]
-        public ActionResult<Genre> Create(string name, IEnumerable<int> idsMovies)
+        public ActionResult<Genre> Create(Genre genre)
         {
             try
             {
-                var created = _genreRepository.Create(name.ToUpper(), idsMovies);
+                var created = genreRepository.Create(genre);
 
                 if (created is null)
                     return NotFound();
-                
-                return CreatedAtAction( nameof(GetById), new { id = created.Id }, created);
 
-            } catch (Exception error)
+                return CreatedAtAction(nameof(GetById), new { Id = created.Id}, created);
+            }
+            catch (Exception error)
             {
-                return BadRequest(error);
+                return BadRequest(error.Message);
             }
         }
 
-        [HttpPut("{id}")]
-        public ActionResult<Genre> Update(int id, string name)
+        [HttpPut]
+        public ActionResult<Genre> Update(Genre genre)
         {
-            if (!string.IsNullOrEmpty(name))
-            {
-                var genreUpdated = _genreRepository.Update(id, name.ToUpper());
+            var genreUpdated = genreRepository.Update(genre);
 
-                if ( genreUpdated is null )
-                    return NotFound();
-                
-                return Ok(genreUpdated);
-            }
-
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
-        {
-            var movieValidation = _genreRepository.SearchById(id);
-
-            if ( movieValidation is null )
+            if (genreUpdated is null)
                 return NotFound();
 
-            _genreRepository.Delete(id);
+            return Ok(genreUpdated);
+        }
 
+        [HttpDelete]
+        public ActionResult Delete(int id)
+        {
+            var genreDelete = genreRepository.GetById(id);
+
+            if ( genreDelete is null )
+                return NotFound();
+
+            genreRepository.Delete(genreDelete);
             return NoContent();
         }
     }
