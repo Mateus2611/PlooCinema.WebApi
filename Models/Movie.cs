@@ -29,18 +29,18 @@ namespace PlooCinema.WebApi.Model
         [Range(1, int.MaxValue, ErrorMessage = "Duração inválida. Informe um valor acima de zero")]
         public int Duration { get; set; }
 
-        public DateTime Release
+        public DateTimeOffset Release
         {
             get => _release;
             set
             {
-                if (value > DateTime.Now.Date)
+                if (value > DateTimeOffset.Now.Date)
                     throw new ArgumentException("A data informada não é valida.");
 
-                _release = value.Date;
+                _release = value.Date.ToUniversalTime();
             }
         }
-        private DateTime _release { get; set; }
+        private DateTimeOffset _release { get; set; }
 
         [Required(ErrorMessage = "Informe a descrição do filme.")]
         public string Description { get; set; }

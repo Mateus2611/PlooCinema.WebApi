@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PlooCinema.WebApi.Models;
 using PlooCinema.WebApi.Repositories;
-using PlooCinema.WebApi.Repositories.PostgreSql;
 
 namespace PlooCinema.WebApi.Controllers
 {
@@ -28,7 +27,7 @@ namespace PlooCinema.WebApi.Controllers
             return Ok(genreRepository.GetByName(name));
         }
 
-        [HttpPost("{id}")]
+        [HttpGet("{id}")]
         public ActionResult<Genre> GetById(int id)
         {
             var genre = genreRepository.GetById(id);

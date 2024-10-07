@@ -22,6 +22,6 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
         public IEnumerable<Movie> GetByName(string name)
             => context.Movies
                 .AsNoTracking()
-                .Where( m => m.Name.ToLower().Contains(name.ToLower()));
+                .Where( m => m.Name.ToLower().Contains(name.ToLower())); 
     }
 }

@@ -1,5 +1,4 @@
 using PlooCinema.WebApi.Repositories;
-using PlooCinema.WebApi.Repositories.Json;
 using PlooCinema.WebApi.Model;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -59,6 +58,16 @@ if (app.Environment.IsDevelopment())
         opttions.SwaggerEndpoint("/swagger/v1/swagger.json", "PlooCinema.WebApi v1");
     });
 }
+
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/")
+    {
+        context.Response.Redirect("/swagger");
+        return;
+    }
+    await next();
+});
 
 app.MapControllers();
 
