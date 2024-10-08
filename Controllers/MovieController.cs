@@ -8,28 +8,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PlooCinema.WebApi.Model;
 using PlooCinema.WebApi.Repositories;
+using PlooCinema.WebApi.Services.Interfaces;
 
 namespace PlooCinema.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MovieController(IMovieRepository movieRepository) : ControllerBase
+    public class MovieController(IMovieService movieService) : ControllerBase
     {
-        private readonly IMovieRepository movieRepository = movieRepository;
+        private readonly IMovieService movieService = movieService;
 
         [HttpGet]
         public ActionResult<IEnumerable<Movie>> Get([FromQuery( Name = "name")] string? name)
         {
             if ( string.IsNullOrEmpty( name ) )
-                return Ok(movieRepository.GetAll());
+                return Ok(movieService.GetAll());
             
-            return Ok(movieRepository.GetByName(name));
+            return Ok(movieService.GetByName(name));
         }
 
         [HttpGet("{id}")]
         public ActionResult<Movie> GetById (int id)
         {
-            var searchMovie = movieRepository.GetById(id);
+            var searchMovie = movieService.GetById(id);
 
             if ( searchMovie is null)
                 return NotFound();
@@ -42,7 +43,7 @@ namespace PlooCinema.WebApi.Controllers
         {
             try
             {
-                var create = movieRepository.Create(movie);
+                var create = movieService.Create(movie);
                 if (create is null)
                     return NotFound();
 
@@ -59,7 +60,7 @@ namespace PlooCinema.WebApi.Controllers
         {
             try
             {
-                var updatedValue = movieRepository.Update(movie);
+                var updatedValue = movieService.Update(movie);
                 
                 if (updatedValue is null)
                     return NotFound();
@@ -75,13 +76,24 @@ namespace PlooCinema.WebApi.Controllers
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            var movieDelete = movieRepository.GetById(id);
+            var movieDelete = movieService.GetById(id);
 
             if ( movieDelete is null )
                 return NotFound();
 
-            movieRepository.Delete(movieDelete);
+            movieService.Delete(movieDelete);
             return NoContent();
+        }
+
+        [HttpPut("{idMovie}")]
+        public ActionResult<Movie> AddGenre(int idMovie, [FromBody] int idGenre)
+        {
+            var movie = movieService.AddGenre(idMovie, idGenre);
+
+            if ( movie is null )
+                return NotFound();
+
+            return Ok(movie);
         }
     }
 }

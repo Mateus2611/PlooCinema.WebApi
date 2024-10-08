@@ -43,6 +43,7 @@ namespace PlooCinema.WebApi.Controllers
         {
             try
             {
+                genre.Name = genre.Name.ToUpper();
                 var created = genreRepository.Create(genre);
 
                 if (created is null)

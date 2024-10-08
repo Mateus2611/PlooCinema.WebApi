@@ -16,8 +16,7 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public Movie? GetById(int id)
             => context.Movies
-                .AsNoTracking()
-                .SingleOrDefault( m => m.Id == id);
+                .Find(id);
 
         public IEnumerable<Movie> GetByName(string name)
             => context.Movies
