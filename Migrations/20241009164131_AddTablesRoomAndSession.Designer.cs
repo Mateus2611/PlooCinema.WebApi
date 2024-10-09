@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PlooCinema.WebApi.Repositories.EntityFramework;
@@ -11,9 +12,11 @@ using PlooCinema.WebApi.Repositories.EntityFramework;
 namespace PlooCinema.WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241009164131_AddTablesRoomAndSession")]
+    partial class AddTablesRoomAndSession
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +40,7 @@ namespace PlooCinema.WebApi.Migrations
 
                     b.HasIndex("MoviesId");
 
-                    b.ToTable("GenreMovie", (string)null);
+                    b.ToTable("GenreMovie");
                 });
 
             modelBuilder.Entity("PlooCinema.WebApi.Model.Movie", b =>
@@ -64,7 +67,7 @@ namespace PlooCinema.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies", (string)null);
+                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("PlooCinema.WebApi.Models.Genre", b =>
@@ -81,7 +84,7 @@ namespace PlooCinema.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres", (string)null);
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("PlooCinema.WebApi.Models.Room", b =>
@@ -101,7 +104,7 @@ namespace PlooCinema.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Rooms", (string)null);
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("PlooCinema.WebApi.Models.Session", b =>
@@ -130,7 +133,7 @@ namespace PlooCinema.WebApi.Migrations
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("Sessions", (string)null);
+                    b.ToTable("Sessions");
                 });
 
             modelBuilder.Entity("GenreMovie", b =>

@@ -15,5 +15,6 @@ namespace PlooCinema.WebApi.Services.Interfaces
         IEnumerable<Movie> GetByName(string name);
         Movie? GetById(int id);
         Movie? AddGenre(int idMovie, int idGenre);
+        Movie? RemoveGenre(int idMovie, int idGenre);
     }
 }

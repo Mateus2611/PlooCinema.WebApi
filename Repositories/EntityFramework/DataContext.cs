@@ -10,6 +10,7 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Genre> Genres { get; set; }
-
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Session> Sessions { get; set; }
     }
 }

@@ -1,12 +1,7 @@
 using PlooCinema.WebApi.Repositories;
-using PlooCinema.WebApi.Model;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using PlooCinema.WebApi.Repositories.EntityFramework;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using PlooCinema.WebApi.Models;
 using PlooCinema.WebApi.Services.Interfaces;
 using PlooCinema.WebApi.Services;
 
@@ -18,9 +13,13 @@ builder.Services.AddDbContext<DataContext>(options =>
         .UseLazyLoadingProxies()
         .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
 });
+
 builder.Services.AddScoped<IMovieRepository, EFMovieRepository>();
 builder.Services.AddScoped<IGenreRepository, EFGenreRepository>();
 builder.Services.AddScoped<IMovieService, MovieServices>();
+builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<IRoomRepository, EFRoomRepository>();
+builder.Services.AddScoped<IRoomServices, RoomServices>();
 
 // builder.Services.AddScoped<IMovieRepository, MovieRepositoryPostgreSql>(ServiceProvider =>
 // {

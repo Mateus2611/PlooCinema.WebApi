@@ -16,12 +16,12 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public Genre? GetById(int id)
             => context.Genres
-                .AsNoTracking()
-                .SingleOrDefault( g => g.Id == id);
+                .Find(id);
 
         public IEnumerable<Genre> GetByName(string name)
             => context.Genres
                 .AsNoTracking()
-                .Where( g => g.Name.ToLower().Contains(name.ToLower()));
+                .Where( g => g.Name.ToLower().Contains(name.ToLower()))
+                .ToList();
     }
 }

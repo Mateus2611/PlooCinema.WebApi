@@ -95,5 +95,15 @@ namespace PlooCinema.WebApi.Controllers
 
             return Ok(movie);
         }
+        [HttpDelete("{idMovie}")]
+        public ActionResult<Movie> RemoveGenre(int idMovie, [FromBody] int idGenre)
+        {
+            var movie = movieService.RemoveGenre(idMovie, idGenre);
+
+            if ( movie is null )
+                return NotFound();
+
+            return Ok(movie);
+        }
     }
 }

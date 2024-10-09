@@ -9,28 +9,29 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PlooCinema.WebApi.Models;
 using PlooCinema.WebApi.Repositories;
+using PlooCinema.WebApi.Services.Interfaces;
 
 namespace PlooCinema.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class GenreController(IGenreRepository genreRepository) : ControllerBase
+    public class GenreController(IGenreService genreService) : ControllerBase
     {
-        private readonly IGenreRepository genreRepository = genreRepository;
+        private readonly IGenreService genreService = genreService;
 
         [HttpGet]
         public ActionResult<IEnumerable<Genre>> Get([FromQuery(Name = "name")] string? name)
         {
             if ( string.IsNullOrEmpty(name) )
-                return Ok(genreRepository.GetAll());
+                return Ok(genreService.GetAll());
 
-            return Ok(genreRepository.GetByName(name));
+            return Ok(genreService.GetByName(name));
         }
 
         [HttpGet("{id}")]
         public ActionResult<Genre> GetById(int id)
         {
-            var genre = genreRepository.GetById(id);
+            var genre = genreService.GetById(id);
 
             if ( genre is null)
                 return NotFound();
@@ -44,7 +45,7 @@ namespace PlooCinema.WebApi.Controllers
             try
             {
                 genre.Name = genre.Name.ToUpper();
-                var created = genreRepository.Create(genre);
+                var created = genreService.Create(genre);
 
                 if (created is null)
                     return NotFound();
@@ -60,7 +61,8 @@ namespace PlooCinema.WebApi.Controllers
         [HttpPut]
         public ActionResult<Genre> Update(Genre genre)
         {
-            var genreUpdated = genreRepository.Update(genre);
+            genre.Name = genre.Name.ToUpper();
+            var genreUpdated = genreService.Update(genre);
 
             if (genreUpdated is null)
                 return NotFound();
@@ -71,12 +73,12 @@ namespace PlooCinema.WebApi.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            var genreDelete = genreRepository.GetById(id);
+            var genreDelete = genreService.GetById(id);
 
             if ( genreDelete is null )
                 return NotFound();
 
-            genreRepository.Delete(genreDelete);
+            genreService.Delete(genreDelete);
             return NoContent();
         }
     }

@@ -44,8 +44,9 @@ namespace PlooCinema.WebApi.Model
 
         [Required(ErrorMessage = "Informe a descrição do filme.")]
         public string Description { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public virtual ICollection<Genre> Genres { get; set; } = [];
+        [JsonIgnore]
+        public virtual ICollection<Session> Sessions{ get; set; } = [];
 
         public override string ToString()
         {

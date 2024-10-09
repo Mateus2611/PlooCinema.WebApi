@@ -56,5 +56,17 @@ namespace PlooCinema.WebApi.Services
             getMovie.Genres.Add(getGenre);
             return movieRepository.Update(getMovie);
         }
+
+        public Movie? RemoveGenre(int idMovie, int idGenre)
+        {
+            var getMovie = movieRepository.GetById(idMovie);
+            var getGenre = genreRepository.GetById(idGenre);
+
+            if (getMovie is null || getGenre is null)
+                return null;
+
+            getMovie.Genres.Remove(getGenre);
+            return movieRepository.Update(getMovie);
+        }
     }
 }
