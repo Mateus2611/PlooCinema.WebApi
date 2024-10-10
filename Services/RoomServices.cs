@@ -11,6 +11,7 @@ namespace PlooCinema.WebApi.Services
     public class RoomServices(IRoomRepository roomRepository) : IRoomServices
     {
         private readonly IRoomRepository roomRepository = roomRepository;
+        
         public Room? Create(Room room)
         {
             return roomRepository.Create(room);

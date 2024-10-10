@@ -14,7 +14,7 @@ namespace PlooCinema.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MovieController(IMovieService movieService) : ControllerBase
+    public class MoviesController(IMovieService movieService) : ControllerBase
     {
         private readonly IMovieService movieService = movieService;
 
@@ -85,7 +85,7 @@ namespace PlooCinema.WebApi.Controllers
             return NoContent();
         }
 
-        [HttpPut("{idMovie}")]
+        [HttpPut("{idMovie}/Genres")]
         public ActionResult<Movie> AddGenre(int idMovie, [FromBody] int idGenre)
         {
             var movie = movieService.AddGenre(idMovie, idGenre);
@@ -95,7 +95,7 @@ namespace PlooCinema.WebApi.Controllers
 
             return Ok(movie);
         }
-        [HttpDelete("{idMovie}")]
+        [HttpDelete("{idMovie}/Genres")]
         public ActionResult<Movie> RemoveGenre(int idMovie, [FromBody] int idGenre)
         {
             var movie = movieService.RemoveGenre(idMovie, idGenre);

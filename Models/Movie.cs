@@ -52,6 +52,5 @@ namespace PlooCinema.WebApi.Model
         {
             return $"ID: {Id} Nome: {Name}, Gênero: {Genres}, Duração: {Duration}, Lançamento: {Release}, Descrição: {Description}\n";
         }
-
     }
 }

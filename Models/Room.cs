@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using PlooCinema.WebApi.Model;
 
 namespace PlooCinema.WebApi.Models
 {
@@ -22,5 +23,16 @@ namespace PlooCinema.WebApi.Models
         public int Seats { get; set; }
         [JsonIgnore]
         public virtual ICollection<Session> UpComingSessions { get; set; } = [];
+
+        public bool BookRoom(Movie movie, DateTimeOffset dateStart)
+        {
+            DateTimeOffset endSession = dateStart.AddMinutes(movie.Duration);
+
+            return UpComingSessions.Any( s => 
+            (
+                dateStart < s.StartMovie.AddMinutes(s.Movie.Duration) &&
+                endSession > s.StartMovie    
+            ));
+        }
     }
 }
