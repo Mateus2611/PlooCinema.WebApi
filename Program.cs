@@ -14,9 +14,9 @@ builder.Services.AddDbContext<DataContext>(options =>
         .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
 });
 
-// builder.Services.AddScoped<IMovieRepository, EFMovieRepository>();
+builder.Services.AddScoped<IMovieRepository, EFMovieRepository>();
 builder.Services.AddScoped<IGenreRepository, EFGenreRepository>();
-// builder.Services.AddScoped<IMovieService, MovieServices>();
+builder.Services.AddScoped<IMovieService, MovieServices>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 // builder.Services.AddScoped<IRoomRepository, EFRoomRepository>();
 // builder.Services.AddScoped<IRoomServices, RoomServices>();

@@ -15,8 +15,8 @@ using PlooCinema.WebApi.Services.Interfaces;
 namespace PlooCinema.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class GenreController(IGenreService genreService) : ControllerBase
+    [Route("api/[controller]")]
+    public class GenresController(IGenreService genreService) : ControllerBase
     {
         private readonly IGenreService genreService = genreService;
 
@@ -71,8 +71,8 @@ namespace PlooCinema.WebApi.Controllers
             return Ok(genreUpdated);
         }
 
-        [HttpDelete]
-        public ActionResult Delete(int id)
+        [HttpDelete("{id}")]
+        public ActionResult Delete([FromRoute]int id)
         {
             var genreDelete = genreService.GetById(id);
 

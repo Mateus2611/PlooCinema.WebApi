@@ -24,7 +24,8 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public T? Update(T entity)
         {
-            context.Set<T>().Update(entity);
+            context.Set<T>()
+                .Update(entity);
             context.SaveChanges();
             return entity;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using PlooCinema.WebApi.Model;
 
 namespace PlooCinema.WebApi.Models.DTOs
 {
@@ -11,6 +12,15 @@ namespace PlooCinema.WebApi.Models.DTOs
         public AutoMapperProfile()
         {
             CreateMap<GenreDTO, Genre>()
+                .ReverseMap();
+            
+            CreateMap<CreateMovieDTO, Movie>()
+                .ReverseMap();
+
+            CreateMap<GetMovieResponse, Movie>()
+                .ReverseMap();
+
+            CreateMap<UpdateMovieDTO, Movie>()
                 .ReverseMap();
         }
     }

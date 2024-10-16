@@ -10,8 +10,8 @@ using PlooCinema.WebApi.Services.Interfaces;
 namespace PlooCinema.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class RoomController(IRoomServices roomServices) : ControllerBase
+    [Route("api/[controller]")]
+    public class RoomsController(IRoomServices roomServices) : ControllerBase
     {
         private readonly IRoomServices roomServices = roomServices;
 

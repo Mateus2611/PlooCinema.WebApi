@@ -20,6 +20,7 @@ namespace PlooCinema.WebApi.Models
 
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
+        [JsonIgnore]
         public virtual ICollection<Movie> Movies { get; set; } = [];
     }
 }

@@ -2,16 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace PlooCinema.WebApi.Models.DTOs
 {
-    public class CreateMovieDTO
+    public class UpdateMovieDTO
     {
-        [JsonIgnore]
-        public int Id { get; set; }
-        [Required(ErrorMessage = "Informe o nome do filme.")]
         public string Name { get; set; } = string.Empty;
 
         [Range(1, int.MaxValue, ErrorMessage = "Duração inválida. Informe um valor acima de zero")]
@@ -32,6 +28,5 @@ namespace PlooCinema.WebApi.Models.DTOs
 
         [Required(ErrorMessage = "Informe a descrição do filme.")]
         public string Description { get; set; } = string.Empty;
-        public IEnumerable<int>? IdsGenres { get; set; } = [];
     }
 }

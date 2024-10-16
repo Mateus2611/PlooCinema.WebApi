@@ -12,7 +12,7 @@ namespace PlooCinema.WebApi.Model
     public class Movie
     {
         public Movie() {}
-        public Movie(int id, string name, int duration, DateTime release, string description)
+        public Movie(int id, string name, int duration, DateTimeOffset release, string description)
         {
             Id = id;
             Name = name;
@@ -27,6 +27,7 @@ namespace PlooCinema.WebApi.Model
         public DateTimeOffset Release { get; set; }
         public string Description { get; set; } = string.Empty;
         public virtual ICollection<Genre> Genres { get; set; } = [];
+        [JsonIgnore]
         public virtual ICollection<Session> Sessions{ get; set; } = [];
 
         public override string ToString()
