@@ -22,30 +22,11 @@ namespace PlooCinema.WebApi.Model
         }
 
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Informe o nome do filme.")]
-        public string Name { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "Duração inválida. Informe um valor acima de zero")]
+        public string Name { get; set; } = string.Empty;
         public int Duration { get; set; }
-
-        public DateTimeOffset Release
-        {
-            get => _release;
-            set
-            {
-                if (value > DateTimeOffset.Now.Date)
-                    throw new ArgumentException("A data informada não é valida.");
-
-                _release = value.Date.ToUniversalTime();
-            }
-        }
-        private DateTimeOffset _release { get; set; }
-
-        [Required(ErrorMessage = "Informe a descrição do filme.")]
-        public string Description { get; set; }
+        public DateTimeOffset Release { get; set; }
+        public string Description { get; set; } = string.Empty;
         public virtual ICollection<Genre> Genres { get; set; } = [];
-        [JsonIgnore]
         public virtual ICollection<Session> Sessions{ get; set; } = [];
 
         public override string ToString()

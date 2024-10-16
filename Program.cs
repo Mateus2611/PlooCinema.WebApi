@@ -14,13 +14,13 @@ builder.Services.AddDbContext<DataContext>(options =>
         .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
 });
 
-builder.Services.AddScoped<IMovieRepository, EFMovieRepository>();
+// builder.Services.AddScoped<IMovieRepository, EFMovieRepository>();
 builder.Services.AddScoped<IGenreRepository, EFGenreRepository>();
-builder.Services.AddScoped<IMovieService, MovieServices>();
+// builder.Services.AddScoped<IMovieService, MovieServices>();
 builder.Services.AddScoped<IGenreService, GenreService>();
-builder.Services.AddScoped<IRoomRepository, EFRoomRepository>();
-builder.Services.AddScoped<IRoomServices, RoomServices>();
-builder.Services.AddScoped<ISessionRepository, EFSessionRepository>();
+// builder.Services.AddScoped<IRoomRepository, EFRoomRepository>();
+// builder.Services.AddScoped<IRoomServices, RoomServices>();
+// builder.Services.AddScoped<ISessionRepository, EFSessionRepository>();
 
 // builder.Services.AddScoped<IMovieRepository, MovieRepositoryPostgreSql>(ServiceProvider =>
 // {
@@ -40,6 +40,7 @@ builder.Services.AddScoped<ISessionRepository, EFSessionRepository>();
 //     return new GenreRepositoryPostgreSql(connString);
 // });
 
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

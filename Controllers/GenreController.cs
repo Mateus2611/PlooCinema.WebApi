@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PlooCinema.WebApi.Models;
+using PlooCinema.WebApi.Models.DTOs;
 using PlooCinema.WebApi.Repositories;
 using PlooCinema.WebApi.Services.Interfaces;
 
@@ -20,7 +21,7 @@ namespace PlooCinema.WebApi.Controllers
         private readonly IGenreService genreService = genreService;
 
         [HttpGet]
-        public ActionResult<IEnumerable<Genre>> Get([FromQuery(Name = "name")] string? name)
+        public ActionResult<IEnumerable<GenreDTO>> Get([FromQuery(Name = "name")] string? name)
         {
             if ( string.IsNullOrEmpty(name) )
                 return Ok(genreService.GetAll());
@@ -29,7 +30,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Genre> GetById(int id)
+        public ActionResult<GenreDTO> GetById(int id)
         {
             var genre = genreService.GetById(id);
 
@@ -40,17 +41,17 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Genre> Create(Genre genre)
+        public ActionResult<GenreDTO> Create(GenreDTO genreDTO)
         {
             try
             {
-                genre.Name = genre.Name.ToUpper();
-                var created = genreService.Create(genre);
+                genreDTO.Name = genreDTO.Name.ToUpper();
+                var created = genreService.Create(genreDTO);
 
                 if (created is null)
                     return NotFound();
 
-                return CreatedAtAction(nameof(GetById), new { Id = created.Id}, created);
+                return CreatedAtAction(nameof(GetById), new { created.Id }, created);
             }
             catch (Exception error)
             {
@@ -59,10 +60,10 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPut]
-        public ActionResult<Genre> Update(Genre genre)
+        public ActionResult<GenreDTO> Update(GenreDTO genreDTO)
         {
-            genre.Name = genre.Name.ToUpper();
-            var genreUpdated = genreService.Update(genre);
+            genreDTO.Name = genreDTO.Name.ToUpper();
+            var genreUpdated = genreService.Update(genreDTO);
 
             if (genreUpdated is null)
                 return NotFound();
