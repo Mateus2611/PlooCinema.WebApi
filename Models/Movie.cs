@@ -22,10 +22,10 @@ namespace PlooCinema.WebApi.Model
         }
 
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public required string Name { get; set; }
         public int Duration { get; set; }
         public DateTimeOffset Release { get; set; }
-        public string Description { get; set; } = string.Empty;
+        public required string Description { get; set; }
         public virtual ICollection<Genre> Genres { get; set; } = [];
         [JsonIgnore]
         public virtual ICollection<Session> Sessions{ get; set; } = [];

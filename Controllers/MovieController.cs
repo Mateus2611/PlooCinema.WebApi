@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PlooCinema.WebApi.Model;
 using PlooCinema.WebApi.Models.DTOs;
+using PlooCinema.WebApi.Models.Responses;
 using PlooCinema.WebApi.Repositories;
 using PlooCinema.WebApi.Services.Interfaces;
 
@@ -77,31 +78,27 @@ namespace PlooCinema.WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
-            try
-            {
-                movieService.Delete(id);
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+            movieService.Delete(id);
+            return NoContent();
         }
 
-        [HttpPut("{idMovie}/Genres")]
-        public ActionResult<Movie> AddGenre(int idMovie, [FromBody] int idGenre)
+        [HttpPut("{id}/Genres")]
+        public ActionResult<GetMovieResponse> AddGenre([FromRoute] int id, [FromBody] MovieGenreDTO movieGenresIds)
         {
-            var movie = movieService.AddGenre(idMovie, idGenre);
+            movieGenresIds.MovieId = id;
+            var movie = movieService.AddGenre(movieGenresIds);
 
             if (movie is null)
                 return NotFound();
 
             return Ok(movie);
         }
-        [HttpDelete("{idMovie}/Genres")]
-        public ActionResult<Movie> RemoveGenre(int idMovie, [FromBody] int idGenre)
+
+        [HttpDelete("{id}/Genres")]
+        public ActionResult<GetMovieResponse> RemoveGenre([FromRoute] int id, [FromBody] MovieGenreDTO movieGenresIds)
         {
-            var movie = movieService.RemoveGenre(idMovie, idGenre);
+            movieGenresIds.MovieId = id;
+            var movie = movieService.RemoveGenre(movieGenresIds);
 
             if (movie is null)
                 return NotFound();

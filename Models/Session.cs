@@ -29,10 +29,11 @@ namespace PlooCinema.WebApi.Models
             get => _seatsAvailable;
         }
         private int _seatsAvailable { get; set; }
+        
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public virtual Movie? Movie { get; set; }
+        public required virtual Movie Movie { get; set; }
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public virtual Room? Room { get; set; }
+        public required virtual Room Room { get; set; }
 
         public void ReserveSeats(int seats)
         {

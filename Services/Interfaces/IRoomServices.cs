@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PlooCinema.WebApi.Models;
+using PlooCinema.WebApi.Models.DTOs;
+using PlooCinema.WebApi.Models.Responses;
 
 namespace PlooCinema.WebApi.Services.Interfaces
 {
     public interface IRoomServices
     {
-        Room? Create(Room room);
-        IEnumerable<Room> GetAll();
-        Room? Update(Room room);
-        void Delete(Room room);
-        IEnumerable<Room> GetByName(string name);
-        Room? GetById(int id);
+        RoomResponse? Create(RoomDTO room);
+        IEnumerable<RoomResponse> GetAll();
+        RoomResponse? Update(int id, RoomDTO room);
+        void Delete(int id);
+        IEnumerable<RoomResponse> GetByName(string name);
+        RoomResponse? GetById(int id);
     }
 }

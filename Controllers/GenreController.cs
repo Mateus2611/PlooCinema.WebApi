@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PlooCinema.WebApi.Models;
 using PlooCinema.WebApi.Models.DTOs;
+using PlooCinema.WebApi.Models.Responses;
 using PlooCinema.WebApi.Repositories;
 using PlooCinema.WebApi.Services.Interfaces;
 
@@ -21,27 +22,27 @@ namespace PlooCinema.WebApi.Controllers
         private readonly IGenreService genreService = genreService;
 
         [HttpGet]
-        public ActionResult<IEnumerable<GenreDTO>> Get([FromQuery(Name = "name")] string? name)
+        public ActionResult<IEnumerable<GenreResponse>> Get([FromQuery(Name = "name")] string? name)
         {
-            if ( string.IsNullOrEmpty(name) )
+            if (string.IsNullOrEmpty(name))
                 return Ok(genreService.GetAll());
 
             return Ok(genreService.GetByName(name));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<GenreDTO> GetById(int id)
+        public ActionResult<GenreResponse> GetById(int id)
         {
             var genre = genreService.GetById(id);
 
-            if ( genre is null)
+            if (genre is null)
                 return NotFound();
-            
+
             return Ok(genre);
         }
 
         [HttpPost]
-        public ActionResult<GenreDTO> Create(GenreDTO genreDTO)
+        public ActionResult<GenreResponse> Create(GenreDTO genreDTO)
         {
             try
             {
@@ -59,11 +60,11 @@ namespace PlooCinema.WebApi.Controllers
             }
         }
 
-        [HttpPut]
-        public ActionResult<GenreDTO> Update(GenreDTO genreDTO)
+        [HttpPut("{id}")]
+        public ActionResult<GenreResponse> Update([FromRoute] int id, GenreDTO genreDTO)
         {
             genreDTO.Name = genreDTO.Name.ToUpper();
-            var genreUpdated = genreService.Update(genreDTO);
+            var genreUpdated = genreService.Update(id, genreDTO);
 
             if (genreUpdated is null)
                 return NotFound();
@@ -72,15 +73,17 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete([FromRoute]int id)
+        public ActionResult Delete([FromRoute] int id)
         {
-            var genreDelete = genreService.GetById(id);
-
-            if ( genreDelete is null )
-                return NotFound();
-
-            genreService.Delete(genreDelete);
-            return NoContent();
+            try
+            {
+                genreService.Delete(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

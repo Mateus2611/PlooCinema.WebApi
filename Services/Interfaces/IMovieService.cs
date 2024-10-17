@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using PlooCinema.WebApi.Model;
 using PlooCinema.WebApi.Models.DTOs;
+using PlooCinema.WebApi.Models.Responses;
 
 namespace PlooCinema.WebApi.Services.Interfaces
 {
@@ -15,7 +16,7 @@ namespace PlooCinema.WebApi.Services.Interfaces
         void Delete(int id);
         IEnumerable<GetMovieResponse> GetByName(string name);
         GetMovieResponse? GetById(int id);
-        Movie? AddGenre(int idMovie, int idGenre);
-        Movie? RemoveGenre(int idMovie, int idGenre);
+        GetMovieResponse? AddGenre(MovieGenreDTO movieGenreIds);
+        GetMovieResponse? RemoveGenre(MovieGenreDTO movieGenreids);
     }
 }

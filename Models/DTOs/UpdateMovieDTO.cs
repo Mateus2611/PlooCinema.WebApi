@@ -8,7 +8,7 @@ namespace PlooCinema.WebApi.Models.DTOs
 {
     public class UpdateMovieDTO
     {
-        public string Name { get; set; } = string.Empty;
+        public required string Name { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Duração inválida. Informe um valor acima de zero")]
         public int Duration { get; set; }
@@ -27,6 +27,6 @@ namespace PlooCinema.WebApi.Models.DTOs
         private DateTimeOffset _release { get; set; }
 
         [Required(ErrorMessage = "Informe a descrição do filme.")]
-        public string Description { get; set; } = string.Empty;
+        public required string Description { get; set; }
     }
 }

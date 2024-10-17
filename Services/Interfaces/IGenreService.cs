@@ -4,16 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using PlooCinema.WebApi.Models;
 using PlooCinema.WebApi.Models.DTOs;
+using PlooCinema.WebApi.Models.Responses;
 
 namespace PlooCinema.WebApi.Services.Interfaces
 {
     public interface IGenreService
     {
-        GenreDTO? Create(GenreDTO genreDTO);
-        IEnumerable<GenreDTO> GetAll();
-        GenreDTO? Update(GenreDTO genreDTO);
-        void Delete(GenreDTO genreDTO);
-        IEnumerable<GenreDTO> GetByName(string name);
-        GenreDTO? GetById(int id);
+        GenreResponse? Create(GenreDTO genreDTO);
+        IEnumerable<GenreResponse> GetAll();
+        GenreResponse? Update(int id, GenreDTO genreDTO);
+        void Delete(int id);
+        IEnumerable<GenreResponse> GetByName(string name);
+        GenreResponse? GetById(int id);
     }
 }

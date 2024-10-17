@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using PlooCinema.WebApi.Controllers;
 using PlooCinema.WebApi.Model;
 using PlooCinema.WebApi.Models.DTOs;
+using PlooCinema.WebApi.Models.Responses;
 using PlooCinema.WebApi.Repositories;
 using PlooCinema.WebApi.Services.Interfaces;
 
@@ -25,10 +27,13 @@ namespace PlooCinema.WebApi.Services
 
             if (movie.IdsGenres is not null && movie.IdsGenres.Any() && movieConverted is not null)
             {
-                foreach (int idGenre in movie.IdsGenres)
+                MovieGenreDTO movieGenreDTO = new()
                 {
-                    AddGenre(movieConverted.Id, idGenre);
-                }
+                    GenresIds = movie.IdsGenres,
+                    MovieId = movieConverted.Id
+                };
+
+                AddGenre(movieGenreDTO);
             }
 
             return
@@ -40,7 +45,7 @@ namespace PlooCinema.WebApi.Services
             var updatedValue = mapper.Map<Movie>(movie);
             updatedValue.Id = id;
 
-            return 
+            return
                 mapper.Map<UpdateMovieDTO>
                 (
                     movieRepository.Update(updatedValue)
@@ -49,7 +54,7 @@ namespace PlooCinema.WebApi.Services
 
         public void Delete(int id)
         {
-            var movieDelete = movieRepository.GetById(id) ?? throw new Exception("Filme nãoi encontrado.");
+            var movieDelete = movieRepository.GetById(id) ?? throw new KeyNotFoundException(id.ToString());
             movieRepository.Delete(movieDelete);
         }
 
@@ -82,28 +87,48 @@ namespace PlooCinema.WebApi.Services
         }
 
 
-        public Movie? AddGenre(int idMovie, int idGenre)
+        public GetMovieResponse? AddGenre(MovieGenreDTO movieGenreIds)
         {
-            var getMovie = movieRepository.GetById(idMovie);
-            var getGenre = genreRepository.GetById(idGenre);
+            var getMovie = movieRepository.GetById(movieGenreIds.MovieId);
 
-            if (getMovie is null || getGenre is null)
+            if (getMovie is null)
                 return null;
 
-            getMovie.Genres.Add(getGenre);
-            return movieRepository.Update(getMovie);
+            foreach (int genre in movieGenreIds.GenresIds)
+            {
+                var getGenre = genreRepository.GetById(genre);
+
+                if (getGenre is not null && !getMovie.Genres.Contains(getGenre))
+                    getMovie.Genres.Add(getGenre);
+            }
+
+            return 
+                mapper.Map<GetMovieResponse>
+                (
+                    movieRepository.Update(getMovie)
+                );
         }
 
-        public Movie? RemoveGenre(int idMovie, int idGenre)
+        public GetMovieResponse? RemoveGenre(MovieGenreDTO movieGenreIds)
         {
-            var getMovie = movieRepository.GetById(idMovie);
-            var getGenre = genreRepository.GetById(idGenre);
+            var getMovie = movieRepository.GetById(movieGenreIds.MovieId);
 
-            if (getMovie is null || getGenre is null)
+            if (getMovie is null)
                 return null;
 
-            getMovie.Genres.Remove(getGenre);
-            return movieRepository.Update(getMovie);
+            foreach (int genre in movieGenreIds.GenresIds)
+            {
+                var getGenre = genreRepository.GetById(genre);
+
+                if (getGenre is not null)
+                    getMovie.Genres.Remove(getGenre);
+            }
+
+            return 
+                mapper.Map<GetMovieResponse>
+                (
+                    movieRepository.Update(getMovie)
+                );
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using PlooCinema.WebApi.Models;
 using PlooCinema.WebApi.Models.DTOs;
+using PlooCinema.WebApi.Models.Responses;
 using PlooCinema.WebApi.Repositories;
 using PlooCinema.WebApi.Services.Interfaces;
 
@@ -15,57 +16,57 @@ namespace PlooCinema.WebApi.Services
         private readonly IGenreRepository genreRepository = genreRepository;
         private readonly IMapper mapper = mapper;
 
-        public GenreDTO? Create(GenreDTO genreDTO)
+        public GenreResponse? Create(GenreDTO genreDTO)
         {
             var newGenre = mapper.Map<Genre>(genreDTO);
 
             return
-                mapper.Map<GenreDTO>
+                mapper.Map<GenreResponse>
                 (
                     genreRepository.Create(newGenre)
                 );
         }
 
-        public IEnumerable<GenreDTO> GetAll()
+        public IEnumerable<GenreResponse> GetAll()
         {
             return
-                mapper.Map<IEnumerable<GenreDTO>>
+                mapper.Map<IEnumerable<GenreResponse>>
                 (
                     genreRepository.GetAll()
                 );
         }
 
-        public GenreDTO? Update(GenreDTO genreDTO)
+        public GenreResponse? Update(int id, GenreDTO genreDTO)
         {
             var genreUpdated = mapper.Map<Genre>(genreDTO);
+            genreUpdated.Id = id;
 
             return
-                mapper.Map<GenreDTO>
+                mapper.Map<GenreResponse>
                 (
                     genreRepository.Update(genreUpdated)
                 );
         }
 
-        public void Delete(GenreDTO genreDTO)
+        public void Delete(int id)
         {
-            var genreDeleted = mapper.Map<Genre>(genreDTO);
-
+            var genreDeleted = genreRepository.GetById(id) ?? throw new Exception("Filme não encontrado.");
             genreRepository.Delete(genreDeleted);
         }
 
-        public GenreDTO? GetById(int id)
+        public GenreResponse? GetById(int id)
         {
             return
-                mapper.Map<GenreDTO>
+                mapper.Map<GenreResponse>
                 (
                     genreRepository.GetById(id)
                 );
         }
 
-        public IEnumerable<GenreDTO> GetByName(string name)
+        public IEnumerable<GenreResponse> GetByName(string name)
         {
             return 
-                mapper.Map<IEnumerable<GenreDTO>>
+                mapper.Map<IEnumerable<GenreResponse>>
                 (
                     genreRepository.GetByName(name)
                 );

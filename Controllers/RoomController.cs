@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using PlooCinema.WebApi.Models;
 using PlooCinema.WebApi.Services;
 using PlooCinema.WebApi.Services.Interfaces;
+using PlooCinema.WebApi.Models.Responses;
+using PlooCinema.WebApi.Models.DTOs;
 
 namespace PlooCinema.WebApi.Controllers
 {
@@ -16,7 +18,7 @@ namespace PlooCinema.WebApi.Controllers
         private readonly IRoomServices roomServices = roomServices;
 
         [HttpGet]
-        public ActionResult<IEnumerable<Room>> Get([FromQuery(Name = "Name")] string? name)
+        public ActionResult<IEnumerable<RoomResponse>> Get([FromQuery(Name = "Name")] string? name)
         {
             if (string.IsNullOrEmpty(name))
                 return Ok(roomServices.GetAll());
@@ -25,7 +27,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Room> GetById(int id)
+        public ActionResult<RoomResponse> GetById(int id)
         {
             var room = roomServices.GetById(id);
 
@@ -36,7 +38,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Room> Create(Room room)
+        public ActionResult<RoomResponse> Create(RoomDTO room)
         {
             try
             {
@@ -45,7 +47,7 @@ namespace PlooCinema.WebApi.Controllers
                 if ( created is null )
                     return NotFound();
                 
-                return CreatedAtAction( nameof(GetById), new { Id = created.Id}, created);
+                return CreatedAtAction( nameof(GetById), new { created.Id }, created);
             }
             catch (Exception ex)
             {
@@ -53,10 +55,10 @@ namespace PlooCinema.WebApi.Controllers
             }
         }
 
-        [HttpPut]
-        public ActionResult<Room> Update(Room room)
+        [HttpPut("{id}")]
+        public ActionResult<RoomResponse> Update([FromRoute] int id, [FromBody] RoomDTO room)
         {
-            var roomUpdated = roomServices.Update(room);
+            var roomUpdated = roomServices.Update(id, room);
 
             if ( roomUpdated is null )
                 return NotFound();
@@ -64,15 +66,10 @@ namespace PlooCinema.WebApi.Controllers
             return Ok(roomUpdated);
         }
 
-        [HttpDelete]
-        public ActionResult Delete(int id)
+        [HttpDelete("{id}")]
+        public ActionResult Delete([FromRoute] int id)
         {
-            var roomDelete = roomServices.GetById(id);
-
-            if ( roomDelete is null )
-                return NotFound();
-            
-            roomServices.Delete(roomDelete);
+            roomServices.Delete(id);
             return NoContent();
         }
     }

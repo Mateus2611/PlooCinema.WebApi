@@ -17,10 +17,10 @@ namespace PlooCinema.WebApi.Models.DTOs
             CreateMap<CreateMovieDTO, Movie>()
                 .ReverseMap();
 
-            CreateMap<GetMovieResponse, Movie>()
+            CreateMap<UpdateMovieDTO, Movie>()
                 .ReverseMap();
 
-            CreateMap<UpdateMovieDTO, Movie>()
+            CreateMap<RoomDTO, Room>()
                 .ReverseMap();
         }
     }
