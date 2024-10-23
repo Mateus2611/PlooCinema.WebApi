@@ -29,7 +29,7 @@ namespace PlooCinema.WebApi.Services
 
         public void Delete(int id)
         {
-            var room = roomRepository.GetById(id) ?? throw new KeyNotFoundException(id.ToString());;
+            var room = roomRepository.GetById(id) ?? throw new KeyNotFoundException(id.ToString());
             roomRepository.Delete(room);
         }
 

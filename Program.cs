@@ -20,7 +20,8 @@ builder.Services.AddScoped<IMovieService, MovieServices>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddScoped<IRoomRepository, EFRoomRepository>();
 builder.Services.AddScoped<IRoomServices, RoomServices>();
-// builder.Services.AddScoped<ISessionRepository, EFSessionRepository>();
+builder.Services.AddScoped<ISessionRepository, EFSessionRepository>();
+builder.Services.AddScoped<ISessionService, SessionService>();
 
 // builder.Services.AddScoped<IMovieRepository, MovieRepositoryPostgreSql>(ServiceProvider =>
 // {

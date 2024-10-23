@@ -1,69 +1,106 @@
-// using System;
-// using System.Collections.Generic;
-// using System.Linq;
-// using System.Runtime.CompilerServices;
-// using System.Threading.Tasks;
-// using PlooCinema.WebApi.Models;
-// using PlooCinema.WebApi.Repositories;
-// using PlooCinema.WebApi.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using AutoMapper;
+using PlooCinema.WebApi.Models;
+using PlooCinema.WebApi.Models.DTOs;
+using PlooCinema.WebApi.Models.Responses;
+using PlooCinema.WebApi.Repositories;
+using PlooCinema.WebApi.Services.Interfaces;
 
-// namespace PlooCinema.WebApi.Services
-// {
-//     public class SessionService(ISessionRepository sessionRepository, IMovieRepository movieRepository, IRoomRepository roomRepository) : ISessionService
-//     {
-//         private readonly ISessionRepository sessionRepository = sessionRepository;
+namespace PlooCinema.WebApi.Services
+{
+    public class SessionService(ISessionRepository sessionRepository, IMovieRepository movieRepository, IRoomRepository roomRepository, IMapper mapper) : ISessionService
+    {
+        private readonly ISessionRepository sessionRepository = sessionRepository;
 
-//         private readonly IMovieRepository movieRepository = movieRepository;
+        private readonly IMovieRepository movieRepository = movieRepository;
 
-//         private readonly IRoomRepository roomRepository = roomRepository;
+        private readonly IRoomRepository roomRepository = roomRepository;
+        private readonly IMapper mapper = mapper;
 
-//         public Session? Create(Session session, int idMovie, int idRoom)
-//         {
-//             var movie = movieRepository.GetById(idMovie);
-//             var room = roomRepository.GetById(idRoom);
+        public SessionResponse? Create(SessionDTO session)
+        {
+            var movie = movieRepository.GetById(session.MovieId);
+            var room = roomRepository.GetById(session.RoomId);
+            var createSession = mapper.Map<Session>(session);
 
-//             if ( movie is null || room is null)
-//                 return null;
+            if ( movie is null || room is null)
+                return null;
 
-//             var validation = room.BookRoom(movie, session.StartMovie);
+            var validation = room.BookRoom(movie, createSession.StartMovie);
 
-//             if (!validation)
-//                 throw new Exception("Já existe uma sessão para este horário.");
+            if (validation is true)
+                throw new Exception("Já existe uma sessão para este horário.");
 
-//             session.Movie = movie;
-//             session.Room = room;
+            createSession.Movie = movie;
+            createSession.Room = room;
 
-//             return sessionRepository.Create(session);
-//         }
+            return 
+                mapper.Map<SessionResponse>
+                (
+                    sessionRepository.Create(createSession)
+                );
+        }
 
-//         public void Delete(Session session)
-//         {
-//             sessionRepository.Delete(session);
-//         }
+        public void Delete(int id)
+        {
+            var session = sessionRepository.GetById(id) ?? throw new KeyNotFoundException(id.ToString());
+            sessionRepository.Delete(session);
+        }
 
-//         public Session? Update(Session session)
-//         {
-//             return sessionRepository.Update(session);
-//         }
+        public SessionResponse? Update(int id, SessionDTO session)
+        {
+            var movie = movieRepository.GetById(session.MovieId);
+            var room = roomRepository.GetById(session.RoomId);
+            var updateSession = mapper.Map<Session>(session);
 
-//         public IEnumerable<Session> GetAll()
-//         {
-//             return sessionRepository.GetAll();
-//         }
+            if ( movie is null || room is null)
+                return null;
 
-//         public Session? GetById(int id)
-//         {
-//             return sessionRepository.GetById(id);
-//         }
+            var validation = room.BookRoom(movie, updateSession.StartMovie);
 
-//         public Session? ReserveSeats(int id, int seats)
-//         {
-//             return sessionRepository.ReserveSeats(id, seats);
-//         }
+            if (!validation)
+                throw new Exception("Já existe uma sessão para este horário.");
 
-//         public Session? CancelReservedSeats(int id, int seats)
-//         {
-//             return sessionRepository.CancelReservedSeats(id, seats);
-//         }
-//     }
-// }
+            updateSession.Movie = movie;
+            updateSession.Room = room;
+
+            return 
+                mapper.Map<SessionResponse>
+                (
+                    sessionRepository.Update(updateSession)
+                );
+        }
+
+        public IEnumerable<SessionResponse> GetAll()
+        {
+            return 
+                mapper.Map<IEnumerable<SessionResponse>>
+                (
+                    sessionRepository.GetAll()
+                );
+        }
+
+        public SessionResponse? GetById(int id)
+        {
+            return 
+                mapper.Map<SessionResponse>
+                (
+                    sessionRepository.GetById(id)
+                );
+        }
+
+        public Session? ReserveSeats(int id, int seats)
+        {
+            return sessionRepository.ReserveSeats(id, seats);
+        }
+
+        public Session? CancelReservedSeats(int id, int seats)
+        {
+            return sessionRepository.CancelReservedSeats(id, seats);
+        }
+    }
+}

@@ -22,17 +22,13 @@ namespace PlooCinema.WebApi.Models
         }
 
         public int Id { get; set; }
-        [Required(ErrorMessage = "Informe a data e horário da sessão.")]
         public DateTimeOffset StartMovie { get; set; }
         public int SeatsAvailable
         {
             get => _seatsAvailable;
         }
         private int _seatsAvailable { get; set; }
-        
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public required virtual Movie Movie { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public required virtual Room Room { get; set; }
 
         public void ReserveSeats(int seats)
