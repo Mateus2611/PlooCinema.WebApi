@@ -37,6 +37,7 @@ namespace PlooCinema.WebApi.Services
 
             createSession.Movie = movie;
             createSession.Room = room;
+            createSession.SeatsAvailable = room.Seats;
 
             return 
                 mapper.Map<SessionResponse>
@@ -67,6 +68,7 @@ namespace PlooCinema.WebApi.Services
 
             updateSession.Movie = movie;
             updateSession.Room = room;
+            updateSession.Id = id;
 
             return 
                 mapper.Map<SessionResponse>
