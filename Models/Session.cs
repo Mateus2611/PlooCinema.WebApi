@@ -10,7 +10,6 @@ namespace PlooCinema.WebApi.Models
 {
     public class Session
     {
-
         public int Id { get; set; }
         public DateTimeOffset StartMovie { get; set; }
         public int SeatsAvailable { get; set; }

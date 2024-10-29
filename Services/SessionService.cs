@@ -76,6 +76,7 @@ namespace PlooCinema.WebApi.Services
                 Room = room,
                 Movie = movie
             };
+
             return 
                 mapper.Map<SessionResponse>
                 (
