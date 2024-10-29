@@ -10,7 +10,6 @@ namespace PlooCinema.WebApi.Models.DTOs
     {
         [Required(ErrorMessage = "Informe o nome da sala")]
         public required string Name { get; set; }
-
         public int Seats { get; set; }
     }
 }

@@ -22,9 +22,6 @@ namespace PlooCinema.WebApi.Models.DTOs
 
             CreateMap<RoomDTO, Room>()
                 .ReverseMap();
-
-            CreateMap<SessionDTO, Session>()
-                .ReverseMap();
         }
     }
 }
