@@ -37,8 +37,8 @@ namespace PlooCinema.WebApi.Services
             Session createSession = new() 
             {
                 StartMovie = session.StartMovie,
-                Room = room,
-                Movie = movie,
+                Rooms = room,
+                Movies = movie,
                 SeatsAvailable = room.Seats
             };
 
@@ -73,8 +73,8 @@ namespace PlooCinema.WebApi.Services
                 Id = id,
                 StartMovie = session.StartMovie,
                 SeatsAvailable = room.Seats,
-                Room = room,
-                Movie = movie
+                Rooms = room,
+                Movies = movie
             };
 
             return 
@@ -86,7 +86,7 @@ namespace PlooCinema.WebApi.Services
 
         public IEnumerable<SessionResponse> GetAll()
         {
-            return 
+            return
                 mapper.Map<IEnumerable<SessionResponse>>
                 (
                     sessionRepository.GetAll()

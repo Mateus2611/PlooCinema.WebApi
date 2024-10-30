@@ -13,8 +13,8 @@ namespace PlooCinema.WebApi.Models
         public int Id { get; set; }
         public DateTimeOffset StartMovie { get; set; }
         public int SeatsAvailable { get; set; }
-        public required virtual Movie Movie { get; set; }
-        public required virtual Room Room { get; set; }
+        public required virtual Movie Movies { get; set; }
+        public required virtual Room Rooms { get; set; }
 
         public void ReserveSeats(int seats)
         {
@@ -26,7 +26,7 @@ namespace PlooCinema.WebApi.Models
 
         public void CancelReservedSeats(int seats)
         {
-            if (Room is not null && SeatsAvailable + seats <= Room.Seats)
+            if (Rooms is not null && SeatsAvailable + seats <= Rooms.Seats)
                 SeatsAvailable += seats;
 
             throw new Exception("A quantidade de assentos ultrapassam o limite suportado pela sala.");

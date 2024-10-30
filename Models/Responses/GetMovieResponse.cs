@@ -12,6 +12,6 @@ namespace PlooCinema.WebApi.Models.Responses
         public int Duration { get; set; }
         public DateTimeOffset Release { get; set; }
         public required string Description { get; set; }
-        public virtual ICollection<Genre> Genres { get; set; } = [];
+        public virtual IEnumerable<Genre> Genres { get; set; } = [];
     }
 }

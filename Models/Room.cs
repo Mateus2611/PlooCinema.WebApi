@@ -21,16 +21,15 @@ namespace PlooCinema.WebApi.Models
         public int Id { get; set; }
         public required string Name { get; set; }
         public int Seats { get; set; }
-        [JsonIgnore]
-        public virtual ICollection<Session> UpComingSessions { get; set; } = [];
+        public virtual ICollection<Session> Sessions { get; set; } = [];
 
         public bool BookRoom(Movie movie, DateTimeOffset dateStart)
         {
             DateTimeOffset endSession = dateStart.AddMinutes(movie.Duration);
 
-            return UpComingSessions.Any( s => 
+            return Sessions.Any( s => 
             (
-                dateStart < s.StartMovie.AddMinutes(s.Movie.Duration) &&
+                dateStart < s.StartMovie.AddMinutes(s.Movies.Duration) &&
                 endSession > s.StartMovie    
             ));
         }

@@ -16,6 +16,9 @@ namespace PlooCinema.WebApi.Models.Responses
             
             CreateMap<GetMovieResponse, Movie>()
                 .ReverseMap();
+
+            CreateMap<MovieSessionResponse, Movie>()
+                .ReverseMap();
             
             CreateMap<RoomResponse, Room>()
                 .ReverseMap();
