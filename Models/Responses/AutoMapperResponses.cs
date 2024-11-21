@@ -28,6 +28,9 @@ namespace PlooCinema.WebApi.Models.Responses
 
             CreateMap<SessionResponse, Session>()
                 .ReverseMap();
+
+            CreateMap<SessionRoomResponse, Session>()
+                .ReverseMap();
         }
     }
 }

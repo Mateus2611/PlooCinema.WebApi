@@ -15,8 +15,12 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
             => this.context = context;
 
         public Movie? GetById(int id)
-            => context.Movies
-                .Find(id);
+        {
+            Movie movie = context.Movies
+                .Single( m => m.Id == id);
+            
+            return movie;
+        }
 
         public IEnumerable<Movie> GetByName(string name)
             => context.Movies

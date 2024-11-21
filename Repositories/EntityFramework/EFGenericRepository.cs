@@ -12,12 +12,12 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public IEnumerable<T> GetAll()
             => context.Set<T>()
-                .AsNoTracking()
                 .ToList();
 
         public T? Create(T entity)
         {
-            context.Set<T>().Add(entity);
+            context.Set<T>()
+            .Add(entity);
             context.SaveChanges();
             return entity;
         }

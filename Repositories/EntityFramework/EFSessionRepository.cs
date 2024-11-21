@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 using PlooCinema.WebApi.Models;
 
 namespace PlooCinema.WebApi.Repositories.EntityFramework
@@ -15,7 +16,12 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
             => this.context = context;
 
         public Session? GetById(int id)
-            => context.Sessions.Find(id);
+        {
+            Session session = context.Sessions
+                .Single(s => s.Id == id);
+            
+            return session;
+        }
 
         public Session? ReserveSeats(int id, int seats)
         {
