@@ -12,18 +12,5 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
         public required DbSet<Genre> Genres { get; set; }
         public required DbSet<Room> Rooms { get; set; }
         public required DbSet<Session> Sessions { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            builder.Entity<Movie>()
-                .HasMany( m => m.Sessions)
-                .WithOne( m => m.Movies)
-                .HasForeignKey( m => m.Id);
-            
-            builder.Entity<Room>()
-                .HasMany( r => r.Sessions)
-                .WithOne( r => r.Rooms )
-                .HasForeignKey( r => r.Id );
-        }
     }
 }

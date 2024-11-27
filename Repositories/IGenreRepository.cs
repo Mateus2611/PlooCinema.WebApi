@@ -14,6 +14,6 @@ namespace PlooCinema.WebApi.Repositories
         Genre? Update(Genre genre);
         void Delete(Genre genre);
         IEnumerable<Genre> GetByName(string name);
-        Genre? GetById(int id);
+        Genre? GetById(Guid id);
     }
 }

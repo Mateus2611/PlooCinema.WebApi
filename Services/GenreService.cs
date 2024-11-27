@@ -36,7 +36,7 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public GenreResponse? Update(int id, GenreDTO genreDTO)
+        public GenreResponse? Update(Guid id, GenreDTO genreDTO)
         {
             var genreUpdated = mapper.Map<Genre>(genreDTO);
             genreUpdated.Id = id;
@@ -48,13 +48,13 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             var genreDeleted = genreRepository.GetById(id) ?? throw new Exception("Filme não encontrado.");
             genreRepository.Delete(genreDeleted);
         }
 
-        public GenreResponse? GetById(int id)
+        public GenreResponse? GetById(Guid id)
         {
             return
                 mapper.Map<GenreResponse>

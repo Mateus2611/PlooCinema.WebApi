@@ -8,7 +8,7 @@ namespace PlooCinema.WebApi.Models.Responses
 {
     public class GenreResponse
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required(ErrorMessage = "Informe o nome do gênero.")]
         public required string Name { get; set; }
     }

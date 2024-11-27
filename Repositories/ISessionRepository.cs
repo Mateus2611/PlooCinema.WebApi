@@ -12,8 +12,8 @@ namespace PlooCinema.WebApi.Repositories
         IEnumerable<Session> GetAll();
         Session? Update(Session session);
         void Delete(Session session);
-        Session? GetById(int id);
-        Session? ReserveSeats(int id, int seats);
-        Session? CancelReservedSeats(int id, int seats);
+        Session? GetById(Guid id);
+        Session? ReserveSeats(Guid id, int seats);
+        Session? CancelReservedSeats(Guid id, int seats);
     }
 }

@@ -9,7 +9,7 @@ namespace PlooCinema.WebApi.Models.DTOs
     public class SessionDTO
     {
         public DateTimeOffset StartMovie { get; set; }
-        public int MovieId { get; set; }
-        public int RoomId { get; set; }
+        public Guid MovieId { get; set; }
+        public Guid RoomId { get; set; }
     }
 }

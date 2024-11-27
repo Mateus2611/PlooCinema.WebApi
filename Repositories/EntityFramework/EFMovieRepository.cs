@@ -11,21 +11,46 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
     {
         private readonly DataContext context;
 
-        public EFMovieRepository(DataContext context) : base(context) 
+        public EFMovieRepository(DataContext context) : base(context)
             => this.context = context;
 
-        public Movie? GetById(int id)
+        public Movie? GetById(Guid id)
         {
             Movie movie = context.Movies
-                .Single( m => m.Id == id);
-            
+                .AsNoTracking()
+                .Single(m => m.Id == id);
+
             return movie;
         }
 
         public IEnumerable<Movie> GetByName(string name)
             => context.Movies
                 .AsNoTracking()
-                .Where( m => m.Name.ToLower().Contains(name.ToLower()))
-                .ToList(); 
+                .Where(m => m.Name.ToLower().Contains(name.ToLower()))
+                .ToList();
+
+        public new Movie? Create(Movie movie)
+        {
+            context.Movies.Add(movie);
+            context.SaveChanges();
+            context.Entry(movie).State = EntityState.Detached;
+
+            return movie;
+        }
+
+        // Método Update com bug por causa de trackemanento, agora crash na ação de addGenre
+        public new Movie? Update(Movie movie)
+        {
+            var trackedMovie = context.Movies.SingleOrDefault(m => m.Id == movie.Id);
+
+            if (trackedMovie is not null)
+                context.Entry(trackedMovie).State = EntityState.Detached;
+            
+            context.Movies.Update(movie);
+            context.SaveChanges();
+            context.Entry(movie).State = EntityState.Detached;
+            
+            return movie;
+        }
     }
 }

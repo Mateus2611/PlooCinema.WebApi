@@ -12,10 +12,10 @@ namespace PlooCinema.WebApi.Services.Interfaces
     {
         SessionResponse? Create(SessionDTO session);
         IEnumerable<SessionResponse> GetAll();
-        SessionResponse? Update(int id, SessionDTO session);
-        void Delete(int id);
-        SessionResponse? GetById(int id);
-        Session? ReserveSeats(int id, int seats);
-        Session? CancelReservedSeats(int id, int seats);
+        SessionResponse? Update(Guid id, SessionDTO session);
+        void Delete(Guid id);
+        SessionResponse? GetById(Guid id);
+        Session? ReserveSeats(Guid id, int seats);
+        Session? CancelReservedSeats(Guid id, int seats);
     }
 }

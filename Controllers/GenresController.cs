@@ -31,7 +31,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<GenreResponse> GetById(int id)
+        public ActionResult<GenreResponse> GetById([FromRoute]Guid id)
         {
             var genre = genreService.GetById(id);
 
@@ -61,7 +61,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<GenreResponse> Update([FromRoute] int id, GenreDTO genreDTO)
+        public ActionResult<GenreResponse> Update([FromRoute] Guid id, GenreDTO genreDTO)
         {
             genreDTO.Name = genreDTO.Name.ToUpper();
             var genreUpdated = genreService.Update(id, genreDTO);
@@ -73,7 +73,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete([FromRoute] int id)
+        public ActionResult Delete([FromRoute] Guid id)
         {
             try
             {

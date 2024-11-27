@@ -15,15 +15,16 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
         public EFSessionRepository( DataContext context) : base(context)
             => this.context = context;
 
-        public Session? GetById(int id)
+        public Session? GetById(Guid id)
         {
             Session session = context.Sessions
+                .AsNoTracking()
                 .Single(s => s.Id == id);
             
             return session;
         }
 
-        public Session? ReserveSeats(int id, int seats)
+        public Session? ReserveSeats(Guid id, int seats)
         {
             var session = GetById(id);
 
@@ -34,7 +35,7 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
             return Update(session);
         }
 
-        public Session? CancelReservedSeats(int id, int seats)
+        public Session? CancelReservedSeats(Guid id, int seats)
         {
             var session = GetById(id);
 

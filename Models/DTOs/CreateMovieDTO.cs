@@ -30,6 +30,6 @@ namespace PlooCinema.WebApi.Models.DTOs
 
         [Required(ErrorMessage = "Informe a descrição do filme.")]
         public required string Description { get; set; }
-        public IEnumerable<int>? IdsGenres { get; set; } = [];
+        public IEnumerable<Guid> IdsGenres { get; set; } = [];
     }
 }

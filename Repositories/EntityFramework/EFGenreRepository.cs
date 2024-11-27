@@ -14,10 +14,11 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
         public EFGenreRepository(DataContext context) : base(context) 
             => this.context = context;
 
-        public Genre? GetById(int id)
+        public Genre? GetById(Guid id)
         {
             Genre genre = context.Genres
-                .Single( g => g.Id == id);
+                .AsNoTracking()
+                .Single( g => g.Id == id );
             
             return genre;
         }

@@ -22,7 +22,7 @@ namespace PlooCinema.WebApi.Controllers
             => Ok(sessionService.GetAll());
 
         [HttpGet("{id}")]
-        public ActionResult<SessionResponse> GetById([FromRoute] int id)
+        public ActionResult<SessionResponse> GetById([FromRoute] Guid id)
         {
             var session = sessionService.GetById(id);
 
@@ -51,7 +51,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<SessionResponse> Update([FromRoute] int id, [FromBody] SessionDTO session)
+        public ActionResult<SessionResponse> Update([FromRoute] Guid id, [FromBody] SessionDTO session)
         {
             var updatedSession = sessionService.Update(id, session);
 
@@ -62,7 +62,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete([FromRoute] int id)
+        public ActionResult Delete([FromRoute] Guid id)
         {
             sessionService.Delete(id);
             return NoContent();

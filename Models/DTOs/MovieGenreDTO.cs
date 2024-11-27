@@ -8,8 +8,13 @@ namespace PlooCinema.WebApi.Models.DTOs
 {
     public class MovieGenreDTO
     {
-        public IEnumerable<int> GenresIds { get; set; } = [];
+        public MovieGenreDTO(IEnumerable<Guid> genresIds, Guid movieId)
+        {
+            GenresIds = genresIds;
+            MovieId = movieId;
+        }
+        public IEnumerable<Guid> GenresIds { get; set; } = [];
         [JsonIgnore]
-        public int MovieId { get; set; }
+        public Guid MovieId { get; set; }
     }
 }

@@ -14,9 +14,10 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
         public EFRoomRepository(DataContext context) : base(context)
             => this.context = context;
 
-        public Room? GetById(int id)
+        public Room? GetById(Guid id)
         {
             Room room = context.Rooms
+                .AsNoTracking()
                 .Single(r => r.Id == id);
             
             return room;

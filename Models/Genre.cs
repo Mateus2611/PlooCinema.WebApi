@@ -12,13 +12,13 @@ namespace PlooCinema.WebApi.Models
     public class Genre
     {
         public Genre() {}
-        public Genre(int id, string name)
+        public Genre(Guid id, string name)
         {
             Id = id;
             Name = name;
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public required string Name { get; set; }
         [JsonIgnore]
         public virtual ICollection<Movie> Movies { get; set; } = [];

@@ -30,7 +30,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<GetMovieResponse> GetById(int id)
+        public ActionResult<GetMovieResponse> GetById([FromRoute]Guid id)
         {
             var searchMovie = movieService.GetById(id);
 
@@ -58,7 +58,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<UpdateMovieDTO> Update([FromRoute] int id, [FromBody] UpdateMovieDTO movie)
+        public ActionResult<UpdateMovieDTO> Update([FromRoute] Guid id, [FromBody] UpdateMovieDTO movie)
         {
             try
             {
@@ -76,14 +76,14 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromRoute] int id)
+        public IActionResult Delete([FromRoute] Guid id)
         {
             movieService.Delete(id);
             return NoContent();
         }
 
         [HttpPut("{id}/Genres")]
-        public ActionResult<GetMovieResponse> AddGenre([FromRoute] int id, [FromBody] MovieGenreDTO movieGenresIds)
+        public ActionResult<GetMovieResponse> AddGenre([FromRoute] Guid id, [FromBody] MovieGenreDTO movieGenresIds)
         {
             movieGenresIds.MovieId = id;
             var movie = movieService.AddGenre(movieGenresIds);
@@ -95,7 +95,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpDelete("{id}/Genres")]
-        public ActionResult<GetMovieResponse> RemoveGenre([FromRoute] int id, [FromBody] MovieGenreDTO movieGenresIds)
+        public ActionResult<GetMovieResponse> RemoveGenre([FromRoute] Guid id, [FromBody] MovieGenreDTO movieGenresIds)
         {
             movieGenresIds.MovieId = id;
             var movie = movieService.RemoveGenre(movieGenresIds);

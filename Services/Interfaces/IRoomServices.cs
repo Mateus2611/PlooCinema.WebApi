@@ -12,9 +12,9 @@ namespace PlooCinema.WebApi.Services.Interfaces
     {
         RoomResponse? Create(RoomDTO room);
         IEnumerable<RoomResponse> GetAll();
-        RoomResponse? Update(int id, RoomDTO room);
-        void Delete(int id);
+        RoomResponse? Update(Guid id, RoomDTO room);
+        void Delete(Guid id);
         IEnumerable<RoomResponse> GetByName(string name);
-        RoomResponse? GetById(int id);
+        RoomResponse? GetById(Guid id);
     }
 }

@@ -8,7 +8,7 @@ namespace PlooCinema.WebApi.Models.Responses
 {
     public class SessionResponse
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTimeOffset StartMovie { get; set; }
         public int SeatsAvailable { get; set; }
         public required virtual MovieSessionResponse Movies { get; set; }

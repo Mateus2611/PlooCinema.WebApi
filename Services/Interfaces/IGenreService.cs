@@ -12,9 +12,9 @@ namespace PlooCinema.WebApi.Services.Interfaces
     {
         GenreResponse? Create(GenreDTO genreDTO);
         IEnumerable<GenreResponse> GetAll();
-        GenreResponse? Update(int id, GenreDTO genreDTO);
-        void Delete(int id);
+        GenreResponse? Update(Guid id, GenreDTO genreDTO);
+        void Delete(Guid id);
         IEnumerable<GenreResponse> GetByName(string name);
-        GenreResponse? GetById(int id);
+        GenreResponse? GetById(Guid id);
     }
 }

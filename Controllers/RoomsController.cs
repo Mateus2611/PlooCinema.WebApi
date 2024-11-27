@@ -27,7 +27,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<RoomResponse> GetById(int id)
+        public ActionResult<RoomResponse> GetById([FromRoute] Guid id)
         {
             var room = roomServices.GetById(id);
 
@@ -56,7 +56,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<RoomResponse> Update([FromRoute] int id, [FromBody] RoomDTO room)
+        public ActionResult<RoomResponse> Update([FromRoute] Guid id, [FromBody] RoomDTO room)
         {
             var roomUpdated = roomServices.Update(id, room);
 
@@ -67,7 +67,7 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete([FromRoute] int id)
+        public ActionResult Delete([FromRoute] Guid id)
         {
             roomServices.Delete(id);
             return NoContent();

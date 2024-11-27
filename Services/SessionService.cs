@@ -49,13 +49,13 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             var session = sessionRepository.GetById(id) ?? throw new KeyNotFoundException(id.ToString());
             sessionRepository.Delete(session);
         }
 
-        public SessionResponse? Update(int id, SessionDTO session)
+        public SessionResponse? Update(Guid id, SessionDTO session)
         {
             var movie = movieRepository.GetById(session.MovieId);
             var room = roomRepository.GetById(session.RoomId);
@@ -93,7 +93,7 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public SessionResponse? GetById(int id)
+        public SessionResponse? GetById(Guid id)
         {
             return 
                 mapper.Map<SessionResponse>
@@ -102,12 +102,12 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public Session? ReserveSeats(int id, int seats)
+        public Session? ReserveSeats(Guid id, int seats)
         {
             return sessionRepository.ReserveSeats(id, seats);
         }
 
-        public Session? CancelReservedSeats(int id, int seats)
+        public Session? CancelReservedSeats(Guid id, int seats)
         {
             return sessionRepository.CancelReservedSeats(id, seats);
         }

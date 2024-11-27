@@ -12,7 +12,7 @@ namespace PlooCinema.WebApi.Model
     public class Movie
     {
         public Movie() {}
-        public Movie(int id, string name, int duration, DateTimeOffset release, string description)
+        public Movie(Guid id, string name, int duration, DateTimeOffset release, string description)
         {
             Id = id;
             Name = name;
@@ -21,7 +21,7 @@ namespace PlooCinema.WebApi.Model
             Description = description;
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public required string Name { get; set; }
         public int Duration { get; set; }
         public DateTimeOffset Release { get; set; }

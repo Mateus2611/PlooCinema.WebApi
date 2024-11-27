@@ -21,29 +21,19 @@ namespace PlooCinema.WebApi.Services
         public GetMovieResponse? Create(CreateMovieDTO movie)
         {
 
-            var movieConverted = mapper.Map<Movie>(movie);
+            Movie? movieConverted = mapper.Map<Movie>(movie);
 
             movieConverted = movieRepository.Create(movieConverted);
 
-            if (movie.IdsGenres is not null && movie.IdsGenres.Any() && movieConverted is not null)
-            {
-                MovieGenreDTO movieGenreDTO = new()
-                {
-                    GenresIds = movie.IdsGenres,
-                    MovieId = movieConverted.Id
-                };
+            if (movieConverted is null)
+                return null;
 
-                movieConverted = mapper.Map<Movie>
-                (
-                    AddGenre(movieGenreDTO)
-                );
-            }
+            MovieGenreDTO movieGenreDTO = new(movie.IdsGenres, movieConverted.Id);
 
-            return
-                mapper.Map<GetMovieResponse>(movieConverted);
+            return AddGenre(movieGenreDTO);
         }
 
-        public UpdateMovieDTO? Update(int id, UpdateMovieDTO movie)
+        public UpdateMovieDTO? Update(Guid id, UpdateMovieDTO movie)
         {
             var updatedValue = mapper.Map<Movie>(movie);
             updatedValue.Id = id;
@@ -55,7 +45,7 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             var movieDelete = movieRepository.GetById(id) ?? throw new KeyNotFoundException(id.ToString());
             movieRepository.Delete(movieDelete);
@@ -70,7 +60,7 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public GetMovieResponse? GetById(int id)
+        public GetMovieResponse? GetById(Guid id)
         {
             return
                 mapper.Map<GetMovieResponse>
@@ -97,24 +87,22 @@ namespace PlooCinema.WebApi.Services
             if (getMovie is null)
                 return null;
 
-            try
+            foreach (Guid genre in movieGenreIds.GenresIds)
             {
-                foreach (int genre in movieGenreIds.GenresIds)
+                try
                 {
                     var getGenre = genreRepository.GetById(genre);
 
                     if (getGenre is not null)
                         getMovie.Genres.Add(getGenre);
                 }
+                catch {}
             }
-            catch { }
-
-            movieRepository.Update(getMovie);
 
             return
                 mapper.Map<GetMovieResponse>
                 (
-                    movieRepository.GetById(getMovie.Id)
+                    movieRepository.Update(getMovie)
                 );
         }
 
@@ -125,12 +113,16 @@ namespace PlooCinema.WebApi.Services
             if (getMovie is null)
                 return null;
 
-            foreach (int genre in movieGenreIds.GenresIds)
+            foreach (Guid genre in movieGenreIds.GenresIds)
             {
-                var getGenre = genreRepository.GetById(genre);
+                try
+                {
+                    var getGenre = genreRepository.GetById(genre);
 
-                if (getGenre is not null)
-                    getMovie.Genres.Remove(getGenre);
+                    if (getGenre is not null)
+                        getMovie.Genres.Remove(getGenre);
+                }
+                catch {}
             }
 
             return

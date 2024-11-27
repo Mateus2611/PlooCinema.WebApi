@@ -27,7 +27,7 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             var room = roomRepository.GetById(id) ?? throw new KeyNotFoundException(id.ToString());
             roomRepository.Delete(room);
@@ -42,7 +42,7 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public RoomResponse? GetById(int id)
+        public RoomResponse? GetById(Guid id)
         {
             return 
                 mapper.Map<RoomResponse>
@@ -60,7 +60,7 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public RoomResponse? Update(int id, RoomDTO room)
+        public RoomResponse? Update(Guid id, RoomDTO room)
         {
             var updatedValue = mapper.Map<Room>(room);
             updatedValue.Id = id;

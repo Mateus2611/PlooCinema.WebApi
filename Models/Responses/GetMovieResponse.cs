@@ -7,7 +7,7 @@ namespace PlooCinema.WebApi.Models.Responses
 {
     public class GetMovieResponse
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public required string Name { get; set; }
         public int Duration { get; set; }
         public DateTimeOffset Release { get; set; }

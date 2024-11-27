@@ -11,14 +11,14 @@ namespace PlooCinema.WebApi.Models
     {
         public Room() {}
 
-        public Room(int id, string name, int seats)
+        public Room(Guid id, string name, int seats)
         {
             Id = id;
             Name = name;
             Seats = seats;
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public required string Name { get; set; }
         public int Seats { get; set; }
         public virtual ICollection<Session> Sessions { get; set; } = [];

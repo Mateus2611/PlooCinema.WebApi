@@ -13,6 +13,6 @@ namespace PlooCinema.WebApi.Repositories
         Room? Update(Room room);
         void Delete(Room room);
         IEnumerable<Room> GetByName(string name);
-        Room? GetById(int id);
+        Room? GetById(Guid id);
     }
 }

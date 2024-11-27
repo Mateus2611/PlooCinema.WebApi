@@ -27,11 +27,11 @@ namespace PlooCinema.WebApi.Migrations
 
             modelBuilder.Entity("GenreMovie", b =>
                 {
-                    b.Property<int>("GenresId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("GenresId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("MoviesId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("MoviesId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("GenresId", "MoviesId");
 
@@ -42,11 +42,9 @@ namespace PlooCinema.WebApi.Migrations
 
             modelBuilder.Entity("PlooCinema.WebApi.Model.Movie", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -69,11 +67,9 @@ namespace PlooCinema.WebApi.Migrations
 
             modelBuilder.Entity("PlooCinema.WebApi.Models.Genre", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -86,11 +82,9 @@ namespace PlooCinema.WebApi.Migrations
 
             modelBuilder.Entity("PlooCinema.WebApi.Models.Room", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -106,17 +100,15 @@ namespace PlooCinema.WebApi.Migrations
 
             modelBuilder.Entity("PlooCinema.WebApi.Models.Session", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("MoviesId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("MoviesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RoomsId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("RoomsId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("SeatsAvailable")
                         .HasColumnType("integer");
