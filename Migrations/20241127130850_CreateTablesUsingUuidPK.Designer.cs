@@ -12,8 +12,8 @@ using PlooCinema.WebApi.Repositories.EntityFramework;
 namespace PlooCinema.WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241126223320_CreateTables")]
-    partial class CreateTables
+    [Migration("20241127130850_CreateTablesUsingUuidPK")]
+    partial class CreateTablesUsingUuidPK
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

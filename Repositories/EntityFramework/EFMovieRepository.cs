@@ -38,18 +38,18 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
             return movie;
         }
 
-        // Método Update com bug por causa de trackemanento, agora crash na ação de addGenre
+        // Addgenre funcionando, falta concertar o RemoveGenre
         public new Movie? Update(Movie movie)
         {
-            var trackedMovie = context.Movies.SingleOrDefault(m => m.Id == movie.Id);
+            context.Entry(movie).State = EntityState.Modified;
 
-            if (trackedMovie is not null)
-                context.Entry(trackedMovie).State = EntityState.Detached;
-            
-            context.Movies.Update(movie);
+            foreach (var genre in movie.Genres)
+            {
+                context.Genres.Update(genre);
+            }
+
             context.SaveChanges();
-            context.Entry(movie).State = EntityState.Detached;
-            
+
             return movie;
         }
     }
