@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.Data;
 using Npgsql;
 using PlooCinema.WebApi.Model;
+using PlooCinema.WebApi.Models;
 
 namespace PlooCinema.WebApi.Repositories
 {

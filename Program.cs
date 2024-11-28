@@ -12,7 +12,6 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
         .UseLazyLoadingProxies()
         .EnableSensitiveDataLogging()
-        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
         .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
 });
 
