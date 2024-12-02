@@ -34,13 +34,15 @@ namespace PlooCinema.WebApi.Services
             if (validation is true)
                 throw new Exception("Já existe uma sessão para este horário.");
 
-            Session createSession = new() 
-            {
-                StartMovie = session.StartMovie,
-                Rooms = room,
-                Movies = movie,
-                SeatsAvailable = room.Seats
-            };
+            // Session createSession = new() 
+            // {
+            //     StartMovie = session.StartMovie,
+            //     Rooms = room,
+            //     Movies = movie,
+            //     SeatsAvailable = room.Seats
+            // };
+
+            Session createSession = new(session.StartMovie, room.Seats, movie, room) {};
 
             return 
                 mapper.Map<SessionResponse>

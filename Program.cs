@@ -4,6 +4,7 @@ using PlooCinema.WebApi.Repositories.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using PlooCinema.WebApi.Services.Interfaces;
 using PlooCinema.WebApi.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +34,11 @@ builder.Services.AddScoped<ISessionService, SessionService>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => 
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 

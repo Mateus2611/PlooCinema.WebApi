@@ -120,16 +120,17 @@ namespace PlooCinema.WebApi.Services
             {
                 try
                 {
-                    var getGenre = genreRepository.GetById(genre);
+                    var getGenre = getMovie.Genres.FirstOrDefault( g => g.Id.Equals(genre) );
 
                     if (getGenre is not null)
                     {
                         getMovie.Genres.Remove(getGenre);
-                        movieRepository.Update(getMovie);
                     }
                 }
                 catch { }
             }
+
+            movieRepository.Update(getMovie);
 
             return
                 mapper.Map<GetMovieResponse>
