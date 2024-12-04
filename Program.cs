@@ -35,10 +35,9 @@ builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddControllers()
-    .AddJsonOptions(options => 
-    {
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-    });
+    .AddJsonOptions( options =>
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve
+    );
 
 builder.Services.AddEndpointsApiExplorer();
 

@@ -13,6 +13,7 @@ namespace PlooCinema.WebApi.Models.DTOs
             GenresIds = genresIds;
             MovieId = movieId;
         }
+        
         public IEnumerable<Guid> GenresIds { get; set; } = [];
         [JsonIgnore]
         public Guid MovieId { get; set; }

@@ -37,7 +37,7 @@ namespace PlooCinema.WebApi.Migrations
 
                     b.HasIndex("MoviesId");
 
-                    b.ToTable("GenreMovie");
+                    b.ToTable("GenreMovie", (string)null);
                 });
 
             modelBuilder.Entity("PlooCinema.WebApi.Model.Movie", b =>
@@ -62,7 +62,7 @@ namespace PlooCinema.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("PlooCinema.WebApi.Models.Genre", b =>
@@ -77,7 +77,7 @@ namespace PlooCinema.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("PlooCinema.WebApi.Models.Room", b =>
@@ -95,7 +95,7 @@ namespace PlooCinema.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Rooms");
+                    b.ToTable("Rooms", (string)null);
                 });
 
             modelBuilder.Entity("PlooCinema.WebApi.Models.Session", b =>
@@ -122,7 +122,7 @@ namespace PlooCinema.WebApi.Migrations
 
                     b.HasIndex("RoomsId");
 
-                    b.ToTable("Sessions");
+                    b.ToTable("Sessions", (string)null);
                 });
 
             modelBuilder.Entity("GenreMovie", b =>

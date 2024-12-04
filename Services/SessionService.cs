@@ -25,6 +25,7 @@ namespace PlooCinema.WebApi.Services
         {
             var movie = movieRepository.GetById(session.MovieId);
             var room = roomRepository.GetById(session.RoomId);
+            var createSession = mapper.Map<Session>(session);
 
             if ( movie is null || room is null)
                 return null;
@@ -34,15 +35,8 @@ namespace PlooCinema.WebApi.Services
             if (validation is true)
                 throw new Exception("Já existe uma sessão para este horário.");
 
-            // Session createSession = new() 
-            // {
-            //     StartMovie = session.StartMovie,
-            //     Rooms = room,
-            //     Movies = movie,
-            //     SeatsAvailable = room.Seats
-            // };
-
-            Session createSession = new(session.StartMovie, room.Seats, movie, room) {};
+            createSession.Movies = movie;
+            createSession.Rooms = room;
 
             return 
                 mapper.Map<SessionResponse>
@@ -70,14 +64,7 @@ namespace PlooCinema.WebApi.Services
             if (validation is true)
                 throw new Exception("Já existe uma sessão para este horário.");
 
-            Session updateSession = new() 
-            {
-                Id = id,
-                StartMovie = session.StartMovie,
-                SeatsAvailable = room.Seats,
-                Rooms = room,
-                Movies = movie
-            };
+            Session updateSession = new(id, session.StartMovie, room.Seats, movie, room) {};
 
             return 
                 mapper.Map<SessionResponse>

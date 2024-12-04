@@ -29,10 +29,5 @@ namespace PlooCinema.WebApi.Model
         public virtual ICollection<Genre> Genres { get; set; } = [];
         [JsonIgnore]
         public virtual ICollection<Session> Sessions{ get; set; } = [];
-
-        public override string ToString()
-        {
-            return $"ID: {Id} Nome: {Name}, Gênero: {Genres}, Duração: {Duration}, Lançamento: {Release}, Descrição: {Description}\n";
-        }
     }
 }
