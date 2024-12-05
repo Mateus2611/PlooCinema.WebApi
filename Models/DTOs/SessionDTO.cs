@@ -8,13 +8,12 @@ namespace PlooCinema.WebApi.Models.DTOs
 {
     public class SessionDTO
     {
-        // public DateTimeOffset StartMovie 
-        // { 
-        //     get => _startMovie; 
-        //     set => _startMovie = value.Date.ToUniversalTime(); 
-        // }
-        // private DateTimeOffset _startMovie { get; set; }
-        public DateTime StartMovie { get; set; }
+        public DateTimeOffset StartMovie 
+        { 
+            get => _startMovie; 
+            set => _startMovie = value.UtcDateTime; 
+        }
+        private DateTimeOffset _startMovie { get; set; }
         public Guid MovieId { get; set; }
         public Guid RoomId { get; set; }
     }

@@ -11,7 +11,7 @@ namespace PlooCinema.WebApi.Models
     public class Session
     {
         public Session() {}
-        public Session(DateTime startMovie, int seatsAvailable, Movie movie, Room room)
+        public Session(DateTimeOffset startMovie, int seatsAvailable, Movie movie, Room room)
         {
             StartMovie = startMovie;
             SeatsAvailable = seatsAvailable;
@@ -19,7 +19,7 @@ namespace PlooCinema.WebApi.Models
             Rooms = room;
         }
         
-        public Session(Guid id, DateTime startMovie, int seatsAvailable, Movie movie, Room room)
+        public Session(Guid id, DateTimeOffset startMovie, int seatsAvailable, Movie movie, Room room)
         {
             Id = id;
             StartMovie = startMovie;
@@ -30,7 +30,7 @@ namespace PlooCinema.WebApi.Models
 
 
         public Guid Id { get; set; }
-        public DateTime StartMovie { get; set; }
+        public DateTimeOffset StartMovie { get; set; }
         public int SeatsAvailable { get; set; }
         public virtual Movie Movies { get; set; }
         public virtual Room Rooms { get; set; }

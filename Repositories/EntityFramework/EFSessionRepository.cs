@@ -17,11 +17,8 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public Session? GetById(Guid id)
         {
-            Session session = context.Sessions
-                .AsNoTracking()
-                .Single(s => s.Id == id);
-            
-            return session;
+            return context.Sessions
+                .Find(id);
         }
 
         public Session? ReserveSeats(Guid id, int seats)

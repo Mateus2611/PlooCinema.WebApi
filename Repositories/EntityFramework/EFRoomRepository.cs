@@ -16,11 +16,8 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public Room? GetById(Guid id)
         {
-            Room room = context.Rooms
-                .AsNoTracking()
-                .Single(r => r.Id == id);
-            
-            return room;
+            return context.Rooms
+                .Find(id);
         }
 
         public IEnumerable<Room> GetByName(string name)
