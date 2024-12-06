@@ -37,18 +37,18 @@ namespace PlooCinema.WebApi.Models
 
         public void ReserveSeats(int seats)
         {
-            if (SeatsAvailable - seats >= 0)
-                SeatsAvailable -= seats;
+            if (SeatsAvailable - seats < 0)
+                throw new Exception("A sala não possui assentos suficiente para essa reserva.");
             
-            throw new Exception("A sala não possui assentos suficiente para essa reserva.");
+            SeatsAvailable -= seats;
         }
 
         public void CancelReservedSeats(int seats)
         {
-            if (Rooms is not null && SeatsAvailable + seats <= Rooms.Seats)
-                SeatsAvailable += seats;
-
-            throw new Exception("A quantidade de assentos ultrapassam o limite suportado pela sala.");
+            if (SeatsAvailable + seats > Rooms.Seats)
+                throw new Exception("A quantidade de assentos ultrapassam o limite suportado pela sala.");
+            
+            SeatsAvailable += seats;
         }
     }
 }

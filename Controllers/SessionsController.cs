@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PlooCinema.WebApi.Models;
 using PlooCinema.WebApi.Models.DTOs;
 using PlooCinema.WebApi.Models.Responses;
 using PlooCinema.WebApi.Services.Interfaces;
@@ -28,12 +29,12 @@ namespace PlooCinema.WebApi.Controllers
 
             if (session is null)
                 return NotFound();
-            
+
             return Ok(session);
         }
 
         [HttpPost]
-        public ActionResult<SessionResponse> Create([FromBody]SessionDTO session)
+        public ActionResult<SessionResponse> Create([FromBody] SessionDTO session)
         {
             try
             {
@@ -41,8 +42,8 @@ namespace PlooCinema.WebApi.Controllers
 
                 if (created is null)
                     return NotFound();
-                
-                return CreatedAtAction(nameof(GetById), new {created.Id}, created);
+
+                return CreatedAtAction(nameof(GetById), new { created.Id }, created);
             }
             catch (Exception ex)
             {
@@ -57,7 +58,7 @@ namespace PlooCinema.WebApi.Controllers
 
             if (updatedSession is null)
                 return NotFound();
-            
+
             return Ok(updatedSession);
         }
 
@@ -66,6 +67,42 @@ namespace PlooCinema.WebApi.Controllers
         {
             sessionService.Delete(id);
             return NoContent();
+        }
+
+        [HttpPut("ReserveSeats/{id}")]
+        public ActionResult<SessionResponse> ReserveSeats([FromRoute(Name = "id")] Guid id, [FromBody] int seats)
+        {
+            try
+            {
+                var session = sessionService.ReserveSeats(id, seats);
+
+                if (session is null)
+                    return NotFound();
+
+                return Ok(session);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPut("CancelReservedSeats/{id}")]
+        public ActionResult<SessionResponse> CancelReservedSeats([FromRoute(Name = "id")] Guid id, [FromBody] int seats)
+        {
+            try
+            {
+                var session = sessionService.CancelReservedSeats(id, seats);
+
+                if (session is null)
+                    return NotFound();
+
+                return Ok(session);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

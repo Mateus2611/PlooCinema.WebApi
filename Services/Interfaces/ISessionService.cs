@@ -15,7 +15,7 @@ namespace PlooCinema.WebApi.Services.Interfaces
         SessionResponse? Update(Guid id, SessionDTO session);
         void Delete(Guid id);
         SessionResponse? GetById(Guid id);
-        Session? ReserveSeats(Guid id, int seats);
-        Session? CancelReservedSeats(Guid id, int seats);
+        SessionResponse? ReserveSeats(Guid id, int seats);
+        SessionResponse? CancelReservedSeats(Guid id, int seats);
     }
 }

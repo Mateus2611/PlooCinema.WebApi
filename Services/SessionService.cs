@@ -56,6 +56,7 @@ namespace PlooCinema.WebApi.Services
         {
             var movie = movieRepository.GetById(session.MovieId);
             var room = roomRepository.GetById(session.RoomId);
+            var updateSession = mapper.Map<Session>(session);
 
             if ( movie is null || room is null)
                 return null;
@@ -65,7 +66,10 @@ namespace PlooCinema.WebApi.Services
             if (validation is true)
                 throw new Exception("Já existe uma sessão para este horário.");
 
-            Session updateSession = new(id, session.StartMovie, room.Seats, movie, room) {};
+            updateSession.Id = id;
+            updateSession.Movies = movie;
+            updateSession.Rooms = room;
+            updateSession.SeatsAvailable = room.Seats;
 
             return 
                 mapper.Map<SessionResponse>
@@ -92,14 +96,22 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public Session? ReserveSeats(Guid id, int seats)
+        public SessionResponse? ReserveSeats(Guid id, int seats)
         {
-            return sessionRepository.ReserveSeats(id, seats);
+            return 
+                mapper.Map<SessionResponse>
+                (
+                    sessionRepository.ReserveSeats(id, seats)
+                );
         }
 
-        public Session? CancelReservedSeats(Guid id, int seats)
+        public SessionResponse? CancelReservedSeats(Guid id, int seats)
         {
-            return sessionRepository.CancelReservedSeats(id, seats);
+            return 
+                mapper.Map<SessionResponse>
+                (
+                    sessionRepository.CancelReservedSeats(id, seats)
+                );
         }
     }
 }
