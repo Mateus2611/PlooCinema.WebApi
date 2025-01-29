@@ -8,11 +8,11 @@ namespace PlooCinema.WebApi.Repositories
 {
     public interface IRoomRepository
     {
-        Room? Create(Room room);
-        IEnumerable<Room> GetAll();
-        Room? Update(Room room);
-        void Delete(Room room);
-        IEnumerable<Room> GetByName(string name);
-        Room? GetById(Guid id);
+        Task<Room> CreateAsync(Room room);
+        Task<IEnumerable<Room>> GetAllAsync();
+        Task<Room>? UpdateAsync(Room room);
+        Task DeleteAsync(Room room);
+        Task<IEnumerable<Room>> GetByNameAsync(string name);
+        Task<Room?> GetByIdAsync(Guid id);
     }
 }

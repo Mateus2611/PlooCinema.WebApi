@@ -14,16 +14,13 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
         public EFRoomRepository(DataContext context) : base(context)
             => this.context = context;
 
-        public Room? GetById(Guid id)
-        {
-            return context.Rooms
-                .Find(id);
-        }
+        public async Task<Room?> GetByIdAsync(Guid id)
+            => await context.Rooms.FindAsync(id);
 
-        public IEnumerable<Room> GetByName(string name)
-            => context.Rooms
+        public async Task<IEnumerable<Room>> GetByNameAsync(string name)
+            => await context.Rooms
                 .AsNoTracking()
                 .Where( r => r.Name.ToLower().Contains(name.ToLower()))
-                .ToList();
+                .ToListAsync();
     }
 }

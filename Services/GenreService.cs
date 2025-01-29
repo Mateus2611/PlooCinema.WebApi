@@ -16,27 +16,27 @@ namespace PlooCinema.WebApi.Services
         private readonly IGenreRepository genreRepository = genreRepository;
         private readonly IMapper mapper = mapper;
 
-        public GenreResponse? Create(GenreDTO genreDTO)
+        public async Task<GenreResponse> CreateAsync(GenreDTO genreDTO)
         {
             var newGenre = mapper.Map<Genre>(genreDTO);
 
             return
                 mapper.Map<GenreResponse>
                 (
-                    genreRepository.Create(newGenre)
+                    await genreRepository.CreateAsync(newGenre)
                 );
         }
 
-        public IEnumerable<GenreResponse> GetAll()
+        public async Task<IEnumerable<GenreResponse>> GetAllAsync()
         {
             return
                 mapper.Map<IEnumerable<GenreResponse>>
                 (
-                    genreRepository.GetAll()
+                    await genreRepository.GetAllAsync()
                 );
         }
 
-        public GenreResponse? Update(Guid id, GenreDTO genreDTO)
+        public async Task<GenreResponse> UpdateAsync(Guid id, GenreDTO genreDTO)
         {
             var genreUpdated = mapper.Map<Genre>(genreDTO);
             genreUpdated.Id = id;
@@ -44,31 +44,31 @@ namespace PlooCinema.WebApi.Services
             return
                 mapper.Map<GenreResponse>
                 (
-                    genreRepository.Update(genreUpdated)
+                    await genreRepository.UpdateAsync(genreUpdated)
                 );
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            var genreDeleted = genreRepository.GetById(id) ?? throw new Exception("Filme não encontrado.");
-            genreRepository.Delete(genreDeleted);
+            var genreDeleted = await genreRepository.GetByIdAsync(id) ?? throw new Exception("Filme não encontrado.");
+            await genreRepository.DeleteAsync(genreDeleted);
         }
 
-        public GenreResponse? GetById(Guid id)
+        public async Task<GenreResponse> GetByIdAsync(Guid id)
         {
             return
                 mapper.Map<GenreResponse>
                 (
-                    genreRepository.GetById(id)
+                    await genreRepository.GetByIdAsync(id)
                 );
         }
 
-        public IEnumerable<GenreResponse> GetByName(string name)
+        public async Task<IEnumerable<GenreResponse>> GetByNameAsync(string name)
         {
             return 
                 mapper.Map<IEnumerable<GenreResponse>>
                 (
-                    genreRepository.GetByName(name)
+                    await genreRepository.GetByNameAsync(name)
                 );
         }
     }

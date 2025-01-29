@@ -12,11 +12,11 @@ namespace PlooCinema.WebApi.Repositories
 {
     public interface IMovieRepository
     {
-        Movie? Create(Movie movie);
-        IEnumerable<Movie> GetAll();
-        Movie? Update(Movie movie);
-        void Delete(Movie movie);
-        IEnumerable<Movie> GetByName(string name);
-        Movie? GetById(Guid id);
+        Task<Movie> CreateAsync(Movie movie);
+        Task<IEnumerable<Movie>> GetAllAsync();
+        Task<Movie> UpdateAsync(Movie movie);
+        Task DeleteAsync(Movie movie);
+        Task<IEnumerable<Movie>> GetByNameAsync(string name);
+        Task<Movie?> GetByIdAsync(Guid id);
     }
 }

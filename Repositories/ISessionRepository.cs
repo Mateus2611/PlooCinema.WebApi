@@ -8,12 +8,12 @@ namespace PlooCinema.WebApi.Repositories
 {
     public interface ISessionRepository
     {
-        Session? Create(Session session);
-        IEnumerable<Session> GetAll();
-        Session? Update(Session session);
-        void Delete(Session session);
-        Session? GetById(Guid id);
-        Session? ReserveSeats(Guid id, int seats);
-        Session? CancelReservedSeats(Guid id, int seats);
+        Task<Session> CreateAsync(Session session);
+        Task<IEnumerable<Session>> GetAllAsync();
+        Task<Session>? UpdateAsync(Session session);
+        Task DeleteAsync(Session session);
+        Task<Session?> GetByIdAsync(Guid id);
+        Task<Session?> ReserveSeatsAsync(Guid id, int seats);
+        Task<Session?> CancelReservedSeatsAsync(Guid id, int seats);
     }
 }

@@ -10,11 +10,11 @@ namespace PlooCinema.WebApi.Services.Interfaces
 {
     public interface IGenreService
     {
-        GenreResponse? Create(GenreDTO genreDTO);
-        IEnumerable<GenreResponse> GetAll();
-        GenreResponse? Update(Guid id, GenreDTO genreDTO);
-        void Delete(Guid id);
-        IEnumerable<GenreResponse> GetByName(string name);
-        GenreResponse? GetById(Guid id);
+        Task<GenreResponse> CreateAsync(GenreDTO genreDTO);
+        Task<IEnumerable<GenreResponse>> GetAllAsync();
+        Task<GenreResponse> UpdateAsync(Guid id, GenreDTO genreDTO);
+        Task DeleteAsync(Guid id);
+        Task<IEnumerable<GenreResponse>> GetByNameAsync(string name);
+        Task<GenreResponse> GetByIdAsync(Guid id);
     }
 }

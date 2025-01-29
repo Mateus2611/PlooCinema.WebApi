@@ -14,19 +14,19 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
         public EFGenreRepository(DataContext context) : base(context) 
             => this.context = context;
 
-        public Genre? GetById(Guid id)
+        public async Task<Genre?> GetByIdAsync(Guid id)
         {
-            Genre genre = context.Genres
+            Genre genre = await context.Genres
                 .AsNoTracking()
-                .Single( g => g.Id == id );
+                .SingleAsync( g => g.Id == id );
             
             return genre;
         }
 
-        public IEnumerable<Genre> GetByName(string name)
-            => context.Genres
+        public async Task<IEnumerable<Genre>> GetByNameAsync(string name)
+            => await context.Genres
                 .AsNoTracking()
                 .Where( g => g.Name.ToLower().Contains(name.ToLower()))
-                .ToList();
+                .ToListAsync();
     }
 }

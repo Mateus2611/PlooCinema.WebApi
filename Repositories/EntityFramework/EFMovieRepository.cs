@@ -15,23 +15,18 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
         public EFMovieRepository(DataContext context) : base(context)
             => this.context = context;
 
-        public Movie? GetById(Guid id)
-        {
-            Movie? movie = context.Movies
-                .Find(id);
+        public async Task<Movie?> GetByIdAsync(Guid id)
+            => await context.Movies.FindAsync(id);
 
-            return movie;
-        }
-
-        public IEnumerable<Movie> GetByName(string name)
-            => context.Movies
+        public async Task<IEnumerable<Movie>> GetByNameAsync(string name)
+            => await context.Movies
                 .Where(m => m.Name.ToLower().Contains(name.ToLower()))
-                .ToList();
+                .ToListAsync();
 
-        public new Movie? Create(Movie movie)
+        public async new Task<Movie> CreateAsync(Movie movie)
         {
-            context.Movies.Add(movie);
-            context.SaveChanges();
+            await context.Movies.AddAsync(movie);
+            await context.SaveChangesAsync();
             context.Entry(movie).State = EntityState.Detached;
 
             return movie;

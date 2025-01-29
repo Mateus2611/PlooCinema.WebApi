@@ -15,32 +15,32 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
         public EFSessionRepository( DataContext context) : base(context)
             => this.context = context;
 
-        public Session? GetById(Guid id)
+        public async Task<Session?> GetByIdAsync(Guid id)
         {
-            return context.Sessions
-                .Find(id);
+            return await context.Sessions
+                .FindAsync(id);
         }
 
-        public Session? ReserveSeats(Guid id, int seats)
+        public async Task<Session?> ReserveSeatsAsync(Guid id, int seats)
         {
-            var session = GetById(id);
+            var session = await GetByIdAsync(id);
 
             if (session is null)
                 return null;
 
-            session.ReserveSeats(seats);
-            return Update(session);
+            await Task.Run(() => session.ReserveSeats(seats));
+            return await UpdateAsync(session);
         }
 
-        public Session? CancelReservedSeats(Guid id, int seats)
+        public async Task<Session?> CancelReservedSeatsAsync(Guid id, int seats)
         {
-            var session = GetById(id);
+            var session = await GetByIdAsync(id);
 
             if (session is null)
                 return null;
             
-            session.CancelReservedSeats(seats);
-            return Update(session);
+            await Task.Run(() => session.CancelReservedSeats(seats));
+            return await UpdateAsync(session);
         }
     }
 }
