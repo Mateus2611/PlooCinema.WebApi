@@ -21,13 +21,13 @@ namespace PlooCinema.WebApi.Services
         private readonly IRoomRepository roomRepository = roomRepository;
         private readonly IMapper mapper = mapper;
 
-        public SessionResponse? Create(SessionDTO session)
+        public async Task<SessionResponse?> CreateAsync(SessionDTO session)
         {
-            var movie = movieRepository.GetById(session.MovieId);
-            var room = roomRepository.GetById(session.RoomId);
+            var movie = await movieRepository.GetByIdAsync(session.MovieId);
+            var room = await roomRepository.GetByIdAsync(session.RoomId);
             var createSession = mapper.Map<Session>(session);
 
-            if ( movie is null || room is null)
+            if (movie is null || room is null)
                 return null;
 
             var validation = room.BookRoom(movie, session.StartMovie);
@@ -39,26 +39,26 @@ namespace PlooCinema.WebApi.Services
             createSession.Rooms = room;
             createSession.SeatsAvailable = room.Seats;
 
-            return 
+            return
                 mapper.Map<SessionResponse>
                 (
-                    sessionRepository.Create(createSession)
+                    await sessionRepository.CreateAsync(createSession)
                 );
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            var session = sessionRepository.GetById(id) ?? throw new KeyNotFoundException(id.ToString());
-            sessionRepository.Delete(session);
+            var session = await sessionRepository.GetByIdAsync(id) ?? throw new KeyNotFoundException(id.ToString());
+            await sessionRepository.DeleteAsync(session);
         }
 
-        public SessionResponse? Update(Guid id, SessionDTO session)
+        public async Task<SessionResponse?> UpdateAsync(Guid id, SessionDTO session)
         {
-            var movie = movieRepository.GetById(session.MovieId);
-            var room = roomRepository.GetById(session.RoomId);
+            var movie = await movieRepository.GetByIdAsync(session.MovieId);
+            var room = await roomRepository.GetByIdAsync(session.RoomId);
             var updateSession = mapper.Map<Session>(session);
 
-            if ( movie is null || room is null)
+            if (movie is null || room is null)
                 return null;
 
             var validation = room.BookRoom(movie, session.StartMovie);
@@ -71,46 +71,46 @@ namespace PlooCinema.WebApi.Services
             updateSession.Rooms = room;
             updateSession.SeatsAvailable = room.Seats;
 
-            return 
+            return
                 mapper.Map<SessionResponse>
                 (
-                    sessionRepository.Update(updateSession)
+                    await sessionRepository.UpdateAsync(updateSession)
                 );
         }
 
-        public IEnumerable<SessionResponse> GetAll()
+        public async Task<IEnumerable<SessionResponse>> GetAllAsync()
         {
             return
                 mapper.Map<IEnumerable<SessionResponse>>
                 (
-                    sessionRepository.GetAll()
+                    await sessionRepository.GetAllAsync()
                 );
         }
 
-        public SessionResponse? GetById(Guid id)
+        public async Task<SessionResponse> GetByIdAsync(Guid id)
         {
-            return 
+            return
                 mapper.Map<SessionResponse>
                 (
-                    sessionRepository.GetById(id)
+                    await sessionRepository.GetByIdAsync(id)
                 );
         }
 
-        public SessionResponse? ReserveSeats(Guid id, int seats)
+        public async Task<SessionResponse> ReserveSeatsAsync(Guid id, int seats)
         {
-            return 
+            return
                 mapper.Map<SessionResponse>
                 (
-                    sessionRepository.ReserveSeats(id, seats)
+                    await sessionRepository.ReserveSeatsAsync(id, seats)
                 );
         }
 
-        public SessionResponse? CancelReservedSeats(Guid id, int seats)
+        public async Task<SessionResponse> CancelReservedSeatsAsync(Guid id, int seats)
         {
-            return 
+            return
                 mapper.Map<SessionResponse>
                 (
-                    sessionRepository.CancelReservedSeats(id, seats)
+                    await sessionRepository.CancelReservedSeatsAsync(id, seats)
                 );
         }
     }

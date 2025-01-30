@@ -10,12 +10,12 @@ namespace PlooCinema.WebApi.Services.Interfaces
 {
     public interface ISessionService
     {
-        SessionResponse? Create(SessionDTO session);
-        IEnumerable<SessionResponse> GetAll();
-        SessionResponse? Update(Guid id, SessionDTO session);
-        void Delete(Guid id);
-        SessionResponse? GetById(Guid id);
-        SessionResponse? ReserveSeats(Guid id, int seats);
-        SessionResponse? CancelReservedSeats(Guid id, int seats);
+        Task<SessionResponse?> CreateAsync(SessionDTO session);
+        Task<IEnumerable<SessionResponse>> GetAllAsync();
+        Task<SessionResponse?> UpdateAsync(Guid id, SessionDTO session);
+        Task DeleteAsync(Guid id);
+        Task<SessionResponse> GetByIdAsync(Guid id);
+        Task<SessionResponse> ReserveSeatsAsync(Guid id, int seats);
+        Task<SessionResponse> CancelReservedSeatsAsync(Guid id, int seats);
     }
 }

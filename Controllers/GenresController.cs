@@ -22,18 +22,18 @@ namespace PlooCinema.WebApi.Controllers
         private readonly IGenreService genreService = genreService;
 
         [HttpGet]
-        public ActionResult<IEnumerable<GenreResponse>> Get([FromQuery(Name = "name")] string? name)
+        public async Task<ActionResult<IEnumerable<GenreResponse>>> GetAsync([FromQuery(Name = "name")] string? name)
         {
             if (string.IsNullOrEmpty(name))
-                return Ok(genreService.GetAll());
+                return Ok(await genreService.GetAllAsync());
 
-            return Ok(genreService.GetByName(name));
+            return Ok(await genreService.GetByNameAsync(name));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<GenreResponse> GetById([FromRoute]Guid id)
+        public async Task<ActionResult<GenreResponse>> GetByIdAsync([FromRoute]Guid id)
         {
-            var genre = genreService.GetById(id);
+            var genre = await genreService.GetByIdAsync(id);
 
             if (genre is null)
                 return NotFound();
@@ -42,17 +42,17 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<GenreResponse> Create(GenreDTO genreDTO)
+        public async Task<ActionResult<GenreResponse>> CreateAsync(GenreDTO genreDTO)
         {
             try
             {
                 genreDTO.Name = genreDTO.Name.ToUpper();
-                var created = genreService.Create(genreDTO);
+                var created = await genreService.CreateAsync(genreDTO);
 
                 if (created is null)
                     return NotFound();
 
-                return CreatedAtAction(nameof(GetById), new { created.Id }, created);
+                return CreatedAtAction(nameof(GetByIdAsync), new { created.Id }, created);
             }
             catch (Exception error)
             {
@@ -61,10 +61,10 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<GenreResponse> Update([FromRoute] Guid id, GenreDTO genreDTO)
+        public async Task<ActionResult<GenreResponse>> UpdateAsync([FromRoute] Guid id, GenreDTO genreDTO)
         {
             genreDTO.Name = genreDTO.Name.ToUpper();
-            var genreUpdated = genreService.Update(id, genreDTO);
+            var genreUpdated = await genreService.UpdateAsync(id, genreDTO);
 
             if (genreUpdated is null)
                 return NotFound();
@@ -73,11 +73,11 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete([FromRoute] Guid id)
+        public async Task<ActionResult> DeleteAsync([FromRoute] Guid id)
         {
             try
             {
-                genreService.Delete(id);
+                await genreService.DeleteAsync(id);
                 return NoContent();
             }
             catch (Exception ex)

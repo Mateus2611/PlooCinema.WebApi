@@ -28,7 +28,8 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
             if (session is null)
                 return null;
 
-            await Task.Run(() => session.ReserveSeats(seats));
+            // await Task.Run(() => session.ReserveSeats(seats));
+            session.ReserveSeats(seats);
             return await UpdateAsync(session);
         }
 
@@ -39,7 +40,8 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
             if (session is null)
                 return null;
             
-            await Task.Run(() => session.CancelReservedSeats(seats));
+            // await Task.Run(() => session.CancelReservedSeats(seats));
+            session.CancelReservedSeats(seats);
             return await UpdateAsync(session);
         }
     }

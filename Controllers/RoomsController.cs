@@ -18,18 +18,18 @@ namespace PlooCinema.WebApi.Controllers
         private readonly IRoomServices roomServices = roomServices;
 
         [HttpGet]
-        public ActionResult<IEnumerable<RoomResponse>> Get([FromQuery(Name = "Name")] string? name)
+        public async Task<ActionResult<IEnumerable<RoomResponse>>> GetAsync([FromQuery(Name = "Name")] string? name)
         {
             if (string.IsNullOrEmpty(name))
-                return Ok(roomServices.GetAll());
+                return Ok(await roomServices.GetAllAsync());
             
-            return Ok(roomServices.GetByName(name));
+            return Ok(await roomServices.GetByNameAsync(name));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<RoomResponse> GetById([FromRoute] Guid id)
+        public async Task<ActionResult<RoomResponse>> GetByIdAsync([FromRoute] Guid id)
         {
-            var room = roomServices.GetById(id);
+            var room = await roomServices.GetByIdAsync(id);
 
             if ( room is null )
                 return NotFound();
@@ -38,16 +38,16 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<RoomResponse> Create(RoomDTO room)
+        public async Task<ActionResult<RoomResponse>> CreateAsync(RoomDTO room)
         {
             try
             {
-                var created = roomServices.Create(room);
+                var created = await roomServices.CreateAsync(room);
 
                 if ( created is null )
                     return NotFound();
                 
-                return CreatedAtAction( nameof(GetById), new { created.Id }, created);
+                return CreatedAtAction( nameof(GetByIdAsync), new { created.Id }, created);
             }
             catch (Exception ex)
             {
@@ -56,9 +56,9 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<RoomResponse> Update([FromRoute] Guid id, [FromBody] RoomDTO room)
+        public async Task<ActionResult<RoomResponse>> UpdateAsync([FromRoute] Guid id, [FromBody] RoomDTO room)
         {
-            var roomUpdated = roomServices.Update(id, room);
+            var roomUpdated = await roomServices.UpdateAsync(id, room);
 
             if ( roomUpdated is null )
                 return NotFound();
@@ -67,9 +67,9 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete([FromRoute] Guid id)
+        public async Task<ActionResult> DeleteAsync([FromRoute] Guid id)
         {
-            roomServices.Delete(id);
+            await roomServices.DeleteAsync(id);
             return NoContent();
         }
     }

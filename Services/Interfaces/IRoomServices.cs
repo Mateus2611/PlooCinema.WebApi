@@ -10,11 +10,11 @@ namespace PlooCinema.WebApi.Services.Interfaces
 {
     public interface IRoomServices
     {
-        RoomResponse? Create(RoomDTO room);
-        IEnumerable<RoomResponse> GetAll();
-        RoomResponse? Update(Guid id, RoomDTO room);
-        void Delete(Guid id);
-        IEnumerable<RoomResponse> GetByName(string name);
-        RoomResponse? GetById(Guid id);
+        Task<RoomResponse> CreateAsync(RoomDTO room);
+        Task<IEnumerable<RoomResponse>> GetAllAsync();
+        Task<RoomResponse> UpdateAsync(Guid id, RoomDTO room);
+        Task DeleteAsync(Guid id);
+        Task<IEnumerable<RoomResponse>> GetByNameAsync(string name);
+        Task<RoomResponse> GetByIdAsync(Guid id);
     }
 }

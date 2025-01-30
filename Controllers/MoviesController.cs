@@ -21,18 +21,18 @@ namespace PlooCinema.WebApi.Controllers
         private readonly IMovieService movieService = movieService;
 
         [HttpGet]
-        public ActionResult<IEnumerable<GetMovieResponse>> Get([FromQuery(Name = "name")] string? name)
+        public async Task<ActionResult<IEnumerable<GetMovieResponse>>> GetAsync([FromQuery(Name = "name")] string? name)
         {
             if (string.IsNullOrEmpty(name))
-                return Ok(movieService.GetAll());
+                return Ok(await movieService.GetAllAsync());
 
-            return Ok(movieService.GetByName(name));
+            return Ok(await movieService.GetByNameAsync(name));
         }
 
         [HttpGet("{id}")]
-        public ActionResult<GetMovieResponse> GetById([FromRoute]Guid id)
+        public async Task<ActionResult<GetMovieResponse>> GetByIdAsync([FromRoute]Guid id)
         {
-            var searchMovie = movieService.GetById(id);
+            var searchMovie = await movieService.GetByIdAsync(id);
 
             if (searchMovie is null)
                 return NotFound();
@@ -41,15 +41,15 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<GetMovieResponse> Create(CreateMovieDTO movie)
+        public async Task<ActionResult<GetMovieResponse>> CreateAsync(CreateMovieDTO movie)
         {
             try
             {
-                var create = movieService.Create(movie);
+                var create = await movieService.CreateAsync(movie);
                 if (create is null)
                     return NotFound();
 
-                return CreatedAtAction(nameof(GetById), new { id = create.Id }, create);
+                return CreatedAtAction(nameof(GetByIdAsync), new { id = create.Id }, create);
             }
             catch (Exception error)
             {
@@ -58,11 +58,11 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<UpdateMovieDTO> Update([FromRoute] Guid id, [FromBody] UpdateMovieDTO movie)
+        public async Task<ActionResult<UpdateMovieDTO>> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateMovieDTO movie)
         {
             try
             {
-                var updatedValue = movieService.Update(id, movie);
+                var updatedValue = await movieService.UpdateAsync(id, movie);
 
                 if (updatedValue is null)
                     return NotFound();
@@ -76,17 +76,17 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
         {
-            movieService.Delete(id);
+            await movieService.DeleteAsync(id);
             return NoContent();
         }
 
         [HttpPut("{id}/Genres")]
-        public ActionResult<GetMovieResponse> AddGenre([FromRoute] Guid id, [FromBody] MovieGenreDTO movieGenresIds)
+        public async Task<ActionResult<GetMovieResponse>> AddGenreAsync([FromRoute] Guid id, [FromBody] MovieGenreDTO movieGenresIds)
         {
             movieGenresIds.MovieId = id;
-            var movie = movieService.AddGenre(movieGenresIds);
+            var movie = await movieService.AddGenreAsync(movieGenresIds);
 
             if (movie is null)
                 return NotFound();
@@ -95,10 +95,10 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpDelete("{id}/Genres")]
-        public ActionResult<GetMovieResponse> RemoveGenre([FromRoute] Guid id, [FromBody] MovieGenreDTO movieGenresIds)
+        public async Task<ActionResult<GetMovieResponse>> RemoveGenreAsync([FromRoute] Guid id, [FromBody] MovieGenreDTO movieGenresIds)
         {
             movieGenresIds.MovieId = id;
-            var movie = movieService.RemoveGenre(movieGenresIds);
+            var movie = await movieService.RemoveGenreAsync(movieGenresIds);
 
             if (movie is null)
                 return NotFound();

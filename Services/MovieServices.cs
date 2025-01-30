@@ -18,22 +18,19 @@ namespace PlooCinema.WebApi.Services
         private readonly IGenreRepository genreRepository = genreRepository;
         private readonly IMapper mapper = mapper;
 
-        public GetMovieResponse? Create(CreateMovieDTO movie)
+        public async Task<GetMovieResponse?> CreateAsync(CreateMovieDTO movie)
         {
 
             Movie? movieConverted = mapper.Map<Movie>(movie);
 
-            movieConverted = movieRepository.Create(movieConverted);
-
-            if (movieConverted is null)
-                return null;
+            movieConverted = await movieRepository.CreateAsync(movieConverted);
 
             MovieGenreDTO movieGenreDTO = new(movie.IdsGenres, movieConverted.Id);
 
-            return AddGenre(movieGenreDTO);
+            return await AddGenreAsync(movieGenreDTO);
         }
 
-        public UpdateMovieDTO? Update(Guid id, UpdateMovieDTO movie)
+        public async Task<UpdateMovieDTO> UpdateAsync(Guid id, UpdateMovieDTO movie)
         {
             var updatedValue = mapper.Map<Movie>(movie);
             updatedValue.Id = id;
@@ -41,48 +38,48 @@ namespace PlooCinema.WebApi.Services
             return
                 mapper.Map<UpdateMovieDTO>
                 (
-                    movieRepository.Update(updatedValue)
+                    await movieRepository.UpdateAsync(updatedValue)
                 );
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            var movieDelete = movieRepository.GetById(id) ?? throw new KeyNotFoundException(id.ToString());
-            movieRepository.Delete(movieDelete);
+            var movieDelete = await movieRepository.GetByIdAsync(id) ?? throw new KeyNotFoundException(id.ToString());
+            await movieRepository.DeleteAsync(movieDelete);
         }
 
-        public IEnumerable<GetMovieResponse> GetAll()
+        public async Task<IEnumerable<GetMovieResponse>> GetAllAsync()
         {
             return
                 mapper.Map<IEnumerable<GetMovieResponse>>
                 (
-                    movieRepository.GetAll()
+                    await movieRepository.GetAllAsync()
                 );
         }
 
-        public GetMovieResponse? GetById(Guid id)
+        public async Task<GetMovieResponse> GetByIdAsync(Guid id)
         {
             return
                 mapper.Map<GetMovieResponse>
                 (
-                    movieRepository.GetById(id)
+                    await movieRepository.GetByIdAsync(id)
                 );
 
         }
 
-        public IEnumerable<GetMovieResponse> GetByName(string name)
+        public async Task<IEnumerable<GetMovieResponse>> GetByNameAsync(string name)
         {
             return
                 mapper.Map<IEnumerable<GetMovieResponse>>
                 (
-                    movieRepository.GetByName(name)
+                    await movieRepository.GetByNameAsync(name)
                 );
         }
 
 
-        public GetMovieResponse? AddGenre(MovieGenreDTO movieGenreIds)
+        public async Task<GetMovieResponse?> AddGenreAsync(MovieGenreDTO movieGenreIds)
         {
-            var getMovie = movieRepository.GetById(movieGenreIds.MovieId);
+            var getMovie = await movieRepository.GetByIdAsync(movieGenreIds.MovieId);
 
             if (getMovie is null)
                 return null;
@@ -91,12 +88,12 @@ namespace PlooCinema.WebApi.Services
             {
                 try
                 {
-                    var getGenre = genreRepository.GetById(genre);
+                    var getGenre = await genreRepository.GetByIdAsync(genre);
 
                     if (getGenre is not null && !getMovie.Genres.Contains(getGenre))
                     {
                         getMovie.Genres.Add(getGenre);
-                        movieRepository.Update(getMovie);
+                        await movieRepository.UpdateAsync(getMovie);
                     }
                 }
                 catch { }
@@ -109,9 +106,9 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public GetMovieResponse? RemoveGenre(MovieGenreDTO movieGenreIds)
+        public async Task<GetMovieResponse?> RemoveGenreAsync(MovieGenreDTO movieGenreIds)
         {
-            var getMovie = movieRepository.GetById(movieGenreIds.MovieId);
+            var getMovie = await movieRepository.GetByIdAsync(movieGenreIds.MovieId);
 
             if (getMovie is null)
                 return null;
@@ -130,7 +127,7 @@ namespace PlooCinema.WebApi.Services
                 catch { }
             }
 
-            movieRepository.Update(getMovie);
+            await movieRepository.UpdateAsync(getMovie);
 
             return
                 mapper.Map<GetMovieResponse>

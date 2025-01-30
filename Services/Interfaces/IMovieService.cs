@@ -10,13 +10,13 @@ namespace PlooCinema.WebApi.Services.Interfaces
 {
     public interface IMovieService
     {
-        GetMovieResponse? Create(CreateMovieDTO movie);
-        IEnumerable<GetMovieResponse> GetAll();
-        UpdateMovieDTO? Update(Guid id, UpdateMovieDTO movie);
-        void Delete(Guid id);
-        IEnumerable<GetMovieResponse> GetByName(string name);
-        GetMovieResponse? GetById(Guid id);
-        GetMovieResponse? AddGenre(MovieGenreDTO movieGenreIds);
-        GetMovieResponse? RemoveGenre(MovieGenreDTO movieGenreids);
+        Task<GetMovieResponse?> CreateAsync(CreateMovieDTO movie);
+        Task<IEnumerable<GetMovieResponse>> GetAllAsync();
+        Task<UpdateMovieDTO> UpdateAsync(Guid id, UpdateMovieDTO movie);
+        Task DeleteAsync(Guid id);
+        Task<IEnumerable<GetMovieResponse>> GetByNameAsync(string name);
+        Task<GetMovieResponse> GetByIdAsync(Guid id);
+        Task<GetMovieResponse?> AddGenreAsync(MovieGenreDTO movieGenreIds);
+        Task<GetMovieResponse?> RemoveGenreAsync(MovieGenreDTO movieGenreids);
     }
 }

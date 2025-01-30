@@ -16,59 +16,59 @@ namespace PlooCinema.WebApi.Services
         private readonly IRoomRepository roomRepository = roomRepository;
         private readonly IMapper mapper= mapper;
         
-        public RoomResponse? Create(RoomDTO room)
+        public async Task<RoomResponse> CreateAsync(RoomDTO room)
         {
             var createObject = mapper.Map<Room>(room);
 
             return 
                 mapper.Map<RoomResponse>
                 (
-                    roomRepository.Create(createObject)
+                    await roomRepository.CreateAsync(createObject)
                 );
         }
 
-        public void Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            var room = roomRepository.GetById(id) ?? throw new KeyNotFoundException(id.ToString());
-            roomRepository.Delete(room);
+            var room = await roomRepository.GetByIdAsync(id) ?? throw new KeyNotFoundException(id.ToString());
+            await roomRepository.DeleteAsync(room);
         }
 
-        public IEnumerable<RoomResponse> GetAll()
+        public async Task<IEnumerable<RoomResponse>> GetAllAsync()
         {
             return 
                 mapper.Map<IEnumerable<RoomResponse>>
                 (
-                    roomRepository.GetAll()
+                    await roomRepository.GetAllAsync()
                 );
         }
 
-        public RoomResponse? GetById(Guid id)
+        public async Task<RoomResponse> GetByIdAsync(Guid id)
         {
             return 
                 mapper.Map<RoomResponse>
                 (
-                    roomRepository.GetById(id)
+                    await roomRepository.GetByIdAsync(id)
                 );
         }
 
-        public IEnumerable<RoomResponse> GetByName(string name)
+        public async Task<IEnumerable<RoomResponse>> GetByNameAsync(string name)
         {
             return 
                 mapper.Map<IEnumerable<RoomResponse>>
                 (
-                    roomRepository.GetByName(name)
+                    await roomRepository.GetByNameAsync(name)
                 );
         }
 
-        public RoomResponse? Update(Guid id, RoomDTO room)
+        public async Task<RoomResponse> UpdateAsync(Guid id, RoomDTO room)
         {
             var updatedValue = mapper.Map<Room>(room);
             updatedValue.Id = id;
 
-            return 
+            return
                 mapper.Map<RoomResponse>
                 (
-                    roomRepository.Update(updatedValue)
+                    await roomRepository.UpdateAsync(updatedValue)
                 );
         }
     }

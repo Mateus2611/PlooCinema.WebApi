@@ -19,13 +19,13 @@ namespace PlooCinema.WebApi.Controllers
         private readonly ISessionService sessionService = sessionService;
 
         [HttpGet]
-        public ActionResult<IEnumerable<SessionResponse>> Get()
-            => Ok(sessionService.GetAll());
+        public async Task<ActionResult<IEnumerable<SessionResponse>>> Get()
+            => Ok(await sessionService.GetAllAsync());
 
         [HttpGet("{id}")]
-        public ActionResult<SessionResponse> GetById([FromRoute] Guid id)
+        public async Task<ActionResult<SessionResponse>> GetByIdAsync([FromRoute] Guid id)
         {
-            var session = sessionService.GetById(id);
+            var session = await sessionService.GetByIdAsync(id);
 
             if (session is null)
                 return NotFound();
@@ -34,16 +34,16 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<SessionResponse> Create([FromBody] SessionDTO session)
+        public async Task<ActionResult<SessionResponse>> CreateAsync([FromBody] SessionDTO session)
         {
             try
             {
-                var created = sessionService.Create(session);
+                var created = await sessionService.CreateAsync(session);
 
                 if (created is null)
                     return NotFound();
 
-                return CreatedAtAction(nameof(GetById), new { created.Id }, created);
+                return CreatedAtAction(nameof(GetByIdAsync), new { created.Id }, created);
             }
             catch (Exception ex)
             {
@@ -52,9 +52,9 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<SessionResponse> Update([FromRoute] Guid id, [FromBody] SessionDTO session)
+        public async Task<ActionResult<SessionResponse>> UpdateAsync([FromRoute] Guid id, [FromBody] SessionDTO session)
         {
-            var updatedSession = sessionService.Update(id, session);
+            var updatedSession = await sessionService.UpdateAsync(id, session);
 
             if (updatedSession is null)
                 return NotFound();
@@ -63,18 +63,18 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult Delete([FromRoute] Guid id)
+        public async Task<ActionResult> DeleteAsync([FromRoute] Guid id)
         {
-            sessionService.Delete(id);
+            await sessionService.DeleteAsync(id);
             return NoContent();
         }
 
         [HttpPut("ReserveSeats/{id}")]
-        public ActionResult<SessionResponse> ReserveSeats([FromRoute(Name = "id")] Guid id, [FromBody] int seats)
+        public async Task<ActionResult<SessionResponse>> ReserveSeatsAsync([FromRoute(Name = "id")] Guid id, [FromBody] int seats)
         {
             try
             {
-                var session = sessionService.ReserveSeats(id, seats);
+                var session = await sessionService.ReserveSeatsAsync(id, seats);
 
                 if (session is null)
                     return NotFound();
@@ -88,11 +88,11 @@ namespace PlooCinema.WebApi.Controllers
         }
 
         [HttpPut("CancelReservedSeats/{id}")]
-        public ActionResult<SessionResponse> CancelReservedSeats([FromRoute(Name = "id")] Guid id, [FromBody] int seats)
+        public async Task<ActionResult<SessionResponse>> CancelReservedSeatsAsync([FromRoute(Name = "id")] Guid id, [FromBody] int seats)
         {
             try
             {
-                var session = sessionService.CancelReservedSeats(id, seats);
+                var session = await sessionService.CancelReservedSeatsAsync(id, seats);
 
                 if (session is null)
                     return NotFound();
