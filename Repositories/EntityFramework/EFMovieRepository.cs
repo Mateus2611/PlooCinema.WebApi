@@ -18,9 +18,12 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
         public async Task<Movie?> GetByIdAsync(Guid id)
             => await context.Movies.FindAsync(id);
 
-        public async Task<IEnumerable<Movie>> GetByNameAsync(string name)
+        public async Task<IEnumerable<Movie>> GetByNameAsync(string name, int skip, int take)
             => await context.Movies
+                .AsNoTracking()
                 .Where(m => m.Name.ToLower().Contains(name.ToLower()))
+                .Skip(skip)
+                .Take(take)
                 .ToListAsync();
 
         public async new Task<Movie> CreateAsync(Movie movie)

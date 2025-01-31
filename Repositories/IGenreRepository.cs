@@ -10,10 +10,10 @@ namespace PlooCinema.WebApi.Repositories
     public interface IGenreRepository
     {
         Task<Genre> CreateAsync(Genre genre);
-        Task<IEnumerable<Genre>> GetAllAsync();
+        Task<IEnumerable<Genre>> GetAllAsync(int skip, int take);
         Task<Genre> UpdateAsync(Genre genre);
         Task DeleteAsync(Genre genre);
-        Task<IEnumerable<Genre>> GetByNameAsync(string name);
+        Task<IEnumerable<Genre>> GetByNameAsync(string name, int skip, int take);
         Task<Genre?> GetByIdAsync(Guid id);
     }
 }

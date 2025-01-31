@@ -21,13 +21,13 @@ namespace PlooCinema.WebApi.Controllers
     {
         private readonly IGenreService genreService = genreService;
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<GenreResponse>>> GetAsync([FromQuery(Name = "name")] string? name)
+        [HttpGet("Skip/{skip}/Take/{take}")]
+        public async Task<ActionResult<IEnumerable<GenreResponse>>> GetAsync([FromQuery(Name = "name")] string? name, [FromRoute]int skip = 0, [FromRoute] int take = 5)
         {
             if (string.IsNullOrEmpty(name))
-                return Ok(await genreService.GetAllAsync());
+                return Ok(await genreService.GetAllAsync(skip, take));
 
-            return Ok(await genreService.GetByNameAsync(name));
+            return Ok(await genreService.GetByNameAsync(name, skip, take));
         }
 
         [HttpGet("{id}")]

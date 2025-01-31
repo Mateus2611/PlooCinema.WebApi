@@ -18,9 +18,9 @@ namespace PlooCinema.WebApi.Controllers
     {
         private readonly ISessionService sessionService = sessionService;
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<SessionResponse>>> Get()
-            => Ok(await sessionService.GetAllAsync());
+        [HttpGet("Skip/{skip}/Take/{take}")]
+        public async Task<ActionResult<IEnumerable<SessionResponse>>> Get([FromRoute] int skip = 0, [FromRoute] int take = 5)
+            => Ok(await sessionService.GetAllAsync(skip, take));
 
         [HttpGet("{id}")]
         public async Task<ActionResult<SessionResponse>> GetByIdAsync([FromRoute] Guid id)

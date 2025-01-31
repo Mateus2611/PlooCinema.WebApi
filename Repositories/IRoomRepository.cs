@@ -9,10 +9,10 @@ namespace PlooCinema.WebApi.Repositories
     public interface IRoomRepository
     {
         Task<Room> CreateAsync(Room room);
-        Task<IEnumerable<Room>> GetAllAsync();
+        Task<IEnumerable<Room>> GetAllAsync(int skip, int take);
         Task<Room>? UpdateAsync(Room room);
         Task DeleteAsync(Room room);
-        Task<IEnumerable<Room>> GetByNameAsync(string name);
+        Task<IEnumerable<Room>> GetByNameAsync(string name, int skip, int take);
         Task<Room?> GetByIdAsync(Guid id);
     }
 }

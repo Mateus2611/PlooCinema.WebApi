@@ -17,13 +17,13 @@ namespace PlooCinema.WebApi.Controllers
     {
         private readonly IRoomServices roomServices = roomServices;
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<RoomResponse>>> GetAsync([FromQuery(Name = "Name")] string? name)
+        [HttpGet("Skip/{skip}/Take/{take}")]
+        public async Task<ActionResult<IEnumerable<RoomResponse>>> GetAsync([FromQuery(Name = "Name")] string? name, [FromRoute] int skip = 0, [FromRoute] int take = 5)
         {
             if (string.IsNullOrEmpty(name))
-                return Ok(await roomServices.GetAllAsync());
+                return Ok(await roomServices.GetAllAsync(skip, take));
             
-            return Ok(await roomServices.GetByNameAsync(name));
+            return Ok(await roomServices.GetByNameAsync(name, skip, take));
         }
 
         [HttpGet("{id}")]

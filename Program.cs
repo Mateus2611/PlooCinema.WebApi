@@ -16,6 +16,11 @@ builder.Services.AddDbContext<DataContext>(options =>
         .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
 });
 
+builder.Services.AddMvc(options =>
+{
+    options.SuppressAsyncSuffixInActionNames = false;
+});
+
 builder.Services.AddScoped<IMovieRepository, EFMovieRepository>();
 
 builder.Services.AddScoped<IGenreRepository, EFGenreRepository>();

@@ -33,12 +33,12 @@ namespace PlooCinema.WebApi.Services
             await roomRepository.DeleteAsync(room);
         }
 
-        public async Task<IEnumerable<RoomResponse>> GetAllAsync()
+        public async Task<IEnumerable<RoomResponse>> GetAllAsync(int skip, int take)
         {
             return 
                 mapper.Map<IEnumerable<RoomResponse>>
                 (
-                    await roomRepository.GetAllAsync()
+                    await roomRepository.GetAllAsync(skip, take)
                 );
         }
 
@@ -51,12 +51,12 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public async Task<IEnumerable<RoomResponse>> GetByNameAsync(string name)
+        public async Task<IEnumerable<RoomResponse>> GetByNameAsync(string name, int skip, int take)
         {
             return 
                 mapper.Map<IEnumerable<RoomResponse>>
                 (
-                    await roomRepository.GetByNameAsync(name)
+                    await roomRepository.GetByNameAsync(name, skip, take)
                 );
         }
 

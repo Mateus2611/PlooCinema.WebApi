@@ -11,7 +11,7 @@ namespace PlooCinema.WebApi.Services.Interfaces
     public interface ISessionService
     {
         Task<SessionResponse?> CreateAsync(SessionDTO session);
-        Task<IEnumerable<SessionResponse>> GetAllAsync();
+        Task<IEnumerable<SessionResponse>> GetAllAsync(int skip, int take);
         Task<SessionResponse?> UpdateAsync(Guid id, SessionDTO session);
         Task DeleteAsync(Guid id);
         Task<SessionResponse> GetByIdAsync(Guid id);

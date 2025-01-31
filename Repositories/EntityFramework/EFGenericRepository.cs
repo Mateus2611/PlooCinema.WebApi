@@ -10,9 +10,16 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public EFGenericRepository(DataContext context) => this.context = context;
 
-        public async Task<IEnumerable<T>> GetAllAsync()
-            => await context.Set<T>()
-                .ToListAsync();
+        public async Task<IEnumerable<T>> GetAllAsync(int skip, int take)
+        {
+            var itens = await context.Set<T>()
+                        .AsNoTracking()
+                        .Skip(skip)
+                        .Take(take)
+                        .ToListAsync();
+            
+            return itens;
+        }
 
         public async Task<T> CreateAsync(T entity)
         {
@@ -24,7 +31,7 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public async Task<T> UpdateAsync(T entity)
         {
-            context.Set<T>() 
+            context.Set<T>()
                 .Update(entity);
             await context.SaveChangesAsync();
             return entity;

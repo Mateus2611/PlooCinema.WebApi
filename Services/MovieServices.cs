@@ -48,12 +48,12 @@ namespace PlooCinema.WebApi.Services
             await movieRepository.DeleteAsync(movieDelete);
         }
 
-        public async Task<IEnumerable<GetMovieResponse>> GetAllAsync()
+        public async Task<IEnumerable<GetMovieResponse>> GetAllAsync(int skip, int take)
         {
             return
                 mapper.Map<IEnumerable<GetMovieResponse>>
                 (
-                    await movieRepository.GetAllAsync()
+                    await movieRepository.GetAllAsync(skip, take)
                 );
         }
 
@@ -67,12 +67,12 @@ namespace PlooCinema.WebApi.Services
 
         }
 
-        public async Task<IEnumerable<GetMovieResponse>> GetByNameAsync(string name)
+        public async Task<IEnumerable<GetMovieResponse>> GetByNameAsync(string name, int skip, int take)
         {
             return
                 mapper.Map<IEnumerable<GetMovieResponse>>
                 (
-                    await movieRepository.GetByNameAsync(name)
+                    await movieRepository.GetByNameAsync(name, skip, take)
                 );
         }
 

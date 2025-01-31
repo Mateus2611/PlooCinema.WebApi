@@ -23,10 +23,12 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
             return genre;
         }
 
-        public async Task<IEnumerable<Genre>> GetByNameAsync(string name)
+        public async Task<IEnumerable<Genre>> GetByNameAsync(string name, int skip, int take)
             => await context.Genres
                 .AsNoTracking()
                 .Where( g => g.Name.ToLower().Contains(name.ToLower()))
+                .Skip(skip)
+                .Take(take)
                 .ToListAsync();
     }
 }

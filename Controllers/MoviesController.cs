@@ -20,13 +20,13 @@ namespace PlooCinema.WebApi.Controllers
     {
         private readonly IMovieService movieService = movieService;
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetMovieResponse>>> GetAsync([FromQuery(Name = "name")] string? name)
+        [HttpGet("Skip/{skip}/Take/{take}")]
+        public async Task<ActionResult<IEnumerable<GetMovieResponse>>> GetAsync([FromQuery(Name = "name")] string? name, [FromRoute] int skip = 0, [FromRoute] int take = 5)
         {
             if (string.IsNullOrEmpty(name))
-                return Ok(await movieService.GetAllAsync());
+                return Ok(await movieService.GetAllAsync(skip, take));
 
-            return Ok(await movieService.GetByNameAsync(name));
+            return Ok(await movieService.GetByNameAsync(name, skip, take));
         }
 
         [HttpGet("{id}")]

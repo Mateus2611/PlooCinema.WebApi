@@ -27,12 +27,12 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public async Task<IEnumerable<GenreResponse>> GetAllAsync()
+        public async Task<IEnumerable<GenreResponse>> GetAllAsync(int skip, int take)
         {
             return
                 mapper.Map<IEnumerable<GenreResponse>>
                 (
-                    await genreRepository.GetAllAsync()
+                    await genreRepository.GetAllAsync(skip, take)
                 );
         }
 
@@ -63,12 +63,12 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public async Task<IEnumerable<GenreResponse>> GetByNameAsync(string name)
+        public async Task<IEnumerable<GenreResponse>> GetByNameAsync(string name, int skip, int take)
         {
             return 
                 mapper.Map<IEnumerable<GenreResponse>>
                 (
-                    await genreRepository.GetByNameAsync(name)
+                    await genreRepository.GetByNameAsync(name, skip, take)
                 );
         }
     }

@@ -78,12 +78,12 @@ namespace PlooCinema.WebApi.Services
                 );
         }
 
-        public async Task<IEnumerable<SessionResponse>> GetAllAsync()
+        public async Task<IEnumerable<SessionResponse>> GetAllAsync(int skip, int take)
         {
             return
                 mapper.Map<IEnumerable<SessionResponse>>
                 (
-                    await sessionRepository.GetAllAsync()
+                    await sessionRepository.GetAllAsync(skip, take)
                 );
         }
 
