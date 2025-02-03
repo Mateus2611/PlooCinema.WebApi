@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<DataContext>(options =>
+builder.Services.AddDbContextFactory<DataContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
         .UseLazyLoadingProxies()

@@ -9,20 +9,28 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 {
     public class EFRoomRepository : EFGenericRepository<Room>, IRoomRepository
     {
-        private readonly DataContext context;
+        private readonly IDbContextFactory<DataContext> _contextFactory;
 
-        public EFRoomRepository(DataContext context) : base(context)
-            => this.context = context;
+        public EFRoomRepository(IDbContextFactory<DataContext> context) : base(context)
+            => _contextFactory = context;
 
         public async Task<Room?> GetByIdAsync(Guid id)
-            => await context.Rooms.FindAsync(id);
+        {
+            using var context = _contextFactory.CreateDbContext();
+
+            return await context.Rooms.FindAsync(id);
+        }
 
         public async Task<IEnumerable<Room>> GetByNameAsync(string name, int skip, int take)
-            => await context.Rooms
+        {
+            using var context = _contextFactory.CreateDbContext();
+
+            return await context.Rooms
                 .AsNoTracking()
-                .Where( r => r.Name.ToLower().Contains(name.ToLower()))
+                .Where(r => r.Name.ToLower().Contains(name.ToLower()))
                 .Skip(skip)
                 .Take(take)
                 .ToListAsync();
+        }
     }
 }

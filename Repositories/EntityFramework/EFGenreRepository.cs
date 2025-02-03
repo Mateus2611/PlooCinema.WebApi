@@ -9,26 +9,32 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 {
     public class EFGenreRepository : EFGenericRepository<Genre>, IGenreRepository
     {
-        private readonly DataContext context;
+        private readonly IDbContextFactory<DataContext> _contextFactory;
 
-        public EFGenreRepository(DataContext context) : base(context) 
-            => this.context = context;
+        public EFGenreRepository(IDbContextFactory<DataContext> context) : base(context)
+            => _contextFactory = context;
 
         public async Task<Genre?> GetByIdAsync(Guid id)
         {
+            using var context = _contextFactory.CreateDbContext();
+
             Genre genre = await context.Genres
                 .AsNoTracking()
-                .SingleAsync( g => g.Id == id );
-            
+                .SingleAsync(g => g.Id == id);
+
             return genre;
         }
 
         public async Task<IEnumerable<Genre>> GetByNameAsync(string name, int skip, int take)
-            => await context.Genres
-                .AsNoTracking()
-                .Where( g => g.Name.ToLower().Contains(name.ToLower()))
-                .Skip(skip)
-                .Take(take)
-                .ToListAsync();
+        {
+            using var context = _contextFactory.CreateDbContext();
+
+            return await context.Genres
+                    .AsNoTracking()
+                    .Where(g => g.Name.ToLower().Contains(name.ToLower()))
+                    .Skip(skip)
+                    .Take(take)
+                    .ToListAsync();
+        }
     }
 }
