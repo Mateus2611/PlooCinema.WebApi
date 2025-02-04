@@ -16,7 +16,7 @@ namespace PlooCinema.WebApi.Models.Responses
         }
         private DateTimeOffset _startMovie { get; set; }
         public int SeatsAvailable { get; set; }
-        public required virtual MovieSessionResponse Movies { get; set; }
-        public required virtual RoomSessionResponse Rooms { get; set; }
+        public required MovieSessionResponse Movies { get; set; }
+        public required RoomSessionResponse Rooms { get; set; }
     }
 }

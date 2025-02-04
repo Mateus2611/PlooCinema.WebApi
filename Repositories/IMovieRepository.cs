@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.Data;
@@ -13,7 +14,7 @@ namespace PlooCinema.WebApi.Repositories
     public interface IMovieRepository
     {
         Task<Movie> CreateAsync(Movie movie);
-        Task<IEnumerable<Movie>> GetAllAsync(int skip, int take);
+        Task<IEnumerable<Movie>> GetAllAsync(int skip, int take, params Expression<Func<Movie, object>>[] includeProperties);
         Task<Movie> UpdateAsync(Movie movie);
         Task DeleteAsync(Movie movie);
         Task<IEnumerable<Movie>> GetByNameAsync(string name, int skip, int take);

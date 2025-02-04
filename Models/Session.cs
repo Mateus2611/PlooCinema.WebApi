@@ -32,8 +32,8 @@ namespace PlooCinema.WebApi.Models
         public Guid Id { get; set; }
         public DateTimeOffset StartMovie { get; set; }
         public int SeatsAvailable { get; set; }
-        public virtual Movie Movies { get; set; }
-        public virtual Room Rooms { get; set; }
+        public Movie Movies { get; set; }
+        public Room Rooms { get; set; }
 
         public void ReserveSeats(int seats)
         {

@@ -83,7 +83,10 @@ namespace PlooCinema.WebApi.Services
             return
                 mapper.Map<IEnumerable<SessionResponse>>
                 (
-                    await sessionRepository.GetAllAsync(skip, take)
+                    await sessionRepository.GetAllAsync(skip, take, 
+                                                        s => s.Movies, 
+                                                        s => s.Rooms,
+                                                        s => s.Movies.Genres)
                 );
         }
 

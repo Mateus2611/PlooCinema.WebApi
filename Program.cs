@@ -5,16 +5,18 @@ using Microsoft.EntityFrameworkCore;
 using PlooCinema.WebApi.Services.Interfaces;
 using PlooCinema.WebApi.Services;
 using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContextFactory<DataContext>(options =>
+builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-        .UseLazyLoadingProxies()
         .EnableSensitiveDataLogging()
         .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
-});
+}, ServiceLifetime.Scoped);
+
+builder.Services.AddScoped<IDbContextFactory<DataContext>, DataContextFactory>();
 
 builder.Services.AddMvc(options =>
 {

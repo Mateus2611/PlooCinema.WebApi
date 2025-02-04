@@ -20,6 +20,7 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
             Genre genre = await context.Genres
                 .AsNoTracking()
+                .Include( g => g.Movies)
                 .SingleAsync(g => g.Id == id);
 
             return genre;
@@ -31,6 +32,7 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
             return await context.Genres
                     .AsNoTracking()
+                    .Include(g => g.Movies)
                     .Where(g => g.Name.ToLower().Contains(name.ToLower()))
                     .Skip(skip)
                     .Take(take)

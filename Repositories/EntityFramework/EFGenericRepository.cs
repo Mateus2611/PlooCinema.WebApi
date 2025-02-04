@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using PlooCinema.WebApi.Model;
 using PlooCinema.WebApi.Repositories;
@@ -10,15 +11,20 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public EFGenericRepository(IDbContextFactory<DataContext> context) => _contextFactory = context;
 
-        public async Task<IEnumerable<T>> GetAllAsync(int skip, int take)
+        public async Task<IEnumerable<T>> GetAllAsync(int skip, int take, params Expression<Func<T, object>>[] includeProperties)
         {
             using var context = _contextFactory.CreateDbContext();
+            IQueryable<T> query = context.Set<T>().AsNoTracking();
 
-            return await context.Set<T>()
-                                    .AsNoTracking()
-                                    .Skip(skip)
-                                    .Take(take)
-                                    .ToListAsync();
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return await query
+                    .Skip(skip)
+                    .Take(take)
+                    .ToListAsync();
         }
 
         public async Task<T> CreateAsync(T entity)

@@ -18,7 +18,10 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
         {
             using var context = _contextFactory.CreateDbContext();
 
-            return await context.Rooms.FindAsync(id);
+            return await context.Rooms
+                .AsNoTracking()
+                .Include(r => r.Sessions)
+                .SingleAsync(g => g.Id == id);
         }
 
         public async Task<IEnumerable<Room>> GetByNameAsync(string name, int skip, int take)
@@ -26,11 +29,12 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
             using var context = _contextFactory.CreateDbContext();
 
             return await context.Rooms
-                .AsNoTracking()
-                .Where(r => r.Name.ToLower().Contains(name.ToLower()))
-                .Skip(skip)
-                .Take(take)
-                .ToListAsync();
+                    .AsNoTracking()
+                    .Include(r => r.Sessions)
+                    .Where(g => g.Name.ToLower().Contains(name.ToLower()))
+                    .Skip(skip)
+                    .Take(take)
+                    .ToListAsync();
         }
     }
 }

@@ -21,6 +21,6 @@ namespace PlooCinema.WebApi.Models
         public Guid Id { get; set; }
         public required string Name { get; set; }
         [JsonIgnore]
-        public virtual ICollection<Movie> Movies { get; set; } = [];
+        public ICollection<Movie> Movies { get; set; } = [];
     }
 }

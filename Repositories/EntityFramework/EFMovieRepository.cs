@@ -19,7 +19,10 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
         {
             using var context = _contextFactory.CreateDbContext();
 
-            return await context.Movies.FindAsync(id);
+            return await context.Movies
+                .AsNoTracking()
+                .Include(m => m.Genres)
+                .SingleAsync(g => g.Id == id);
         }
 
         public async Task<IEnumerable<Movie>> GetByNameAsync(string name, int skip, int take)
@@ -27,17 +30,18 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
             using var context = _contextFactory.CreateDbContext();
 
             return await context.Movies
-               .AsNoTracking()
-               .Where(m => m.Name.ToLower().Contains(name.ToLower()))
-               .Skip(skip)
-               .Take(take)
-               .ToListAsync();
+                    .AsNoTracking()
+                    .Include(m => m.Genres)
+                    .Where(g => g.Name.ToLower().Contains(name.ToLower()))
+                    .Skip(skip)
+                    .Take(take)
+                    .ToListAsync();
         }
 
         public async new Task<Movie> CreateAsync(Movie movie)
         {
             using var context = _contextFactory.CreateDbContext();
-            
+
             await context.Movies.AddAsync(movie);
             await context.SaveChangesAsync();
             context.Entry(movie).State = EntityState.Detached;

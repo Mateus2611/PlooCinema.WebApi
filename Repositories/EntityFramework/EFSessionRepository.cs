@@ -20,7 +20,11 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
             using var context = _contextFactory.CreateDbContext();
 
             return await context.Sessions
-                .FindAsync(id);
+                .AsNoTracking()
+                .Include(s => s.Rooms)
+                .Include(s => s.Movies)
+                    .ThenInclude(s => s.Genres)
+                .SingleAsync(g => g.Id == id);
         }
 
         public async Task<Session?> ReserveSeatsAsync(Guid id, int seats)

@@ -26,8 +26,8 @@ namespace PlooCinema.WebApi.Model
         public int Duration { get; set; }
         public DateTimeOffset Release { get; set; }
         public required string Description { get; set; }
-        public virtual ICollection<Genre> Genres { get; set; } = [];
+        public ICollection<Genre> Genres { get; set; } = [];
         [JsonIgnore]
-        public virtual ICollection<Session> Sessions{ get; set; } = [];
+        public ICollection<Session> Sessions{ get; set; } = [];
     }
 }
