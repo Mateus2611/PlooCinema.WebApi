@@ -10,15 +10,12 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 {
     public class EFMovieRepository : EFGenericRepository<Movie>, IMovieRepository
     {
-        private readonly IDbContextFactory<DataContext> _contextFactory;
+        private readonly DataContext context;
 
-        public EFMovieRepository(IDbContextFactory<DataContext> context) : base(context)
-            => _contextFactory = context;
+        public EFMovieRepository(DataContext context) : base(context) => this.context = context;
 
         public async Task<Movie?> GetByIdAsync(Guid id)
         {
-            using var context = _contextFactory.CreateDbContext();
-
             return await context.Movies
                 .AsNoTracking()
                 .Include(m => m.Genres)
@@ -27,8 +24,6 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public async Task<IEnumerable<Movie>> GetByNameAsync(string name, int skip, int take)
         {
-            using var context = _contextFactory.CreateDbContext();
-
             return await context.Movies
                     .AsNoTracking()
                     .Include(m => m.Genres)
@@ -40,8 +35,6 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public async new Task<Movie> CreateAsync(Movie movie)
         {
-            using var context = _contextFactory.CreateDbContext();
-
             await context.Movies.AddAsync(movie);
             await context.SaveChangesAsync();
             context.Entry(movie).State = EntityState.Detached;

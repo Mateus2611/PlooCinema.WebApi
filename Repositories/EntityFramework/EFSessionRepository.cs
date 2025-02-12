@@ -10,15 +10,12 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 {
     public class EFSessionRepository : EFGenericRepository<Session>, ISessionRepository
     {
-        private readonly IDbContextFactory<DataContext> _contextFactory;
+        private readonly DataContext context;
 
-        public EFSessionRepository( IDbContextFactory<DataContext> context) : base(context)
-            => _contextFactory = context;
+        public EFSessionRepository(DataContext context) : base(context) => this.context = context;
 
         public async Task<Session?> GetByIdAsync(Guid id)
         {
-            using var context = _contextFactory.CreateDbContext();
-
             return await context.Sessions
                 .AsNoTracking()
                 .Include(s => s.Rooms)

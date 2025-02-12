@@ -7,13 +7,12 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 {
     public class EFGenericRepository<T> where T : class
     {
-        private readonly IDbContextFactory<DataContext> _contextFactory;
+        private readonly DataContext context;
 
-        public EFGenericRepository(IDbContextFactory<DataContext> context) => _contextFactory = context;
+        public EFGenericRepository(DataContext context) => this.context = context;
 
         public async Task<IEnumerable<T>> GetAllAsync(int skip, int take, params Expression<Func<T, object>>[] includeProperties)
         {
-            using var context = _contextFactory.CreateDbContext();
             IQueryable<T> query = context.Set<T>().AsNoTracking();
 
             foreach (var includeProperty in includeProperties)
@@ -29,8 +28,6 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public async Task<T> CreateAsync(T entity)
         {
-            using var context = _contextFactory.CreateDbContext();
-
             await context.Set<T>()
             .AddAsync(entity);
             await context.SaveChangesAsync();
@@ -39,8 +36,6 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public async Task<T> UpdateAsync(T entity)
         {
-            using var context = _contextFactory.CreateDbContext();
-            
             context.Set<T>()
                 .Update(entity);
             await context.SaveChangesAsync();
@@ -49,8 +44,6 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public async Task DeleteAsync(T entity)
         {
-            using var context = _contextFactory.CreateDbContext();
-            
             context.Set<T>().Remove(entity);
             await context.SaveChangesAsync();
         }

@@ -14,9 +14,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
         .EnableSensitiveDataLogging()
         .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
-}, ServiceLifetime.Scoped);
-
-builder.Services.AddScoped<IDbContextFactory<DataContext>, DataContextFactory>();
+});
 
 builder.Services.AddMvc(options =>
 {

@@ -21,8 +21,8 @@ namespace PlooCinema.WebApi.Controllers
     {
         private readonly IGenreService genreService = genreService;
 
-        [HttpGet("Skip/{skip}/Take/{take}")]
-        public async Task<ActionResult<IEnumerable<GenreResponse>>> GetAsync([FromQuery(Name = "name")] string? name, [FromRoute]int skip = 0, [FromRoute] int take = 5)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<GenreResponse>>> GetAsync([FromQuery(Name = "name")] string? name, [FromQuery]int skip = 0, [FromQuery] int take = 5)
         {
             if (string.IsNullOrEmpty(name))
                 return Ok(await genreService.GetAllAsync(skip, take));
