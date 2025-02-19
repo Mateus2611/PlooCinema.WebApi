@@ -21,6 +21,7 @@ namespace PlooCinema.WebApi.Models
         public Guid Id { get; set; }
         public required string Name { get; set; }
         public int Seats { get; set; }
+        [JsonIgnore]
         public ICollection<Session> Sessions { get; set; } = [];
 
         public bool BookRoom(Movie movie, DateTimeOffset dateStart)

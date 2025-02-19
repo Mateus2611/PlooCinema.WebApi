@@ -11,20 +11,12 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public EFGenericRepository(DataContext context) => this.context = context;
 
-        public async Task<IEnumerable<T>> GetAllAsync(int skip, int take, params Expression<Func<T, object>>[] includeProperties)
-        {
-            IQueryable<T> query = context.Set<T>().AsNoTracking();
-
-            foreach (var includeProperty in includeProperties)
-            {
-                query = query.Include(includeProperty);
-            }
-
-            return await query
-                    .Skip(skip)
-                    .Take(take)
-                    .ToListAsync();
-        }
+        public async Task<IEnumerable<T>> GetAllAsync(int skip, int take)
+        => await context.Set<T>()
+            .AsNoTracking()
+            .Skip(skip)
+            .Take(take)
+            .ToListAsync();
 
         public async Task<T> CreateAsync(T entity)
         {

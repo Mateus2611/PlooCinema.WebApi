@@ -15,10 +15,7 @@ namespace PlooCinema.WebApi.Repositories.EntityFramework
 
         public async Task<Room?> GetByIdAsync(Guid id)
         {
-            return await context.Rooms
-                .AsNoTracking()
-                .Include(r => r.Sessions)
-                .SingleAsync(g => g.Id == id);
+            return await context.Rooms.FindAsync(id);
         }
 
         public async Task<IEnumerable<Room>> GetByNameAsync(string name, int skip, int take)

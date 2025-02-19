@@ -83,10 +83,7 @@ namespace PlooCinema.WebApi.Services
             return
                 mapper.Map<IEnumerable<SessionResponse>>
                 (
-                    await sessionRepository.GetAllAsync(skip, take, 
-                                                        s => s.Movies, 
-                                                        s => s.Rooms,
-                                                        s => s.Movies.Genres)
+                    await sessionRepository.GetAllAsync(skip, take)
                 );
         }
 
@@ -97,6 +94,15 @@ namespace PlooCinema.WebApi.Services
                 (
                     await sessionRepository.GetByIdAsync(id)
                 );
+        }
+
+        public async Task<IEnumerable<SessionResponse>> GetSessionsFilteredByMovieAndRoomAsync(Guid? movieId, Guid? roomId, int skip, int take)
+        {
+            return
+                   mapper.Map<IEnumerable<SessionResponse>>
+                   (
+                       await sessionRepository.GetSessionsFilteredByMovieAndRoomAsync(movieId, roomId, skip, take)
+                   );
         }
 
         public async Task<SessionResponse> ReserveSeatsAsync(Guid id, int seats)

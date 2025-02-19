@@ -14,7 +14,7 @@ namespace PlooCinema.WebApi.Repositories
     public interface IMovieRepository
     {
         Task<Movie> CreateAsync(Movie movie);
-        Task<IEnumerable<Movie>> GetAllAsync(int skip, int take, params Expression<Func<Movie, object>>[] includeProperties);
+        Task<IEnumerable<Movie>> GetAllAsync(int skip, int take);
         Task<Movie> UpdateAsync(Movie movie);
         Task DeleteAsync(Movie movie);
         Task<IEnumerable<Movie>> GetByNameAsync(string name, int skip, int take);

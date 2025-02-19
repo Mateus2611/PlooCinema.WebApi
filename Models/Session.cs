@@ -32,7 +32,9 @@ namespace PlooCinema.WebApi.Models
         public Guid Id { get; set; }
         public DateTimeOffset StartMovie { get; set; }
         public int SeatsAvailable { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Movie Movies { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Room Rooms { get; set; }
 
         public void ReserveSeats(int seats)

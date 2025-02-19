@@ -11,6 +11,5 @@ namespace PlooCinema.WebApi.Models.Responses
         public Guid Id { get; set; }
         public required string Name { get; set; }
         public int Seats { get; set; }
-        public IEnumerable<SessionRoomResponse> Sessions { get; set; } = [];
     }
 }

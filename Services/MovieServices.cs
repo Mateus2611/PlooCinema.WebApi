@@ -53,7 +53,7 @@ namespace PlooCinema.WebApi.Services
             return
                 mapper.Map<IEnumerable<GetMovieResponse>>
                 (
-                    await movieRepository.GetAllAsync(skip, take, m => m.Genres)
+                    await movieRepository.GetAllAsync(skip, take)
                 );
         }
 
