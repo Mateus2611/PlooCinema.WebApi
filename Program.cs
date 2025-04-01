@@ -4,8 +4,10 @@ using PlooCinema.WebApi.Repositories.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using PlooCinema.WebApi.Services.Interfaces;
 using PlooCinema.WebApi.Services;
-using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.AspNetCore.Identity;
+using System.Text;
+using PlooCinema.WebApi;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,12 @@ builder.Services.AddDbContext<DataContext>(options =>
         .EnableSensitiveDataLogging()
         .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
 });
+
+builder.Services
+    .AddIdentityApiEndpoints<AppUser>()
+    .AddEntityFrameworkStores<DataContext>();
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddMvc(options =>
 {
@@ -54,6 +62,11 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+app.UseAuthorization();
+app.UseAuthentication();
+
+app.MapGroup("auth").MapIdentityApi<AppUser>().WithTags("Authorization");
 
 if (app.Environment.IsDevelopment())
 {

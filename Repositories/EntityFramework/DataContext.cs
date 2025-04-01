@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PlooCinema.WebApi.Model;
 using PlooCinema.WebApi.Models;
 
 namespace PlooCinema.WebApi.Repositories.EntityFramework
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<AppUser, AppRole, Guid>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) {}
 
