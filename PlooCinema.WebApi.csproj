@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <Compile Remove=".cs" />
+    <Compile Remove="Models\Responses\RoleResponse.cs" />
   </ItemGroup>
 
   <ItemGroup>

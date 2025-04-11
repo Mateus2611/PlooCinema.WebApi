@@ -20,6 +20,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services
     .AddIdentityApiEndpoints<AppUser>()
+    .AddRoles<AppRole>()
     .AddEntityFrameworkStores<DataContext>();
 
 builder.Services.AddAuthorization();
