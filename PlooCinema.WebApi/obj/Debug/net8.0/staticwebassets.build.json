@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "uIDfQYnhTQNZTiM6xMnszijy05JV4xSGqvrz0+QBPg8=",
+  "Source": "PlooCinema.WebApi",
+  "BasePath": "_content/PlooCinema.WebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

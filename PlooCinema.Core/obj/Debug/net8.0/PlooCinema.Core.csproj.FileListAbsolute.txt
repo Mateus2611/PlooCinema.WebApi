@@ -1,0 +1,12 @@
+C:\Desenvolvimento\DevConnect\PlooCinema.Core\bin\Debug\net8.0\PlooCinema.Core.deps.json
+C:\Desenvolvimento\DevConnect\PlooCinema.Core\bin\Debug\net8.0\PlooCinema.Core.dll
+C:\Desenvolvimento\DevConnect\PlooCinema.Core\bin\Debug\net8.0\PlooCinema.Core.pdb
+C:\Desenvolvimento\DevConnect\PlooCinema.Core\obj\Debug\net8.0\PlooCinema.Core.csproj.AssemblyReference.cache
+C:\Desenvolvimento\DevConnect\PlooCinema.Core\obj\Debug\net8.0\PlooCinema.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Desenvolvimento\DevConnect\PlooCinema.Core\obj\Debug\net8.0\PlooCinema.Core.AssemblyInfoInputs.cache
+C:\Desenvolvimento\DevConnect\PlooCinema.Core\obj\Debug\net8.0\PlooCinema.Core.AssemblyInfo.cs
+C:\Desenvolvimento\DevConnect\PlooCinema.Core\obj\Debug\net8.0\PlooCinema.Core.csproj.CoreCompileInputs.cache
+C:\Desenvolvimento\DevConnect\PlooCinema.Core\obj\Debug\net8.0\PlooCinema.Core.dll
+C:\Desenvolvimento\DevConnect\PlooCinema.Core\obj\Debug\net8.0\refint\PlooCinema.Core.dll
+C:\Desenvolvimento\DevConnect\PlooCinema.Core\obj\Debug\net8.0\PlooCinema.Core.pdb
+C:\Desenvolvimento\DevConnect\PlooCinema.Core\obj\Debug\net8.0\ref\PlooCinema.Core.dll
